@@ -6,6 +6,8 @@ import Cart from './components/Cart';
 import Slideshow from './components/Slideshow';
 import Banners from './components/Banners';
 import Profile from './components/Profile';
+import SaleItems from 'components/SaleItems';
+import AuthForm from 'components/AuthForm';
 
 function App() {
   return (
@@ -16,8 +18,10 @@ function App() {
           <header className="bg-[#EE4E2E] shadow-sm sticky top-0 z-50">
             <nav className="px-4 sm:px-6 lg:px-8 py-4 flex items-center">
               <div className="flex items-center gap-2">
-                <img src="./tempicon.svg" alt="WebMart Logo" className="w-10 h-10" />
-                <h3 className="text-gray-900 font-semibold">WebMart</h3>
+                <Link to="/" className="flex items-center gap-2">
+                  <img src="./tempicon.svg" alt="WebMart Logo" className="w-10 h-10" />
+                  <h3 className="text-gray-900 font-semibold">WebMart</h3>
+                </Link>
               </div>
               <div className="flex-grow flex items-center space-x-4 ml-8">
                 <div className="relative flex-grow">
@@ -242,12 +246,14 @@ function App() {
                   </section>
                 </>
               } />
+              <Route path="/sale" element={<SaleItems />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/category/:id" element={<Products />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/about" element={<About />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/login" element={<AuthForm mode="login" />} />
+              <Route path="/register" element={<AuthForm mode="register" />} />
             </Routes>
           </main>
 
@@ -277,13 +283,13 @@ function App() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="text-gray-900 font-semibold mb-4">Customer Service</h3>
+                  <h3 className="text-gray-900 font-semibold mb-4">My Account</h3>
                   <ul className="space-y-2">
                     <li>
-                      <Link to="/help" className="text-gray-600 hover:text-primary-600 transition-colors">Help Center</Link>
+                      <Link to="/profile" className="text-gray-600 hover:text-primary-600 transition-colors">Profile</Link>
                     </li>
                     <li>
-                      <Link to="/shipping" className="text-gray-600 hover:text-primary-600 transition-colors">Shipping Info</Link>
+                      <Link to="/shipping" className="text-gray-600 hover:text-primary-600 transition-colors">Track My Order</Link>
                     </li>
                     <li>
                       <Link to="/returns" className="text-gray-600 hover:text-primary-600 transition-colors">Returns</Link>
