@@ -1,0 +1,89 @@
+# Python
+.python-version
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+static/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Webmart API
+webmart_api/.env
+webmart_api/.env.local
+webmart_api/.env.*.local
+webmart_api/__pycache__/
+webmart_api/*.py[cod]
+webmart_api/$py.class
+webmart_api/*.so
+webmart_api/.Python
+webmart_api/build/
+webmart_api/develop-eggs/
+webmart_api/dist/
+webmart_api/downloads/
+webmart_api/eggs/
+webmart_api/.eggs/
+webmart_api/lib/
+webmart_api/lib64/
+webmart_api/parts/
+webmart_api/sdist/
+webmart_api/var/
+webmart_api/wheels/
+webmart_api/*.egg-info/
+webmart_api/.installed.cfg
+webmart_api/*.egg
+webmart_api/venv/
+webmart_api/env/
+webmart_api/ENV/
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
