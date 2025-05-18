@@ -1,28 +1,26 @@
+from ninja import Schema
+from typing import *
+from pydantic import Field
+
 from product.models import *
-from ninja import Schema, ModelSchema
-from datetime import datetime
-from typing import *
-from typing import *
-
 from webmart_api.utils import generate_schema
+from webmart_api.baseschema import CustomFilterSchema
 
-#class BaseProductSchema(ModelSchema):
-#    class Config:
-#        model = Product
-#        model_fields = "__all__"
+# PATH AND QUERY PARAMETERS SCHEMA
+class ProductsFilterSchema(Schema, CustomFilterSchema):
+    name__icontains: str | None = Field(None, alias="search")
+    stores: int | None = Field(None, alias="store_id")
+    removed: bool = False
 
-#class ProductOut(Schema):
-#    name: str
-#    description: Optional[str]
-#    date_added: datetime
-#    date_update: datetime = None
-#    removed: bool
 
+
+# REQUEST AND RESPONSE SCHEMA
 class CategorySimpleOut(Schema):
+    id: int
     title: str
 
 
-ProductIn = generate_schema(
+ProductCreate = generate_schema(
     Product,
     "ProductIn",
     fields=["name", "description"],
@@ -33,6 +31,14 @@ ProductOut = generate_schema(
     Product,
     "ProductOut",
     fields=["name", "description", "removed"],
+    custom=[
+        ("category", List[CategorySimpleOut], None)
+    ]
+)
+
+FullProductOut = generate_schema(
+    Product,
+    "FullProductOut",
     custom=[
         ("category", List[CategorySimpleOut], None)
     ]

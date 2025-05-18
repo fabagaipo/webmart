@@ -7,7 +7,7 @@ from django.db import models
 def generate_schema(
     model = type[models.Model],
     name = str,
-    fields = list[str],
+    fields: list[str] = [],
     depth: int = 0,
     exclude: Optional[list[str]] = None,
     optional: Optional[list[str]] = None,
@@ -37,3 +37,6 @@ def create_schema(
     custom_fields: list[tuple(str, Any, Any)] = None, # if passed - this will override default field types (or add new fields)
 )
 """
+
+def removeNoneValues(data: dict):
+    return { key: value for key, value in data.items() if value}
