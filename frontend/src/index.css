@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -15,19 +17,19 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #EE4E2E;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #FE6233;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
@@ -42,16 +44,37 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #FE6233;
   cursor: pointer;
   transition: border-color 0.25s;
 }
+button.no-bg {
+  background-color: transparent;
+}
 button:hover {
-  border-color: #646cff;
+  border-color: #EE4E2E;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -60,7 +83,7 @@ button:focus-visible {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #EE4E2E;
   }
   button {
     background-color: #f9f9f9;
