@@ -8,6 +8,7 @@ class Product(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     removed = models.BooleanField(default=False)
+    price = models.PositiveIntegerField(default=0)
     category = models.ManyToManyField(
         Category,
         related_name="products",
@@ -15,3 +16,18 @@ class Product(models.Model):
     )
 
     history = HistoricalRecords()
+
+
+class Sale(models.Model):
+    product = models.ForeignKey(
+        Product,
+        related_name="sale_configuration",
+        on_delete=models.CASCADE
+    )
+    markdown = models.DecimalField(
+        max_digits=5,
+        decimal_places=2
+    )
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    
