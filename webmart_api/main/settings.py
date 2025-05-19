@@ -46,12 +46,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'simple_history',
+    'corsheaders',
     *MODELS
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,9 +87,9 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'webmartdb',
-        'USER': 'webmartuser',
-        'PASSWORD': 'webmartpassword',
+        'NAME': 'webmart',
+        #'USER': 'webmartuser',
+        #'PASSWORD': 'webmartpassword',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -134,3 +136,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Ref https://www.stackhawk.com/blog/django-cors-guide/
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"http://localhost:\d+$",
+    r"http://127.0.0.1:\d+$",
+]
