@@ -51,6 +51,7 @@ frontend/.env.*.local
 webmart_api/.env
 webmart_api/.env.local
 webmart_api/.env.*.local
+webmart_api/.pyenv
 webmart_api/__pycache__/
 webmart_api/*.py[cod]
 webmart_api/$py.class
