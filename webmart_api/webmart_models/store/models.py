@@ -3,8 +3,6 @@ from user_profile.models import *
 
 
 class Store(models.Model):
-    #from webmart_models.store.models import Inventory
-
     name = models.CharField(max_length=50)
     owner = models.ForeignKey(
         UserProfile,

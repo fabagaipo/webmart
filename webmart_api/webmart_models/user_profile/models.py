@@ -16,7 +16,7 @@ class Address(models.Model):
     )
     zip_code = models.CharField(max_length=5)
     city = models.CharField(max_length=50)
-    province = models.CharField(max_length=50),
-    zip_code = models.CharField(max_length=50),
+    province = models.CharField(max_length=50)
+    street = models.CharField(max_length=50)
     contact_number = models.CharField(max_length=11)
     details = models.CharField(max_length=50)
