@@ -12,6 +12,7 @@ def generate_schema(
     exclude: Optional[list[str]] = None,
     optional: Optional[list[str]] = None,
     custom: Optional[list[tuple[str, str, any]]] = None,
+    base: Optional[type[Schema]] = Schema
 ):
 
     return create_schema(
@@ -21,7 +22,8 @@ def generate_schema(
         fields=fields,
         exclude=exclude,
         optional_fields=optional,
-        custom_fields=custom
+        custom_fields=custom,
+        base_class=base
     )
 
 """

@@ -7,18 +7,20 @@ from webmart_api.utils import generate_schema
 #class BaseUserSchema(ModelSchema):
 #    pass
 #class BaseUserProfileSchema(ModelSchema):
-#    class Config:
+#    class Meta:
 #        model = UserProfile
-#        model_fields = []
+#        exclude = ["id"]
 
-#UserCreate = generate_schema(
-#    User,
-#    fields = ["first_name", "email", "last_name", "password" ],
-#    custom = [
-#        ("city", str, str),
-#        ("province", str, str),
-#        ("contact_number", str, str),
-#        ("street", str, str),
-#        ("zip_code", str, str)
-#    ]
-#)
+class BaseAddressSchema(ModelSchema):
+    class Meta:
+        model = Address
+        fields = "__all__"
+        exclude = ["id", "user_profile"]
+        fields_optional = ["details"]
+
+
+class UserCreate(Schema):
+    first_name: str
+    email: str
+    last_name: str
+    address: BaseAddressSchema
