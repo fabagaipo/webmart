@@ -23,14 +23,14 @@ class CategorySimpleOut(Schema):
 ProductCreate = generate_schema(
     Product,
     "ProductIn",
-    fields=["name", "description"],
+    fields=["name", "description", "category"],
     optional=["category"]
 )
 
 ProductOut = generate_schema(
     Product,
     "ProductOut",
-    fields=["name", "description", "removed"],
+    fields=["id", "name", "description", "removed", "price"],
     custom=[
         ("category", List[CategorySimpleOut], None)
     ]
