@@ -1,39 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const AuthForm = ({ mode, onLogin, onRegister }) => {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordContainerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (passwordContainerRef.current && !passwordContainerRef.current.contains(event.target)) {
+        setShowPassword(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   
   // TODO: Implement login and register functionality
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    try {
-      const url = mode === 'login' ? '/api/auth/login' : '/api/auth/register';
-      const body = mode === 'login' 
-        ? { email, password }
-        : { name, email, password };
+    // Mock user data for testing
+    const mockUserData = {
+      id: 1,
+      username: 'testuser',
+      email: 'testuser@example.com',
+      firstName: 'Test',
+      lastName: 'User',
+      phone: '+1234567890',
+      password: 'password',
+      address: {
+        street: '123 Test St.',
+        city: 'Test City',
+        province: 'Test Province',
+        zipCode: '12345',
+        additionalDetails: 'Additional details',
+        contactNumber: '+1234567890',
+      },
+    };
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-      if (!response.ok) {
-        throw new Error(`${mode === 'login' ? 'Login' : 'Registration'} failed`);
-      }
-
-      const data = await response.json();
-      mode === 'login' ? onLogin(data.user) : onRegister(data.user);
-    } catch {
-      setError(`${mode === 'login' ? 'Login' : 'Registration'} failed. Please check your credentials.`);
-    }
+    mode === 'login' ? onLogin(mockUserData) : onRegister(mockUserData);
   }
 
   return (
@@ -55,18 +78,50 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
       )}
       <form onSubmit={handleSubmit} className="space-y-8">
         {mode === 'register' && (
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
-              required
-            />
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                First Name
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                Phone Number (Optional)
+              </label>
+              <PhoneInput
+                id="phone"
+                value={phone}
+                onChange={setPhone}
+                defaultCountry="US"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+                placeholder="Enter phone number"
+                style={{
+                  height: '40px',
+                  padding: '0 1rem'
+                }}
+              />
+            </div>
           </div>
         )}
         <div>
@@ -86,14 +141,23 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">
             Password
           </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
-            required
-          />
+          <div className="relative" ref={passwordContainerRef}>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 pr-10"
+              required
+            />
+            <button 
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-orange-500 no-bg no-hover no-focus"
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
+            </button>
+          </div>
         </div>
         <button
           type="submit"

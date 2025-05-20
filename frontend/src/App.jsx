@@ -39,10 +39,14 @@ function App() {
                   </div>
                 </div>
                 <Link to="/cart" className="text-gray-700 p-2 rounded-lg transition-colors no-bg">
-                  <img src="./shoppingcart.svg" alt="Shopping Cart" className="w-5 h-5" />
+                  <div className="rounded-full w-8 h-8 bg-gray-200 flex items-center justify-center">
+                    <img src="./shoppingcart.svg" alt="Shopping Cart" className="w-5 h-5" />
+                  </div>
                 </Link>
                 <Link to="/profile" className="text-gray-700 p-2 rounded-lg transition-colors no-bg">
-                  <img src="./user.svg" alt="User" className="w-5 h-5" />
+                  <div className="rounded-full w-8 h-8 bg-gray-200 flex items-center justify-center">
+                    <img src="./user.svg" alt="User" className="w-5 h-5" />
+                  </div>
                 </Link>
               </div>
             </nav>
