@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { CartContext } from '../context/CartContext';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
   const [total, setTotal] = useState(0);
   const [voucherCode, setVoucherCode] = useState('');
   const [voucherError, setVoucherError] = useState('');
   const [voucherDiscount, setVoucherDiscount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  // Load cart items from localStorage
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCartItems(savedCart);
-    calculateTotal(savedCart);
-  }, []);
-
-  const calculateTotal = (items) => {
-    const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    setTotal(subtotal);
-  };
+    const getTotal = () => {
+      return cart.reduce((total, item) => total + (parseFloat(item.price.replace('₱', '')) * item.quantity), 0);
+    };
+    setTotal(getTotal());
+  }, [cart]);
 
   const applyVoucher = async () => {
     if (!voucherCode.trim()) {
@@ -44,23 +40,7 @@ const Cart = () => {
     }
   };
 
-  const removeFromCart = (itemId) => {
-    const updatedCart = cartItems.filter(item => item.id !== itemId);
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    calculateTotal(updatedCart);
-  };
-
-  const updateQuantity = (itemId, newQuantity) => {
-    const updatedCart = cartItems.map(item => 
-      item.id === itemId ? { ...item, quantity: newQuantity } : item
-    );
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    calculateTotal(updatedCart);
-  };
-
-  if (cartItems.length === 0) {
+  if (cart.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-3xl font-bold text-gray-900 mb-8">Your Cart is Empty</h2>
@@ -79,7 +59,7 @@ const Cart = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Cart Items */}
         <div className="space-y-6">
-          {cartItems.map((item) => (
+          {cart.map((item) => (
             <div key={item.id} className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-6">
@@ -90,7 +70,7 @@ const Cart = () => {
                   />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-1">{item.name}</h3>
-                    <p className="text-gray-600 mb-1">₱{item.price}</p>
+                    <p className="text-gray-600 mb-1">{item.price}</p>
                     <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
                   </div>
                 </div>
@@ -142,7 +122,7 @@ const Cart = () => {
                 value={voucherCode}
                 onChange={(e) => setVoucherCode(e.target.value)}
                 placeholder="Enter voucher code"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="flex-1 px-4 py-3 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
               <button
                 onClick={applyVoucher}
@@ -184,7 +164,7 @@ const Cart = () => {
             )}
             <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
               <span className="text-xl font-bold text-gray-900">Total</span>
-              <span className="text-xl font-bold">₱{(total * (1 - voucherDiscount)).toFixed(2)}</span>
+              <span className="text-xl font-bold text-gray-700">₱{(total * (1 - voucherDiscount)).toFixed(2)}</span>
             </div>
           </div>
           

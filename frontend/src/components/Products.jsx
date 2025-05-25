@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useCart } from '../context/useCart';
+import { Link } from 'react-router-dom';
 
 function Products() {
   const [products] = useState([
@@ -44,15 +46,30 @@ function Products() {
     },
   ]);
 
+  const { addToCart, updateQuantity, cart } = useCart();
+
+  const getCartQuantity = (productId) => {
+    const item = cart.find(item => item.id === productId);
+    return item ? item.quantity : 0;
+  };
+
+  const handleQuantityChange = (product, newQuantity) => {
+    updateQuantity(product.id, newQuantity);
+  };
+
   return (
     <div className="px-2 sm:px-4 lg:px-6 py-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">All Products</h1>
         <div className="flex flex-wrap justify-center gap-8">
           {products.map(product => (
-            <div key={product.id} className="bg-white rounded-xl overflow-hidden shadow-sm transition-transform hover:-translate-y-2">
+            <Link 
+              key={product.id} 
+              to={`/product/${product.id}`}
+              className="bg-white rounded-xl overflow-hidden shadow-sm transition-transform hover:-translate-y-2 block"
+            >
               <img src={product.image} alt={product.name} className="w-full h-32 object-cover" />
-              <div className="p-3">
+              <div className="p-4">
                 <h3 className="text-sm font-semibold text-gray-900 mb-1">{product.name}</h3>
                 <p className="text-xs text-gray-500 mb-1">{product.category}</p>
                 <div className="flex items-center justify-center mb-1">
@@ -65,12 +82,35 @@ function Products() {
                   </div>
                   <span className="ml-1 text-xs text-gray-500">{product.rating}</span>
                 </div>
-                <div className="text-base font-bold text-gray-900 mb-2 text-center">{product.price}</div>
-                <button className="w-full bg-primary-600 text-white py-1.5 rounded-lg hover:bg-primary-700 transition-colors">
-                  Add to Cart
-                </button>
+                <div className="text-base font-bold text-gray-900 mb-4 text-center">{product.price}</div>
+                <div className="flex items-center justify-between">
+                  {getCartQuantity(product.id) > 0 ? (
+                    <>
+                      <button 
+                        onClick={() => handleQuantityChange(product, getCartQuantity(product.id) - 1)}
+                        className="w-8 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                      >
+                        -
+                      </button>
+                      <span className="text-sm font-semibold text-gray-900">{getCartQuantity(product.id)}</span>
+                      <button 
+                        onClick={() => handleQuantityChange(product, getCartQuantity(product.id) + 1)}
+                        className="w-8 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                      >
+                        +
+                      </button>
+                    </>
+                  ) : (
+                    <button 
+                      onClick={() => addToCart(product)}
+                      className="w-full bg-primary-600 text-white py-1.5 rounded-lg hover:bg-primary-700 transition-colors"
+                    >
+                      Add to Cart
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
