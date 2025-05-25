@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Products from './components/Products';
 import Categories from './components/Categories';
@@ -8,8 +9,48 @@ import Banners from './components/Banners';
 import Profile from './components/Profile';
 import SaleItems from 'components/SaleItems';
 import AuthForm from 'components/AuthForm';
+import NotificationItem from 'components/NotificationItem';
 
 function App() {
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: 'Order Confirmation',
+      message: 'Your order #123456 has been successfully placed!',
+      type: 'success',
+      timestamp: '2025-05-20 14:30',
+      read: false
+    },
+    {
+      id: 2,
+      title: 'Shipping Update',
+      message: 'Your order is being prepared for shipping.',
+      type: 'info',
+      timestamp: '2025-05-19 10:45',
+      read: true
+    },
+    {
+      id: 3,
+      title: 'Special Offer',
+      message: 'Get 20% off on your next purchase! Use code WEBMART20',
+      type: 'offer',
+      timestamp: '2025-05-18 16:20',
+      read: false
+    }
+  ]);
+
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const markAsRead = (id) => {
+    setNotifications(prev => prev.map(notification =>
+      notification.id === id ? { ...notification, read: true } : notification
+    ));
+  };
+
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(notification => ({ ...notification, read: true })))
+  };
+
   return (
     <Router>
       <div className="min-h-screen bg-white">
@@ -19,11 +60,11 @@ function App() {
             <nav className="px-4 sm:px-6 lg:px-8 py-4 flex items-center">
               <div className="flex items-center gap-2">
                 <Link to="/" className="flex items-center gap-2">
-                  <img src="./tempicon.svg" alt="WebMart Logo" className="w-10 h-10" />
+                  <img src="/tempicon.svg" alt="WebMart Logo" className="w-10 h-10" />
                   <h3 className="text-gray-900 font-semibold">WebMart</h3>
                 </Link>
               </div>
-              <div className="flex-grow flex items-center space-x-4 ml-8">
+              <div className="flex-grow flex items-center space-x-2 ml-8">
                 <div className="relative flex-grow">
                   <div className="w-full relative">
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -40,12 +81,52 @@ function App() {
                 </div>
                 <Link to="/cart" className="text-gray-700 p-2 rounded-lg transition-colors no-bg">
                   <div className="rounded-full w-8 h-8 bg-gray-200 flex items-center justify-center">
-                    <img src="./shoppingcart.svg" alt="Shopping Cart" className="w-5 h-5" />
+                    <img src="/shoppingcart.svg" alt="Shopping Cart" className="w-5 h-5" />
                   </div>
                 </Link>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowNotifications(!showNotifications)}
+                    className="text-gray-700 p-2 rounded-lg transition-colors no-bg no-focus"
+                  >
+                    <div className="relative rounded-full w-8 h-8 bg-gray-200 flex items-center justify-center">
+                      <img src="/bell.svg" alt="Notifications" className="w-5 h-5" />
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {notifications.filter(n => !n.read).length}
+                      </span>
+                    </div>
+                  </button>
+                  {showNotifications && (
+                    <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-xl py-2 z-50">
+                      <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
+                        <h3 className="text-sm font-medium text-gray-900">Notifications</h3>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={markAllAsRead}
+                            className="text-sm no-bg text-indigo-600 no-hover"
+                          >
+                            Mark all as read
+                          </button>
+                          <Link to="/profile/notifications" className="text-sm text-indigo-600 hover:text-indigo-700 no-bg no-hover" onClick={() => setShowNotifications(false)}>
+                            <img src="/redirect.svg" alt="View All Notifications" className="w-5 h-5" />
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {notifications.map((notification) => (
+                          <NotificationItem
+                            key={notification.id}
+                            notification={notification}
+                            onMarkAsRead={markAsRead}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <Link to="/profile" className="text-gray-700 p-2 rounded-lg transition-colors no-bg">
                   <div className="rounded-full w-8 h-8 bg-gray-200 flex items-center justify-center">
-                    <img src="./user.svg" alt="User" className="w-5 h-5" />
+                    <img src="/user.svg" alt="User" className="w-5 h-5" />
                   </div>
                 </Link>
               </div>
@@ -256,6 +337,8 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/notifications" element={<Profile />} />
+              <Route path="/profile/purchases" element={<Profile />} />
               <Route path="/login" element={<AuthForm mode="login" />} />
               <Route path="/register" element={<AuthForm mode="register" />} />
             </Routes>

@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import AuthForm from './AuthForm';
+import Purchases from './Purchases';
+import Notifications from './Notifications';
+import Vouchers from './Vouchers';
+import Settings from './Settings';
 
 const Profile = () => {
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editData, setEditData] = useState({
-    name: '',
+    username: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     profilePicture: null,
@@ -19,6 +27,23 @@ const Profile = () => {
       contactNumber: '',
     },
   });
+  const [currentView, setCurrentView] = useState('profile');
+
+  useEffect(() => {
+    // Extract the view from the URL path
+    const path = location.pathname;
+    if (path.includes('/profile/notifications')) {
+      setCurrentView('notifications');
+    } else if (path.includes('/profile/purchases')) {
+      setCurrentView('purchases');
+    } else if (path.includes('/profile/vouchers')) {
+      setCurrentView('vouchers');
+    } else if (path.includes('/profile/settings')) {
+      setCurrentView('settings');
+    } else {
+      setCurrentView('profile');
+    }
+  }, [location]);
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -52,6 +77,10 @@ const Profile = () => {
       ...editData
     });
     setShowEdit(false);
+  };
+
+  const handleViewChange = (view) => {
+    setCurrentView(view);
   };
 
   if (!user) {
@@ -103,39 +132,59 @@ const Profile = () => {
 
           {/* Navigation */}
           <nav className="space-y-1">
-            <button className="w-full px-4 py-3 rounded-lg bg-indigo-600 text-white font-medium flex items-center space-x-3 transition-all duration-200 hover:bg-indigo-700">
+            <button
+              onClick={() => handleViewChange('profile')}
+              className={`w-full px-4 py-3 rounded-lg ${
+                currentView === 'profile' ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
+              } font-medium flex items-center space-x-3 transition-all duration-200`}
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               <span className="text-sm">Profile</span>
             </button>
-            <button className="w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center space-x-3 transition-all duration-200">
+            <button
+              onClick={() => handleViewChange('purchases')}
+              className={`w-full px-4 py-3 rounded-lg ${
+                currentView === 'purchases' ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
+              } font-medium flex items-center space-x-3 transition-all duration-200`}
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               <span className="text-sm">Purchases</span>
             </button>
-            <button className="w-full px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center space-x-2 transition-all duration-200">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h2l.4 2M7 15h1m4 0h1m-7 4h12a3 3 0 0116 0 3 3 0 0116 0z" />
+            <button
+              onClick={() => handleViewChange('notifications')}
+              className={`w-full px-4 py-3 rounded-lg ${
+                currentView === 'notifications' ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
+              } font-medium flex items-center space-x-3 transition-all duration-200`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
-              <span className="text-sm">Payment Methods</span>
+              <span className="text-sm">Notifications</span>
             </button>
-            <button className="w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center space-x-3 transition-all duration-200">
+            <button
+              onClick={() => handleViewChange('vouchers')}
+              className={`w-full px-4 py-3 rounded-lg ${
+                currentView === 'vouchers' ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
+              } font-medium flex items-center space-x-3 transition-all duration-200`}
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="text-sm">Vouchers</span>
             </button>
-            <button className="w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center space-x-3 transition-all duration-200">
+            <button
+              onClick={() => handleViewChange('settings')}
+              className={`w-full px-4 py-3 rounded-lg ${
+                currentView === 'settings' ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
+              } font-medium flex items-center space-x-3 transition-all duration-200`}
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="text-sm">Rewards</span>
-            </button>
-            <button className="w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center space-x-3 transition-all duration-200">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2h2m3-4H9a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-1m-4-4h6a2 2 0 012 2v7a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
               <span className="text-sm">Settings</span>
             </button>
@@ -155,245 +204,261 @@ const Profile = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-8">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Profile Information</h1>
-          </div>
+        {currentView === 'profile' ? (
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
+            </div>
 
-          <div className="text-center mb-8">
-            <div className="relative">
-              <div className="rounded-full w-24 h-24 bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-indigo-600 mx-auto mb-6">
-                {user && user.profilePicture ? (
-                  <img src={user.profilePicture} alt="Profile" className="w-20 h-20" />
-                ) : (
-                  <img src="./user.svg" alt="Profile" className="w-20 h-20" />
-                )}
+            <div className="text-center mb-8">
+              <div className="relative">
+                <div className="rounded-full w-24 h-24 bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-indigo-600 mx-auto mb-6">
+                  {user && user.profilePicture ? (
+                    <img src={user.profilePicture} alt="Profile" className="w-20 h-20" />
+                  ) : (
+                    <img src="./user.svg" alt="Profile" className="w-20 h-20" />
+                  )}
+                </div>
+                <label className="cursor-pointer text-indigo-600 hover:text-indigo-700 block text-center">
+                  <input
+                    type="file"
+                    name="profilePicture"
+                    accept="image/*"
+                    onChange={handleEdit}
+                    className="hidden"
+                  />
+                  <span className="text-sm">Change Profile Picture</span>
+                </label>
               </div>
               <div className="flex justify-end">
-                <label 
-                  htmlFor="profilePicture"
-                  className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-sm shadow-sm hover:shadow-lg flex items-center space-x-2 cursor-pointer"
+                <button 
+                  onClick={() => setShowEdit(true)}
+                  className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-sm shadow-sm hover:shadow-lg flex items-center space-x-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
-                  <span>Change Profile Picture</span>
-                </label>
-                <input
-                  type="file"
-                  id="profilePicture"
-                  name="profilePicture"
-                  accept="image/*"
-                  onChange={handleEdit}
-                  className="hidden"
-                />
+                  <span>Edit Profile</span>
+                </button>
               </div>
             </div>
-            <div className="flex justify-end">
-              <button 
-                onClick={() => setShowEdit(true)}
-                className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-sm shadow-sm hover:shadow-lg flex items-center space-x-2"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-                <span>Edit Profile</span>
-              </button>
-            </div>
-          </div>
 
-          {showEdit ? (
-            <form onSubmit={handleSubmit} className="space-y-8">
+            {showEdit ? (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Personal Information</h3>
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                        <input
+                          type="text"
+                          name="username"
+                          value={editData.username}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your username"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                        <input
+                          type="text"
+                          name="firstName"
+                          value={editData.firstName}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your first name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={editData.lastName}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your last name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={editData.email}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your email"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={editData.phone}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your phone number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Address Information</h3>
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
+                        <input
+                          type="text"
+                          name="street"
+                          value={editData.address.street}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your street address"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                        <input
+                          type="text"
+                          name="city"
+                          value={editData.address.city}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your city"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Province/State</label>
+                        <input
+                          type="text"
+                          name="province"
+                          value={editData.address.province}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your province/state"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">ZIP/Postal Code</label>
+                        <input
+                          type="text"
+                          name="zipCode"
+                          value={editData.address.zipCode}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your ZIP/postal code"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Additional Details</label>
+                        <textarea
+                          name="additionalDetails"
+                          value={editData.address.additionalDetails}
+                          onChange={handleEdit}
+                          rows="2"
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter additional address details (optional)"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Contact Number</label>
+                        <input
+                          type="tel"
+                          name="contactNumber"
+                          value={editData.address.contactNumber}
+                          onChange={handleEdit}
+                          className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
+                          placeholder="Enter your contact number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowEdit(false)}
+                    className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm hover:shadow-lg"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Personal Information</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-6">Personal Information</h3>
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={editData.firstName}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your first name"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Name</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.firstName + ' ' + user.lastName || 'Not provided'}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={editData.lastName}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your last name"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Username</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.username || 'Not provided'}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={editData.email}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your email"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Email</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.email}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={editData.phone}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your phone number"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Phone Number</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.phone || 'Not provided'}</p>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Address Information</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-6">Address Information</h3>
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
-                      <input
-                        type="text"
-                        name="street"
-                        value={editData.address.street}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your street address"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Street Address</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.address.street || 'Not provided'}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                      <input
-                        type="text"
-                        name="city"
-                        value={editData.address.city}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your city"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">City</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.address.city || 'Not provided'}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Province/State</label>
-                      <input
-                        type="text"
-                        name="province"
-                        value={editData.address.province}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your province/state"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Province/State</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.address.province || 'Not provided'}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">ZIP/Postal Code</label>
-                      <input
-                        type="text"
-                        name="zipCode"
-                        value={editData.address.zipCode}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your ZIP/postal code"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">ZIP/Postal Code</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.address.zipCode || 'Not provided'}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Additional Details</label>
-                      <textarea
-                        name="additionalDetails"
-                        value={editData.address.additionalDetails}
-                        onChange={handleEdit}
-                        rows="2"
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter additional address details (optional)"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Additional Details</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.address.additionalDetails || 'Not provided'}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Contact Number</label>
-                      <input
-                        type="tel"
-                        name="contactNumber"
-                        value={editData.address.contactNumber}
-                        onChange={handleEdit}
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                        placeholder="Enter your contact number"
-                      />
+                      <label className="block text-sm font-medium text-gray-500 mb-2">Contact Number</label>
+                      <p className="mt-1 text-gray-900 font-medium">{user.address.contactNumber || 'Not provided'}</p>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div className="flex justify-end space-x-4">
-                <button
-                  type="button"
-                  onClick={() => setShowEdit(false)}
-                  className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm hover:shadow-lg"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Personal Information</h3>
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">Name</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.firstName + ' ' + user.lastName || 'Not provided'}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">Email</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.email}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">Phone Number</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.phone || 'Not provided'}</p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Address Information</h3>
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">Street Address</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.address.street || 'Not provided'}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">City</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.address.city || 'Not provided'}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">Province/State</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.address.province || 'Not provided'}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">ZIP/Postal Code</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.address.zipCode || 'Not provided'}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">Additional Details</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.address.additionalDetails || 'Not provided'}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500 mb-2">Contact Number</label>
-                    <p className="mt-1 text-gray-900 font-medium">{user.address.contactNumber || 'Not provided'}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        ) : currentView === 'purchases' ? (
+          <Purchases />
+        ) : currentView === 'notifications' ? (
+          <Notifications />
+        ) : currentView === 'vouchers' ? (
+          <Vouchers />
+        ) : currentView === 'settings' ? (
+          <Settings />
+        ) : null}
       </div>
     </div>
   );
