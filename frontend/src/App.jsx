@@ -14,6 +14,7 @@ import { CartProvider } from './context/CartContext';
 import FeaturedProducts from './components/FeaturedProducts';
 import CartBadge from './components/CartBadge';
 import ProductDetails from './components/ProductDetails';
+import StoreOwnerApplication from './components/StoreOwnerApplication';
 
 function App() {
   const [notifications, setNotifications] = useState([
@@ -314,6 +315,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile/notifications" element={<Profile />} />
                 <Route path="/profile/purchases" element={<Profile />} />
+                <Route path="/profile/store-owner-application" element={<StoreOwnerApplication />} />
                 <Route path="/login" element={<AuthForm mode="login" />} />
                 <Route path="/register" element={<AuthForm mode="register" />} />
               </Routes>

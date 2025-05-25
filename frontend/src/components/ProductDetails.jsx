@@ -16,7 +16,11 @@ function ProductDetails() {
     id: parseInt(id),
     name: 'Product Name',
     price: '₱99.99',
-    image: 'https://placehold.co/600x400/FE6233/FFF',
+    images: [
+      'https://placehold.co/600x400/FE6233/FFF',
+      'https://placehold.co/600x400/3362FE/FFF',
+      'https://placehold.co/600x400/62FE33/FFF'
+    ],
     rating: 4.5,
     category: 'Category',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -36,6 +40,20 @@ function ProductDetails() {
     ]
   });
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleImageChange = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.images.length);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + product.images.length) % product.images.length);
+  };
+
   const getCartQuantity = (productId) => {
     const item = cart.find(item => item.id === productId);
     return item ? item.quantity : 0;
@@ -49,12 +67,45 @@ function ProductDetails() {
     <div className="px-2 sm:px-4 lg:px-6 py-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="md:w-1/2">
+          <div className="md:w-1/2 relative">
             <img 
-              src={product.image} 
+              src={product.images[currentImageIndex]} 
               alt={product.name} 
               className="w-full h-auto rounded-xl"
             />
+            
+            {/* Image navigation dots */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {product.images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleImageChange(index)}
+                  className={`w-3 h-3 rounded-full cursor-pointer opacity-70 hover:opacity-100 transition-opacity ${
+                    currentImageIndex === index 
+                      ? 'bg-primary-600' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Navigation arrows */}
+            <button 
+              onClick={handlePrevImage}
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full shadow-lg opacity-70 hover:opacity-100 transition-opacity hover:bg-gray-300"
+            >
+              <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button 
+              onClick={handleNextImage}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full shadow-lg opacity-70 hover:opacity-100 transition-opacity hover:bg-gray-300"
+            >
+              <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
           <div className="md:w-1/2">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">{product.name}</h1>
@@ -78,14 +129,14 @@ function ProductDetails() {
                 <>
                   <button 
                     onClick={() => handleQuantityChange(getCartQuantity(product.id) - 1)}
-                    className="w-8 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                    className="w-20 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
                   >
                     -
                   </button>
                   <span className="text-sm font-semibold text-gray-900">{getCartQuantity(product.id)}</span>
                   <button 
                     onClick={() => handleQuantityChange(getCartQuantity(product.id) + 1)}
-                    className="w-8 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                    className="w-20 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
                   >
                     +
                   </button>
