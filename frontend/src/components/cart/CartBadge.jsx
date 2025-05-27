@@ -1,4 +1,4 @@
-import { useCart } from '../context/useCart';
+import { useCart } from '../../context/useCart';
 
 function CartBadge() {
   const { cart } = useCart();
