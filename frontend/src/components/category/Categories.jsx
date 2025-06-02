@@ -53,7 +53,7 @@ function Categories() {
           {categories.map(category => (
             <Link 
               to={`/category/${category.id}`} 
-              className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
+              className="block bg-white border border-gray-300 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
             >
               <div className="text-4xl text-primary-600 mb-4 text-center">{category.icon}</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4 text-center">{category.name}</h3>

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+
 import Products from './components/product/Products';
 import Categories from './components/category/Categories';
 import About from './components/About';
@@ -77,9 +79,10 @@ function App() {
   };
 
   return (
-    <CartProvider>
-      <Router>
+    <Router>
+      <CartProvider>
         <div className="min-h-screen bg-white">
+          <Toaster reverseOrder={false} />
           <div className="flex-grow">
             {/* Header */}
             <header className="bg-[#EE4E2E] shadow-sm sticky top-0 z-50">
@@ -262,7 +265,7 @@ function App() {
                             }
                           ].map(store => (
                             <Link to={`/store/${store.id}`} key={store.id} className="block">
-                              <div className="bg-white rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
+                              <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
                                 <div className="aspect-square relative">
                                   <img src={store.image} alt={store.name} className="w-full h-full object-cover" />
                                   <div className="absolute bottom-4 right-1 bg-[#EE4E2E] text-white text-xs font-semibold px-2 py-1 rounded-tr-lg rounded-bl-lg transform -rotate-45">
@@ -377,7 +380,7 @@ function App() {
                             },
                           ].map(category => (
                             <Link to={`/category/${category.id}`} key={category.id} className="block">
-                              <div className="bg-white rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
+                              <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
                                 <div className="aspect-square">
                                   <img src={category.image} alt={category.name} className="w-full h-full object-cover" />
                                 </div>
@@ -424,7 +427,7 @@ function App() {
                     <h3 className="text-gray-900 font-semibold mb-4">Quick Links</h3>
                     <ul className="space-y-2">
                       <li>
-                        <Link to="/" className="text-gray-600 hover:text-primary-600 transition-colors">Home</Link>
+                        <Link to="/stores" className="text-gray-600 hover:text-primary-600 transition-colors">Stores</Link>
                       </li>
                       <li>
                         <Link to="/products" className="text-gray-600 hover:text-primary-600 transition-colors">Products</Link>
@@ -473,8 +476,8 @@ function App() {
             </footer>
           </div>
         </div>
-      </Router>
-    </CartProvider>
+      </CartProvider>
+    </Router>
   );
 }
 

@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { LuCopy, LuCheck } from 'react-icons/lu';
+import { toast } from 'react-hot-toast';
 
 const StoreDetails = () => {
   const { id } = useParams();
+  const [copiedCode, setCopiedCode] = useState(null);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleCopy = (code) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+    toast.success('Voucher code copied!', {
+      position: 'bottom-center'
+    });
+    setTimeout(() => setCopiedCode(null), 1000);
+  };
 
   const store = {
     id: parseInt(id),
@@ -14,11 +31,6 @@ const StoreDetails = () => {
     reviews: 1245,
     category: "Fashion",
     description: "Welcome to the store.",
-    contact: {
-      phone: "+1 234 567 890",
-      email: "info@store.com",
-      website: "https://store.com"
-    },
     featuredProducts: [
       {
         id: 1,
@@ -40,6 +52,49 @@ const StoreDetails = () => {
         price: 29.99,
         image: "https://placehold.co/300x300/FE6233/FFF",
         category: "Accessories"
+      },
+      {
+        id: 4,
+        name: "Featured Product 4",
+        price: 29.99,
+        image: "https://placehold.co/300x300/FE6233/FFF",
+        category: "Accessories"
+      },
+      {
+        id: 5,
+        name: "Featured Product 5",
+        price: 29.99,
+        image: "https://placehold.co/300x300/FE6233/FFF",
+        category: "Accessories"
+      }
+    ],
+    vouchers: [
+      {
+        id: 1,
+        code: "WELCOME20",
+        description: "20% off your first purchase",
+        bg: "bg-gradient-to-r from-yellow-500 to-yellow-600",
+        expiryDate: "2025-12-31",
+        minSpend: 500,
+        remaining: 100
+      },
+      {
+        id: 2,
+        code: "FASHION15",
+        description: "15% off fashion items",
+        bg: "bg-gradient-to-r from-green-500 to-green-600",
+        expiryDate: "2025-11-30",
+        minSpend: 1000,
+        remaining: 50
+      },
+      {
+        id: 3,
+        code: "SUMMER10",
+        description: "10% off all items",
+        bg: "bg-gradient-to-r from-blue-500 to-blue-600",
+        expiryDate: "2025-09-30",
+        minSpend: 2000,
+        remaining: 200
       }
     ]
   };
@@ -48,13 +103,13 @@ const StoreDetails = () => {
     <div className="py-8 px-4 sm:px-6 lg:px-8">
       {/* Store Banner */}
       <div className="mb-8">
-        <img src={store.banner} alt={`${store.name} Banner`} className="w-full h-64 object-cover rounded-lg" />
+        <img src={store.banner} alt={`₱{store.name} Banner`} className="w-full h-64 object-cover rounded-lg" />
       </div>
 
       {/* Store Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div className="flex items-center">
-          <img src={store.logo} alt={`${store.name} Logo`} className="w-20 h-20 rounded-full mr-4" />
+          <img src={store.logo} alt={`₱{store.name} Logo`} className="w-20 h-20 rounded-full mr-4" />
           <div>
             <h1 className="text-3xl font-bold text-gray-900">{store.name}</h1>
             <div className="flex items-center mt-2">
@@ -88,13 +143,13 @@ const StoreDetails = () => {
           <button className="border-b-2 border-primary-500 text-primary-600 whitespace-nowrap py-4 px-1 text-sm font-medium">
             Overview
           </button>
-          <button className="border-b-2 border-transparent text-black hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
+          <button className="border-b-2 border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
             Products
           </button>
-          <button className="border-b-2 border-transparent text-black hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
+          <button className="border-b-2 border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
             Reviews
           </button>
-          <button className="border-b-2 border-transparent text-black hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
+          <button className="border-b-2 border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 text-sm font-medium">
             Contact
           </button>
         </nav>
@@ -106,43 +161,59 @@ const StoreDetails = () => {
           <h3 className="text-lg font-medium text-gray-900 mb-4">Store Overview</h3>
           <p className="text-gray-600">{store.description}</p>
         </div>
-        <div>
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <svg className="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <span className="text-gray-900">{store.contact.phone}</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <span className="text-gray-900">{store.contact.email}</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-              </svg>
-              <a href={store.contact.website} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700">{store.contact.website}</a>
-            </div>
-          </div>
-        </div>
 
+      {/* Vouchers Section */}
+      <div>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Available Vouchers</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {store.vouchers.map((voucher, index) => (
+            <div 
+              key={index}
+              className={`relative rounded-lg overflow-hidden ${voucher.bg} text-white p-6 transition-transform hover:scale-[1.02]`}
+            >
+              <div className="absolute top-4 left-4 text-4xl opacity-70">🏷️</div>
+              <div className="pl-10 flex flex-col justify-between h-full">
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">{voucher.code}</h3>
+                  <p className="text-sm mb-4">{voucher.description}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <span className="text-sm">Expires: {new Date(voucher.expiryDate).toLocaleDateString()}</span>
+                      <span className="text-sm">Min Spend: ₱{voucher.minSpend}</span>
+                      <span className="text-sm">Remaining: {voucher.remaining}</span>
+                    </div>
+                    <button
+                      onClick={() => handleCopy(voucher.code)}
+                      className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors no-bg no-focus no-hover"
+                    >
+                      {copiedCode === voucher.code ? (
+                        <LuCheck className="w-5 h-5" />
+                      ) : (
+                        <LuCopy className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Featured Products Section */}
         <div>
           <h3 className="text-lg font-medium text-gray-900 mb-4">Featured Products</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-wrap gap-6 justify-center">
             {store.featuredProducts.map(product => (
               <Link to={`/product/${product.id}`} key={product.id} className="block">
-                <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+                <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm">
                   <div className="aspect-square">
                     <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="p-4">
                     <h4 className="text-sm font-medium text-gray-900 mb-1">{product.name}</h4>
                     <p className="text-xs text-gray-500 mb-2">{product.category}</p>
-                    <p className="text-sm font-semibold text-primary-600">${product.price}</p>
+                    <p className="text-sm font-semibold text-primary-600">₱{product.price}</p>
                   </div>
                 </div>
               </Link>

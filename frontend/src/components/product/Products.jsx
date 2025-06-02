@@ -127,7 +127,7 @@ function Products() {
           {products.map(product => (
             <div 
               key={product.id} 
-              className="bg-white overflow-hidden shadow-sm transition-transform hover:-translate-y-2 block"
+              className="bg-white border border-gray-300 overflow-hidden shadow-sm transition-transform hover:-translate-y-2 block"
             >
               <Link 
                 to={`/product/${product.id}`}
