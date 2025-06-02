@@ -1,7 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import {
+    regions,
+    provinces,
+    cities,
+    barangays,
+} from 'select-philippines-address';
 
 const AuthForm = ({ mode, onLogin, onRegister }) => {
   const [firstName, setFirstName] = useState('');
@@ -13,51 +19,102 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const passwordContainerRef = useRef(null);
 
+  const [addressOptions, setAddressOptions] = useState({
+    regions: [],
+    provinces: [],
+    cities: [],
+    barangays: []
+  });
+  const [address, setAddress] = useState({
+    region: {},
+    province: {},
+    city: {},
+    barangay: {},
+  });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  
+  const handleSubmit = async () => {}
+
+  const getRegions = useCallback(() => {
+    regions().then(res => setAddressOptions((prev) => ({...prev, regions: res})));
+  }, [])
+
+  const getProvinces = (regionCode) => {
+    provinces(regionCode).then((res) => {
+      setAddressOptions((prev) => ({...prev, provinces: res, cities: [], barangays: []}));
+    })
+  }
+
+  const getCities = (provinceCode) => {
+    cities(provinceCode).then((res) => {
+      setAddressOptions((prev) => ({...prev, cities: res, barangays: []}));
+    })
+  }
+
+  const getBarangays = (cityCode) => {
+    barangays(cityCode).then((res) => {
+      setAddressOptions((prev) => ({...prev, barangays: res}));
+    })
+  }
+
+  const onSelection = ({code, key}) => {
+    switch(key) {
+      case 'regions':
+        { 
+          //resetOptions(['provinces', 'cities', 'barangays']);
+          const newRegion = addressOptions[key].find(region => region.region_code === code);
+          setAddress((prev) => ({...prev,
+            region: newRegion
+          }));
+          getProvinces(newRegion.region_code);
+          break; 
+        }
+      case 'provinces':
+        { 
+          //resetOptions(['cities', 'barangays']);
+          const newProvince = addressOptions[key].find(province => province.province_code === code);
+          setAddress((prev) => ({...prev,
+            province: newProvince
+          }));
+          getCities(newProvince.province_code);
+          break; 
+        }
+      case 'cities':
+        {
+          const newCity = addressOptions[key].find(city => city.city_code === code);
+          setAddress((prev) => ({...prev,
+            city: newCity
+          }));
+          getBarangays(newCity.city_code);
+          break;
+        }
+    }
+  }
+
+  const resetOptions = (keys) => {
+    keys.forEach(key=> {
+      setAddressOptions((prev) => ({...prev, [key]: []}));
+    })
+  }
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (passwordContainerRef.current && !passwordContainerRef.current.contains(event.target)) {
         setShowPassword(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-  
-  // TODO: Implement login and register functionality
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-
-    // Mock user data for testing
-    const mockUserData = {
-      id: 1,
-      username: 'testuser',
-      email: 'testuser@example.com',
-      firstName: 'Test',
-      lastName: 'User',
-      phone: '+1234567890',
-      password: 'password',
-      address: {
-        street: '123 Test St.',
-        city: 'Test City',
-        province: 'Test Province',
-        zipCode: '12345',
-        additionalDetails: 'Additional details',
-        contactNumber: '+1234567890',
-      },
-    };
-
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    mode === 'login' ? onLogin(mockUserData) : onRegister(mockUserData);
-  }
+  useEffect(() => {
+    getRegions();
+  }, [getRegions])
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow p-8">
@@ -88,7 +145,7 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
                 id="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+                className="mt-1 block w-full rounded-md shadow-sm text-gray-900 p-2 focus:outline-none"
                 required
               />
             </div>
@@ -101,7 +158,7 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
                 id="lastName"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 p-2 focus:outline-none"
                 required
               />
             </div>
@@ -114,14 +171,62 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
                 value={phone}
                 onChange={setPhone}
                 defaultCountry="US"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 p-2 focus:outline-none"
                 placeholder="Enter phone number"
                 style={{
-                  height: '40px',
-                  padding: '0 1rem'
+                  input: {
+                    padding: '8px'
+                  }
                 }}
               />
             </div>
+            {
+              ['regions', 'provinces', 'cities', 'barangays'].map((key) => {
+                const texts = {
+                  regions: 'Region',
+                  provinces: 'Province',
+                  cities: 'City',
+                  barangays: 'Barangay'
+                }
+                const vals = {
+                  regions: address['region'],
+                  provinces: address['province'],
+                  cities: address['city'],
+                  barangays: address['barangay']
+                }
+                return (
+                  <div key={key}>
+                    <label htmlFor={key} className="block text-sm font-medium text-gray-700">
+                      {texts[key]}
+                    </label>
+                    <select
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 pr-10 appearance-none p-2 focus:outline-none"
+                      value={vals[key]?.psgc_code}
+                      defaultValue={'preselect'}
+                      required
+                      onChange={(e) => onSelection({ code: e.target.value, key})}
+                    >
+                      <option disabled value={'preselect'}>{`Select ${texts[key].toLowerCase()}`}</option>
+                      {addressOptions[key].map((data) => {
+                        const innerKey = {
+                        regions: data?.region_code,
+                        provinces: data?.province_code,
+                        cities: data?.city_code,
+                        barangays: data?.brgy_code
+                        }
+                        const name = data?.region_name ?? data?.province_name
+                          ?? data?.city_name ?? data?.brgy_name;
+                        return (
+                          <option key={innerKey[key]} value={innerKey[key]}>
+                            {name}
+                          </option>
+                        )
+                      })}
+                    </select>
+                  </div>
+                );
+              })
+            }
           </div>
         )}
         <div>
@@ -133,7 +238,8 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 p-2
+            focus:outline-none"
             required
           />
         </div>
@@ -147,7 +253,8 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 pr-10"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 p-2
+              focus:outline-none"
               required
             />
             <button 
