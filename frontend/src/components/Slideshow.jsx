@@ -17,7 +17,7 @@ const Slideshow = () => {
       subtitle: "Fresh products just landed",
       image: "https://placehold.co/1920x800?text=New",
       cta: "View New Products",
-      link: "/products/new"
+      link: "/new-arrivals"
     },
     {
       id: 3,
