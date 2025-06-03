@@ -8,8 +8,10 @@ import {
     cities,
     barangays,
 } from 'select-philippines-address';
+import { useUser } from 'context';
+import { useNavigate } from "react-router";
 
-const AuthForm = ({ mode, onLogin, onRegister }) => {
+const AuthForm = ({ mode  }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +20,8 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const passwordContainerRef = useRef(null);
+  const { user, performLogin, performSignup } = useUser();
+  const navigate = useNavigate();
 
   const [addressOptions, setAddressOptions] = useState({
     regions: [],
@@ -36,7 +40,31 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
     setShowPassword(!showPassword);
   };
   
-  const handleSubmit = async () => {}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (mode === "register") {
+      const payload = {
+        email: email,
+        first_name: firstName,
+        last_name: lastName,
+        password: password,
+        ...address
+      }
+      performSignup(payload).then(() => {
+        //navigate("/cart")
+      });
+    }
+    else {
+      const payload = {
+        email: email,
+        password: password,
+        username: ''
+      }
+      performLogin(payload).then(() => {
+        //navigate("/cart")
+      });
+    }
+  }
 
   const getRegions = useCallback(() => {
     regions().then(res => setAddressOptions((prev) => ({...prev, regions: res})));
@@ -170,7 +198,7 @@ const AuthForm = ({ mode, onLogin, onRegister }) => {
                 id="phone"
                 value={phone}
                 onChange={setPhone}
-                defaultCountry="US"
+                defaultCountry="PH"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 p-2 focus:outline-none"
                 placeholder="Enter phone number"
                 style={{

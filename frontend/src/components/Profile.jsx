@@ -7,10 +7,12 @@ import Vouchers from './Vouchers';
 import Settings from './Settings';
 import StoreOwnerApplication from './store/StoreOwnerApplication';
 import StoreManagement from './store/StoreManagement';
+import { useUser } from 'context';
 
 const Profile = () => {
   const location = useLocation();
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(null);
+  const { user } = useUser();
   const [showRegister, setShowRegister] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editData, setEditData] = useState({
@@ -52,14 +54,6 @@ const Profile = () => {
     }
   }, [location]);
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-  };
-
-  const handleRegister = (userData) => {
-    setUser(userData);
-  };
-
   const handleEdit = (e) => {
     const { name, value } = e.target;
     if (name === 'profilePicture') {
@@ -79,11 +73,11 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: Implement API call to update user data
-    setUser({
-      ...user,
-      ...editData
-    });
-    setShowEdit(false);
+    //setUser({
+    //  ...user,
+    //  ...editData
+    //});
+    //setShowEdit(false);
   };
 
   const handleViewChange = (view) => {
@@ -96,14 +90,10 @@ const Profile = () => {
         {showRegister ? (
           <AuthForm 
             mode="register"
-            onRegister={handleRegister}
-            onLogin={() => setShowRegister(false)}
           />
         ) : (
           <AuthForm 
             mode="login"
-            onLogin={handleLogin}
-            onRegister={() => setShowRegister(true)}
           />
         )}
       </div>
