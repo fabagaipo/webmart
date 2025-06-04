@@ -53,6 +53,7 @@ const Profile = () => {
   };
 
   const isActivePath = (path) => {
+    if (path === 'profile') return location.pathname === `/${path}`
     return location.pathname.includes(path)
   }
 
