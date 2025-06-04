@@ -9,9 +9,9 @@ import {
     barangays,
 } from 'select-philippines-address';
 import { useUser } from 'context';
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
-const AuthForm = ({ mode  }) => {
+const AuthForm = ({ mode }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,6 +22,7 @@ const AuthForm = ({ mode  }) => {
   const passwordContainerRef = useRef(null);
   const { user, performLogin, performSignup } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [addressOptions, setAddressOptions] = useState({
     regions: [],
@@ -40,7 +41,7 @@ const AuthForm = ({ mode  }) => {
     setShowPassword(!showPassword);
   };
   
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (mode === "register") {
       const payload = {
@@ -61,8 +62,8 @@ const AuthForm = ({ mode  }) => {
         username: ''
       }
       performLogin(payload).then(() => {
-        //navigate("/cart")
-      });
+        navigate('/profile')
+      }).catch(() => {})
     }
   }
 
