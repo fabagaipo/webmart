@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useCart } from 'context';
+import { Link } from 'react-router-dom';
 
 function FeaturedProducts() {
   const { cart, addToCart, updateQuantity } = useCart();
