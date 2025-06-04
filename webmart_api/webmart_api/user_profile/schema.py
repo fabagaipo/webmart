@@ -14,17 +14,11 @@ class BaseUserSchema(ModelSchema):
     @computed_field
     def full_name(self) -> str:
         return f'{self.first_name} {self.last_name}'
-    
-    @staticmethod
-    def resolve_test(obj):
-        return 'test'
 
 class BaseAddressSchema(ModelSchema):
     class Meta:
         model = Address
         fields = "__all__"
-        fields_optional = ["details", "id"]
-        exclude = ["user_profile"]
 
 class BaseUserProfileSchema(ModelSchema):
     address: Optional[list[BaseAddressSchema]] = Field(
@@ -35,15 +29,19 @@ class BaseUserProfileSchema(ModelSchema):
     class Meta:
         model = UserProfile
         fields = "__all__"
+class AddressCreate(Schema):
+    city: str
+    province: str
+    postal_code: str
 
 class UserCreate(Schema):
     first_name: str
     email: str
     last_name: str
     password: str
-    address: BaseAddressSchema
+    address: AddressCreate
 
 class UserSignInForm(Schema):
     email: str
-    username: str = None
+    username: Optional[str] = None
     password: str

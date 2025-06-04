@@ -7,4 +7,4 @@ from ninja import NinjaAPI
 webmart = NinjaAPI()
 
 webmart.add_router("products/", product_router)
-webmart.add_router("user", user_router)
+webmart.add_router("user/", user_router)

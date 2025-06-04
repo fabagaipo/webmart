@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -142,3 +142,10 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r"http://localhost:\d+$",
     r"http://127.0.0.1:\d+$",
 ]
+
+
+# TO DO: Usage of refresh token to generate new access token (instead of forced log out then log in). Shorter lifetime for access token
+JWT_SETTING = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30)
+}
