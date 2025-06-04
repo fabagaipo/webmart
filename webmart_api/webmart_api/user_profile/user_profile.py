@@ -7,13 +7,14 @@ from django.shortcuts import get_object_or_404
 
 from webmart_api.user_profile.schema import *
 from user_profile.models import *
+from webmart_api.auth import *
 
 
 user_router = Router()
 
 @user_router.post('sign-up')
 def register_user(request, payload: UserCreate=Form()):
-    data = payload.dict().copy()
+    data = request.POST.copy()
     address_data = data.pop("address", {})
     with transaction.atomic():
         new_user = User.objects.create_user(
@@ -25,14 +26,38 @@ def register_user(request, payload: UserCreate=Form()):
             user_profile = new_user_profile,
             **address_data
         )
+        serialized_user = BaseUserProfileSchema.from_orm(new_user_profile)
 
-@user_router.post('sign-in')
+        return {
+            "user": serialized_user,
+            "tokens": {
+                "access_token": generate_access_token(data={"user": new_user}),
+                "refresh_token": generate_refresh_token(data={"user": new_user}),
+            }
+        }
+
+@user_router.post('sign-in', response={200: dict, 404: str})
 def sign_in_user(request, payload: UserSignInForm=Form()):
-    data = payload.dict().copy()
-    user_obj = get_object_or_404(User, Q(username=data["username"]) | Q(email__iexact=data["email"]))
-    user = authenticate(user=user_obj, password=data["password"])
-    print(user)
-    return
+    data = request.POST.copy()
+    user_obj = User.objects.filter(Q(username=data["username"])
+                                   | Q(email__iexact=data["email"])).first()
+    user = authenticate(username=user_obj.username, password=data["password"])
+    if user:
+        user_profile = UserProfile.objects.filter(user=user).first()
+        serialized_user = BaseUserProfileSchema.from_orm(user_profile)
+        return 200, {
+            "user": serialized_user,
+            "tokens": {
+                "access_token": generate_access_token(data={ "user": user }),
+                "refresh_token": generate_refresh_token(data={ "user": user}),
+            }
+        }
+    return 404, "Not found"
+
+@user_router.post('sign-out')
+def sign_out_user(request):
+    # Temporary. Might have to do some operations on the tokens
+    return 200
 
 @user_router.get('user-profiles', response=list[BaseUserProfileSchema])
 def get_user_profiles(request):
