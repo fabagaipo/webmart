@@ -30,6 +30,12 @@ const Profile = () => {
   const [currentView, setCurrentView] = useState('profile');
   const location = useLocation();
 
+  useEffect(() => {
+    if (!Object.keys(user).length) {
+      navigate('/', { replace: true });
+    }
+ }, [user, navigate])
+
   const handleEdit = (e) => {
     const { name, value } = e.target;
     if (name === 'profilePicture') {
@@ -49,16 +55,6 @@ const Profile = () => {
   const isActivePath = (path) => {
     return location.pathname.includes(path)
   }
-
-//  useEffect(() => {
-//    if (!Object.keys(user).length) {
-//      navigate('profile');
-//    }
-// }, [user, navigate])
-
- useEffect(() => {
-    console.log(location)
- }, [location])
 
   const onLogout = () => {
     performLogout();
