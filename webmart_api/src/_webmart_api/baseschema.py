@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from _webmart_api.utils import removeNoneValues
 
+
 class CustomFilterSchema(BaseModel):
     """
     This is an inheritable class for Path and Query parameters schema classes
@@ -12,7 +13,7 @@ class CustomFilterSchema(BaseModel):
     def get_products(request, queries: Query[ProductsFilterSchema]):
         filters = #removal of None values
         return 200, Product.objects.filter(**filters)
-    
+
         vs
 
     @product_router.get('', response={200: list[ProductOut], 404: None})
@@ -23,5 +24,6 @@ class CustomFilterSchema(BaseModel):
         https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel.model_dump
         https://django-ninja.dev/guides/input/query-params/
     """
+
     def model_dump(self, *args, **kwargs):
         return removeNoneValues(super().model_dump(*args, **kwargs))

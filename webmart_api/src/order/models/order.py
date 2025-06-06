@@ -2,6 +2,7 @@ from django.db import models
 from product.models.product import *
 from user_profile.models.user_profile import *
 
+
 class Order(models.Model):
     PREPARING = 0
     SHIPPED = 2
@@ -12,15 +13,10 @@ class Order(models.Model):
         (PREPARING, "Preparing"),
         (SHIPPED, "Shipped"),
         (DELIVERED, "Delivered"),
-        (CANCELLED, "Cancelled")
+        (CANCELLED, "Cancelled"),
     ]
     product = models.ForeignKey(
-        Product,
-        related_name="orders",
-        on_delete=models.DO_NOTHING
+        Product, related_name="orders", on_delete=models.DO_NOTHING
     )
     status = models.IntegerField(choices=status_tuples)
-    recipient = models.ForeignKey(
-        UserProfile,
-        on_delete=models.DO_NOTHING
-    )
+    recipient = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)

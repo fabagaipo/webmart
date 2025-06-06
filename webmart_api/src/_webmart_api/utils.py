@@ -5,16 +5,15 @@ from django.db import models
 
 
 def generate_schema(
-    model = type[models.Model],
-    name = str,
+    model=type[models.Model],
+    name=str,
     fields: list[str] = [],
     depth: int = 0,
     exclude: Optional[list[str]] = None,
     optional: Optional[list[str]] = None,
     custom: Optional[list[tuple[str, str, any]]] = None,
-    base: Optional[type[Schema]] = Schema
+    base: Optional[type[Schema]] = Schema,
 ):
-
     return create_schema(
         model,
         name=name,
@@ -23,8 +22,9 @@ def generate_schema(
         exclude=exclude,
         optional_fields=optional,
         custom_fields=custom,
-        base_class=base
+        base_class=base,
     )
+
 
 """
 Ref: https://django-ninja.dev/guides/response/django-pydantic-create-schema/
@@ -40,5 +40,6 @@ def create_schema(
 )
 """
 
+
 def removeNoneValues(data: dict):
-    return { key: value for key, value in data.items() if value}
+    return {key: value for key, value in data.items() if value}

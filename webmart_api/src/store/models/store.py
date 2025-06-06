@@ -5,14 +5,10 @@ from user_profile.models.user_profile import *
 class Store(models.Model):
     name = models.CharField(max_length=50)
     owner = models.ForeignKey(
-        UserProfile,
-        related_name="stores",
-        on_delete=models.CASCADE
+        UserProfile, related_name="stores", on_delete=models.CASCADE
     )
     products = models.ManyToManyField(
-        "product.Product",
-        related_name="stores",
-        through="store.Inventory"
+        "product.Product", related_name="stores", through="store.Inventory"
     )
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -23,14 +19,10 @@ class Store(models.Model):
 
 class Inventory(models.Model):
     store = models.ForeignKey(
-        "store.Store",
-        related_name="inventories",
-        on_delete=models.CASCADE
+        "store.Store", related_name="inventories", on_delete=models.CASCADE
     )
     product = models.ForeignKey(
-        "product.Product",
-        related_name="inventories",
-        on_delete=models.CASCADE
+        "product.Product", related_name="inventories", on_delete=models.CASCADE
     )
     quantity = models.PositiveIntegerField()
 

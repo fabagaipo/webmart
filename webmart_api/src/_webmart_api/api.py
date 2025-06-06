@@ -1,4 +1,4 @@
-#from django.urls import path
+# from django.urls import path
 from product.api.product import product_router
 from user_profile.api.user_profile import user_router
 

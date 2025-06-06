@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-    
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, related_name="user_profile", on_delete=models.CASCADE
@@ -10,9 +11,7 @@ class UserProfile(models.Model):
 
 class Address(models.Model):
     user_profile = models.ForeignKey(
-        UserProfile,
-        related_name="address_list",
-        on_delete=models.CASCADE
+        UserProfile, related_name="address_list", on_delete=models.CASCADE
     )
     zip_code = models.CharField(max_length=5)
     city = models.CharField(max_length=50)
