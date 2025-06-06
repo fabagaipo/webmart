@@ -47,7 +47,7 @@ const NewArrivals = () => {
         {newArrivals.map(product => (
           <Link 
             key={product.id} 
-            to={`/products/${product.id}`} 
+            to={`/product/${product.id}`} 
             className="block"
           >
             <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">

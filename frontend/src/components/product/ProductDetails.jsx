@@ -1,10 +1,14 @@
-import { useParams } from 'react-router-dom';
-import { useCart } from 'context';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useCart } from '../../context/useCart';
 import { useState, useEffect } from 'react';
+import { BsCartPlus } from 'react-icons/bs';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { MdStarRate, MdStarOutline, MdStarHalf } from 'react-icons/md';
 
 function ProductDetails() {
   const { id } = useParams();
   const { addToCart, updateQuantity, cart } = useCart();
+  const navigate = useNavigate();
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -15,7 +19,7 @@ function ProductDetails() {
   const [product] = useState({
     id: parseInt(id),
     name: 'Product Name',
-    price: '₱99.99',
+    price: '1999.99',
     images: [
       'https://placehold.co/600x400/FE6233/FFF',
       'https://placehold.co/600x400/3362FE/FFF',
@@ -23,6 +27,9 @@ function ProductDetails() {
     ],
     rating: 4.5,
     category: 'Category',
+    stock: 10,
+    shippingTo: 'Philippines',
+    shippingFee: '₱50.00',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     reviews: [
       {
@@ -61,6 +68,29 @@ function ProductDetails() {
 
   const handleQuantityChange = (newQuantity) => {
     updateQuantity(product.id, newQuantity);
+  };
+
+  const handleBuyNow = (product) => {
+    addToCart(product);
+    navigate('/cart');
+  };
+
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    
+    for (let i = 1; i <= 5; i++) {
+      if (i <= fullStars) {
+        stars.push(<MdStarRate key={i} className="text-yellow-400 w-7 h-7" />);
+      } else if (i === fullStars + 1 && hasHalfStar) {
+        stars.push(<MdStarHalf key={i} className="text-yellow-400 w-7 h-7" />);
+      } else {
+        stars.push(<MdStarOutline key={i} className="text-gray-300 w-7 h-7" />);
+      }
+    }
+    
+    return stars;
   };
 
   return (
@@ -109,46 +139,112 @@ function ProductDetails() {
           </div>
           <div className="md:w-1/2">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">{product.name}</h1>
-            <p className="text-xs text-gray-500 mb-1">{product.category}</p>
+            <p className="text-xs text-gray-500 mb-4">{product.category}</p>
             <div className="flex items-center justify-start mb-1">
-              <div className="text-yellow-400">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <span key={i} className={`text-xs ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`}>
-                    ⭐
-                  </span>
-                ))}
+              <div className="flex">
+                {renderStars(product.rating)}
               </div>
-              <span className="ml-1 text-xs text-gray-500">{product.rating}</span>
+              <span className="ml-2 text-sm text-gray-500">{product.rating}</span>
             </div>
-            <div className="text-2xl font-bold text-gray-900 mb-6">{product.price}</div>
-            <div className="mb-6">
-              <p className="text-gray-600">{product.description}</p>
+            <div className="text-3xl font-bold text-orange-500 my-6">₱{product.price}</div>
+            <div className="mb-8 space-y-3">
+              <p className="text-gray-600">
+                <span className="font-medium">Shipping to:</span> {product.shippingTo || 'Philippines'}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-medium">Shipping Fee:</span> {product.shippingFee || '₱50.00'}
+              </p>
             </div>
             <div className="flex items-center justify-between mb-6">
               {getCartQuantity(product.id) > 0 ? (
                 <>
                   <button 
                     onClick={() => handleQuantityChange(getCartQuantity(product.id) - 1)}
-                    className="w-20 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                    className="w-20 h-full bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors"
                   >
-                    -
+                    <FaMinus className="text-sm" />
                   </button>
-                  <span className="text-sm font-semibold text-gray-900">{getCartQuantity(product.id)}</span>
+                  <span className="text-lg font-semibold text-gray-900">{getCartQuantity(product.id)}</span>
                   <button 
                     onClick={() => handleQuantityChange(getCartQuantity(product.id) + 1)}
-                    className="w-20 h-8 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                    className="w-20 h-full bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors"
                   >
-                    +
+                    <FaPlus className="text-sm" />
                   </button>
                 </>
               ) : (
-                <button 
-                  onClick={() => addToCart(product)}
-                  className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors"
-                >
-                  Add to Cart
-                </button>
+                <div className="flex gap-4 w-full">
+                  <button 
+                    onClick={() => addToCart(product)}
+                    className="flex-1 bg-white text-primary-600 py-3 px-6 rounded-lg hover:bg-gray-50 transition-all duration-200 border-2 border-primary-600 font-medium hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                  >
+                    <BsCartPlus className="text-lg" />
+                    Add to Cart
+                  </button>
+                  <button 
+                    onClick={() => handleBuyNow(product)}
+                    className="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-6 rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-200 font-medium hover:shadow-lg hover:-translate-y-0.5 transform"
+                  >
+                    Buy Now
+                  </button>
+                </div>
               )}
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-12 space-y-8">
+          {/* Product Specifications */}
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Product Specifications</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Brand</span>
+                  <span className="font-medium text-gray-900">Nike</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Category</span>
+                  <span className="font-medium text-gray-900">{product.category}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Ships From</span>
+                  <span className="font-medium text-gray-900">Philippines</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Weight</span>
+                  <span className="font-medium text-gray-900">0.5 kg</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Dimensions</span>
+                  <span className="font-medium text-gray-900">10 x 10 x 5 cm</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-gray-600">Available Stock</span>
+                  <span className="font-medium text-green-500">{product.stock}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Detailed Description */}
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Detailed Description</h2>
+            <div className="prose max-w-none text-gray-600">
+              <p className="mb-4">{product.description}</p>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>High-quality materials for long-lasting durability</li>
+                <li>Designed for optimal performance and comfort</li>
+                <li>Eco-friendly and sustainable production</li>
+                <li>Easy to clean and maintain</li>
+                <li>Comes with a 1-year manufacturer's warranty</li>
+              </ul>
+              <p className="mt-4">
+                This product has been carefully crafted to meet the highest standards of quality and design. 
+                Perfect for everyday use, it combines functionality with modern aesthetics.
+              </p>
             </div>
           </div>
         </div>
@@ -160,12 +256,8 @@ function ProductDetails() {
               <div key={review.id} className="p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center mb-2">
                   <h3 className="font-semibold text-gray-900">{review.user}</h3>
-                  <div className="ml-2 text-yellow-400">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className={`text-sm ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}>
-                        ⭐
-                      </span>
-                    ))}
+                  <div className="flex ml-2">
+                    {renderStars(review.rating)}
                   </div>
                 </div>
                 <p className="text-gray-600">{review.comment}</p>

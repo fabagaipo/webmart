@@ -1,20 +1,10 @@
 import { useState } from 'react';
-import { useCart } from 'context';
 import { Link } from 'react-router-dom';
+import { MdStarRate, MdStarOutline, MdStarHalf } from 'react-icons/md';
 
 function FeaturedProducts() {
-  const { cart, addToCart, updateQuantity } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 5;
-
-  const getCartQuantity = (productId) => {
-    const item = cart.find(item => item.id === productId);
-    return item ? item.quantity : 0;
-  };
-
-  const handleQuantityChange = (product, newQuantity) => {
-    updateQuantity(product.id, newQuantity);
-  };
 
   const products = [
     {
@@ -134,60 +124,34 @@ function FeaturedProducts() {
               to={`/product/${product.id}`}
               className="block"
             >
-              <img src={product.image} alt={product.name} className="w-full h-32 object-cover" />
-              <div className="p-3">
+              <img src={product.image} alt={product.name} className="w-full h-64 object-cover" />
+              <div className="p-2">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-base font-medium text-gray-900">{product.name}</h3>
                   <span className="text-sm text-gray-500">{product.sales} sold</span>
                 </div>
                 <div className="flex items-center justify-center mb-2">
-                  <div className="text-yellow-400">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className={`text-sm ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`}>
-                        ⭐
-                      </span>
-                    ))}
+                  <div className="flex text-yellow-400">
+                    {[1, 2, 3, 4, 5].map((star) => {
+                      const ratingValue = product.rating;
+                      return (
+                        <span key={star} className="text-lg">
+                          {ratingValue >= star ? (
+                            <MdStarRate />
+                          ) : ratingValue >= star - 0.5 ? (
+                            <MdStarHalf />
+                          ) : (
+                            <MdStarOutline />
+                          )}
+                        </span>
+                      );
+                    })}
                   </div>
                   <span className="ml-1 text-sm text-gray-500">{product.rating}</span>
                 </div>
-                <div className="text-base font-semibold text-gray-900 mb-2 text-center">{product.price}</div>
+                <div className="text-base font-semibold text-orange-500 mb-2 text-center">{product.price}</div>
               </div>
             </Link>
-            <div className="p-3">
-              {getCartQuantity(product.id) > 0 ? (
-                <div className="flex items-center w-full justify-between">
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleQuantityChange(product, getCartQuantity(product.id) - 1);
-                    }}
-                    className="w-20 h-10 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors px-2"
-                  >
-                    -
-                  </button>
-                  <span className="text-sm font-semibold text-gray-900 px-2">{getCartQuantity(product.id)}</span>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleQuantityChange(product, getCartQuantity(product.id) + 1);
-                    }}
-                    className="w-20 h-10 bg-gray-100 text-white rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors px-2"
-                  >
-                    +
-                  </button>
-                </div>
-              ) : (
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(product);
-                  }}
-                  className="w-full bg-primary-600 text-white py-1.5 rounded-md hover:bg-primary-700 transition-colors"
-                >
-                  Add to Cart
-                </button>
-              )}
-            </div>
           </div>
         ))}
       </div>
