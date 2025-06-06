@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from src._webmart_api.utils import removeNoneValues
+from _webmart_api.utils import removeNoneValues
 
 class CustomFilterSchema(BaseModel):
     """
