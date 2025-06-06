@@ -3,11 +3,11 @@
 import os
 import sys
 
-sys.path.insert(0, "webmart_models")
+sys.path.insert(0, "src/")
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "_webmart_api.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
