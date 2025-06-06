@@ -1,6 +1,6 @@
 #from django.urls import path
-from src.product.api.product import product_router
-from src.user_profile.api.user_profile import user_router
+from product.api.product import product_router
+from user_profile.api.user_profile import user_router
 
 from ninja import NinjaAPI
 
