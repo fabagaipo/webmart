@@ -11,7 +11,7 @@ function FeaturedProducts() {
       id: 1,
       name: 'Product 1',
       price: '₱99.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.5,
       sales: 124
     },
@@ -19,7 +19,7 @@ function FeaturedProducts() {
       id: 2,
       name: 'Product 2',
       price: '₱149.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.7,
       sales: 89
     },
@@ -27,7 +27,7 @@ function FeaturedProducts() {
       id: 3,
       name: 'Product 3',
       price: '₱1299.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.8,
       sales: 45
     },
@@ -35,7 +35,7 @@ function FeaturedProducts() {
       id: 4,
       name: 'Product 4',
       price: '₱1299.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.8,
       sales: 67
     },
@@ -43,7 +43,7 @@ function FeaturedProducts() {
       id: 5,
       name: 'Product 5',
       price: '₱899.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.6,
       sales: 78
     },
@@ -51,7 +51,7 @@ function FeaturedProducts() {
       id: 6,
       name: 'Product 6',
       price: '₱199.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.9,
       sales: 95
     },
@@ -59,7 +59,7 @@ function FeaturedProducts() {
       id: 7,
       name: 'Product 7',
       price: '₱299.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.7,
       sales: 112
     },
@@ -67,7 +67,7 @@ function FeaturedProducts() {
       id: 8,
       name: 'Product 8',
       price: '₱399.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.5,
       sales: 88
     },
@@ -75,7 +75,7 @@ function FeaturedProducts() {
       id: 9,
       name: 'Product 9',
       price: '₱499.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.8,
       sales: 65
     },
@@ -83,7 +83,7 @@ function FeaturedProducts() {
       id: 10,
       name: 'Product 10',
       price: '₱599.99',
-      image: 'https://placehold.co/300x200/FE6233/FFF',
+      image: 'https://placehold.co/300x200/0053E2/FFF',
       rating: 4.9,
       sales: 102
     }
@@ -118,7 +118,7 @@ function FeaturedProducts() {
         {currentProducts.map(product => (
           <div 
             key={product.id} 
-            className="bg-white overflow-hidden border border-gray-300 shadow-sm transition-transform hover:-translate-y-1"
+            className="bg-[#F0F5FF] overflow-hidden border border-gray-300 shadow-sm transition-transform hover:-translate-y-1"
           >
             <Link 
               to={`/product/${product.id}`}
@@ -149,7 +149,7 @@ function FeaturedProducts() {
                   </div>
                   <span className="ml-1 text-sm text-gray-500">{product.rating}</span>
                 </div>
-                <div className="text-base font-semibold text-orange-500 mb-2 text-center">{product.price}</div>
+                <div className="text-base font-semibold text-[#001E60] mb-2 text-center">{product.price}</div>
               </div>
             </Link>
           </div>

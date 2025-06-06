@@ -9,7 +9,7 @@ const SaleItems = () => {
       originalPrice: 129.99,
       salePrice: 64.99,
       discount: 50,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/0053E2/FFF",
     },
     {
       id: 2,
@@ -17,7 +17,7 @@ const SaleItems = () => {
       originalPrice: 99.99,
       salePrice: 49.99,
       discount: 50,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/0053E2/FFF",
     },
     {
       id: 3,
@@ -25,7 +25,7 @@ const SaleItems = () => {
       originalPrice: 49.99,
       salePrice: 24.99,
       discount: 50,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/0053E2/FFF",
     },
   ];
 

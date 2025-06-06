@@ -33,8 +33,8 @@ const StoreDetails = () => {
   const store = {
     id: parseInt(id),
     name: "Store Name",
-    logo: "https://placehold.co/200x200/FE6233/FFF",
-    banner: "https://placehold.co/1200x400/FE6233/FFF",
+    logo: "https://placehold.co/200x200/0053E2/FFF",
+    banner: "https://placehold.co/1200x400/0053E2/FFF",
     rating: 4.8,
     reviewsCount: 1245,
     followers: 5823,
@@ -48,7 +48,7 @@ const StoreDetails = () => {
         price: 99.99,
         originalPrice: 149.99,
         discount: 50,
-        image: "https://placehold.co/300x300/FE6233/FFF",
+        image: "https://placehold.co/300x300/0053E2/FFF",
         category: "Dresses"
       },
       {
@@ -57,7 +57,7 @@ const StoreDetails = () => {
         price: 49.99,
         originalPrice: 199.99,
         discount: 25,
-        image: "https://placehold.co/300x300/FE6233/FFF",
+        image: "https://placehold.co/300x300/002E99/FFF",
         category: "Shoes"
       },
       {
@@ -66,7 +66,7 @@ const StoreDetails = () => {
         price: 749.99,
         originalPrice: 1499.99,
         discount: 50,
-        image: "https://placehold.co/300x300/FE6233/FFF",
+        image: "https://placehold.co/300x300/0053E2/FFF",
         category: "Accessories"
       },
       {
@@ -75,7 +75,7 @@ const StoreDetails = () => {
         price: 1799.99,
         originalPrice: 2999.99,
         discount: 60,
-        image: "https://placehold.co/300x300/FE6233/FFF",
+        image: "https://placehold.co/300x300/002E99/FFF",
         category: "Accessories"
       },
       {
@@ -84,7 +84,7 @@ const StoreDetails = () => {
         price: 26.99,
         originalPrice: 89.99,
         discount: 30,
-        image: "https://placehold.co/300x300/FE6233/FFF",
+        image: "https://placehold.co/300x300/0053E2/FFF",
         category: "Accessories"
       }
     ],
@@ -237,7 +237,7 @@ const StoreDetails = () => {
             {/* Store Banner Image */}
             <div className="mt-8">
               <img 
-                src="https://placehold.co/1200x625/FE6233/FFF" 
+                src="https://placehold.co/1200x625/0053E2/FFF" 
                 alt={`${store.name} Banner`} 
                 className="w-full h-[625px] object-cover rounded-lg"
               />
@@ -285,7 +285,7 @@ const StoreDetails = () => {
             </svg>
             Follow Store
           </button>
-          <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-primary-600 bg-white hover:bg-gray-50">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
             </svg>
@@ -301,8 +301,8 @@ const StoreDetails = () => {
             onClick={() => setActiveTab('overview')}
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'overview' 
-                ? 'border-primary-500 text-primary-600' 
-                : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-primary-500 text-yellow-300' 
+                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
             }`}
           >
             Overview
@@ -311,8 +311,8 @@ const StoreDetails = () => {
             onClick={() => setActiveTab('products')}
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'products' 
-                ? 'border-primary-500 text-primary-600' 
-                : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-primary-500 text-yellow-300' 
+                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
             }`}
           >
             Products
@@ -321,8 +321,8 @@ const StoreDetails = () => {
             onClick={() => setActiveTab('reviews')}
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'reviews' 
-                ? 'border-primary-500 text-primary-600' 
-                : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-primary-500 text-yellow-300' 
+                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
             }`}
           >
             Reviews
@@ -331,8 +331,8 @@ const StoreDetails = () => {
             onClick={() => setActiveTab('contact')}
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'contact' 
-                ? 'border-primary-500 text-primary-600' 
-                : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-primary-500 text-yellow-300' 
+                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
             }`}
           >
             Contact

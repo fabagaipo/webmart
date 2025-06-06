@@ -16,7 +16,7 @@ const Stores = () => {
       name: "Top Store 1",
       rating: 4.8,
       reviews: 1245,
-      image: "https://placehold.co/300x200/FE6233/FFF",
+      image: "https://placehold.co/300x200/0053E2/FFF",
       category: "Fashion",
       description: "Buy trending fashion"
     },
@@ -25,7 +25,7 @@ const Stores = () => {
       name: "Top Store 2",
       rating: 4.9,
       reviews: 987,
-      image: "https://placehold.co/300x200/FE6233/FFF",
+      image: "https://placehold.co/300x200/002E99/FFF",
       category: "Electronics",
       description: "Buy techie stuff"
     },
@@ -34,7 +34,7 @@ const Stores = () => {
       name: "Top Store 3",
       rating: 4.7,
       reviews: 1560,
-      image: "https://placehold.co/300x200/FE6233/FFF",
+      image: "https://placehold.co/300x200/0053E2/FFF",
       category: "Home & Living",
       description: "Buy furniture and decoration"
     },
@@ -43,7 +43,7 @@ const Stores = () => {
       name: "Top Store 4",
       rating: 4.8,
       reviews: 2134,
-      image: "https://placehold.co/300x200/FE6233/FFF",
+      image: "https://placehold.co/300x200/002E99/FFF",
       category: "Food & Beverages",
       description: "Buy food and drinks"
     },
@@ -52,7 +52,7 @@ const Stores = () => {
       name: "Top Store 5",
       rating: 4.9,
       reviews: 876,
-      image: "https://placehold.co/300x200/FE6233/FFF",
+      image: "https://placehold.co/300x200/0053E2/FFF",
       category: "Books & Stationery",
       description: "Buy school supplies"
     }
@@ -108,7 +108,7 @@ const Stores = () => {
       <div className="flex flex-wrap gap-4 w-full justify-center">
         {filteredStores.map(store => (
           <Link to={`/store/${store.id}`} key={store.id} className="">
-            <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
+            <div className="bg-[#F0F5FF] border border-gray-300 rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
               <div className="aspect-rectangle">
                 <img src={store.image} alt={store.name} className="object-cover" />
               </div>

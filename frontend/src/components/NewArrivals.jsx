@@ -8,35 +8,35 @@ const NewArrivals = () => {
       id: 1,
       name: "New Arrival 1",
       price: 199.99,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/002E99/FFF",
       category: "Dresses"
     },
     {
       id: 2,
       name: "New Arrival 2",
       price: 299.99,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/0053E2/FFF",
       category: "Shoes"
     },
     {
       id: 3,
       name: "New Arrival 3",
       price: 399.99,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/002E99/FFF",
       category: "Accessories"
     },
     {
       id: 4,
       name: "New Arrival 4",
       price: 499.99,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/0053E2/FFF",
       category: "Accessories"
     },
     {
       id: 5,
       name: "New Arrival 5",
       price: 599.99,
-      image: "https://placehold.co/300x300/FE6233/FFF",
+      image: "https://placehold.co/300x300/002E99/FFF",
       category: "Accessories"
     }
   ];

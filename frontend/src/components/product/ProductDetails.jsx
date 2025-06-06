@@ -21,8 +21,8 @@ function ProductDetails() {
     name: 'Product Name',
     price: '1999.99',
     images: [
-      'https://placehold.co/600x400/FE6233/FFF',
       'https://placehold.co/600x400/3362FE/FFF',
+      'https://placehold.co/600x400/FE6233/FFF',
       'https://placehold.co/600x400/62FE33/FFF'
     ],
     rating: 4.5,
@@ -146,7 +146,7 @@ function ProductDetails() {
               </div>
               <span className="ml-2 text-sm text-gray-500">{product.rating}</span>
             </div>
-            <div className="text-3xl font-bold text-orange-500 my-6">₱{product.price}</div>
+            <div className="text-3xl font-bold text-[#001E60] my-6">₱{product.price}</div>
             <div className="mb-8 space-y-3">
               <p className="text-gray-600">
                 <span className="font-medium">Shipping to:</span> {product.shippingTo || 'Philippines'}
@@ -176,14 +176,14 @@ function ProductDetails() {
                 <div className="flex gap-4 w-full">
                   <button 
                     onClick={() => addToCart(product)}
-                    className="flex-1 bg-white text-primary-600 py-3 px-6 rounded-lg hover:bg-gray-50 transition-all duration-200 border-2 border-primary-600 font-medium hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                    className="flex-1 bg-white text-primary-600 py-3 px-8 rounded-full hover:bg-gray-50 transition-all duration-200 border-2 border-primary-600 font-medium hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap min-w-[160px]"
                   >
                     <BsCartPlus className="text-lg" />
                     Add to Cart
                   </button>
                   <button 
                     onClick={() => handleBuyNow(product)}
-                    className="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-6 rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-200 font-medium hover:shadow-lg hover:-translate-y-0.5 transform"
+                    className="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-8 rounded-full hover:from-primary-700 hover:to-primary-800 transition-all duration-200 font-medium hover:shadow-lg hover:-translate-y-0.5 transform whitespace-nowrap min-w-[120px]"
                   >
                     Buy Now
                   </button>
@@ -195,7 +195,7 @@ function ProductDetails() {
         
         <div className="mt-12 space-y-8">
           {/* Product Specifications */}
-          <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="bg-[#F0F5FF] p-6 rounded-xl shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Product Specifications</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -230,7 +230,7 @@ function ProductDetails() {
           </div>
 
           {/* Detailed Description */}
-          <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="bg-[#F0F5FF] p-6 rounded-xl shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Detailed Description</h2>
             <div className="prose max-w-none text-gray-600">
               <p className="mb-4">{product.description}</p>
@@ -253,7 +253,7 @@ function ProductDetails() {
           <h2 className="text-xl font-bold text-gray-900 mb-4">Customer Reviews</h2>
           <div className="space-y-4">
             {product.reviews.map(review => (
-              <div key={review.id} className="p-4 bg-gray-50 rounded-lg">
+              <div key={review.id} className="p-4 bg-[#F0F5FF] rounded-lg">
                 <div className="flex items-center mb-2">
                   <h3 className="font-semibold text-gray-900">{review.user}</h3>
                   <div className="flex ml-2">

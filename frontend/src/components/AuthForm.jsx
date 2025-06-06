@@ -289,7 +289,7 @@ const AuthForm = ({ mode }) => {
             <button 
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-orange-500 no-bg no-hover no-focus"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#001E60] no-bg no-hover no-focus"
             >
               {showPassword ? <FaEye /> : <FaEyeSlash />}
             </button>

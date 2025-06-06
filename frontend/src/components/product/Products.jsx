@@ -15,7 +15,7 @@ function Products() {
       name: 'Product 1',
       price: 99.99,
       items_sold: 10,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.5,
     },
     {
@@ -23,7 +23,7 @@ function Products() {
       name: 'Product 2',
       price: 149.99,
       items_sold: 20,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.7,
     },
     {
@@ -31,7 +31,7 @@ function Products() {
       name: 'Product 3',
       price: 1299.99,
       items_sold: 30,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -39,7 +39,7 @@ function Products() {
       name: 'Product 4',
       price: 1299.99,
       items_sold: 40,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -47,7 +47,7 @@ function Products() {
       name: 'Product 5',
       price: 1299.99,
       items_sold: 50,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -55,7 +55,7 @@ function Products() {
       name: 'Product 6',
       price: 1299.99,
       items_sold: 60,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -63,7 +63,7 @@ function Products() {
       name: 'Product 7',
       price: 1299.99,
       items_sold: 70,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -71,7 +71,7 @@ function Products() {
       name: 'Product 8',
       price: 1299.99,
       items_sold: 80,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -79,7 +79,7 @@ function Products() {
       name: 'Product 9',
       price: 1299.99,
       items_sold: 90,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -87,7 +87,7 @@ function Products() {
       name: 'Product 10',
       price: 1299.99,
       items_sold: 100,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -95,7 +95,7 @@ function Products() {
       name: 'Product 11',
       price: 1299.99,
       items_sold: 110,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.9,
     },
     {
@@ -103,7 +103,7 @@ function Products() {
       name: 'Product 12',
       price: 1299.99,
       items_sold: 120,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -111,7 +111,7 @@ function Products() {
       name: 'Product 13',
       price: 1299.99,
       items_sold: 130,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
     {
@@ -119,7 +119,7 @@ function Products() {
       name: 'Product 14',
       price: 1299.99,
       items_sold: 140,
-      image: 'https://placehold.co/600x400/FE6233/FFF',
+      image: 'https://placehold.co/600x400/002E99/FFF',
       rating: 4.8,
     },
   ]);
@@ -156,7 +156,7 @@ function Products() {
                     <span className="ml-1 text-xs text-gray-500">{product.rating}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-base font-bold text-orange-500">₱{product.price.toFixed(2)}</div>
+                    <div className="text-base font-bold text-[#001E60]">₱{product.price.toFixed(2)}</div>
                     <div className="text-sm text-gray-500">{product.items_sold || 0} sold</div>
                   </div>
                 </div>
