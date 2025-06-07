@@ -31,13 +31,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-WEBMART_API_APPS = [
-    'product',
-    'store',
-    'user_profile',
-    'category',
-    'order'
-]
+WEBMART_API_APPS = ["product", "store", "user_profile", "category", "order"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",

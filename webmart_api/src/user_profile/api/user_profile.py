@@ -2,12 +2,25 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.db import transaction
 from django.db.models import Q
-from ninja import *
+from ninja import (
+    Router,
+    Form,
+)
 from django.shortcuts import get_object_or_404
 
-from user_profile.schema.user_profile import *
-from user_profile.models.user_profile import *
-from _webmart_api.auth import *
+from user_profile.schema.user_profile import (
+    BaseUserProfileSchema,
+    UserSignInForm,
+    UserCreate,
+)
+from user_profile.models.user_profile import (
+    UserProfile,
+    Address,
+)
+from _webmart_api.auth import (
+    generate_access_token,
+    generate_refresh_token,
+)
 
 
 user_router = Router()
@@ -15,7 +28,7 @@ user_router = Router()
 
 @user_router.post("sign-up")
 def register_user(request, payload: UserCreate = Form()):
-    data = request.POST.copy()
+    data = payload.dict()
     address_data = data.pop("address", {})
     with transaction.atomic():
         new_user = User.objects.create_user(

@@ -2,12 +2,11 @@ from ninja import (
     Schema,
     ModelSchema,
 )
-from typing import (
-    Optional
-)
+from typing import Optional
 from user_profile.models.user_profile import (
     Address,
 )
+
 
 class BaseAddressSchema(ModelSchema):
     class Meta:
