@@ -1,10 +1,13 @@
-from ninja import *
-from django.db import models
-from typing import *
-from user_profile.models.user_profile import *
+from ninja import Schema, ModelSchema, Field
+from typing import Optional
+from pydantic import computed_field
+
+from user_profile.models.user_profile import UserProfile
 from django.contrib.auth.models import User
-from pydantic import *
-from _webmart_api.utils import generate_schema
+from user_profile.schema.address import (
+    BaseAddressSchema,
+    AddressCreate,
+)
 
 
 class BaseUserSchema(ModelSchema):
@@ -17,12 +20,6 @@ class BaseUserSchema(ModelSchema):
         return f"{self.first_name} {self.last_name}"
 
 
-class BaseAddressSchema(ModelSchema):
-    class Meta:
-        model = Address
-        fields = "__all__"
-
-
 class BaseUserProfileSchema(ModelSchema):
     address: Optional[list[BaseAddressSchema]] = Field(default=[], alias="address_list")
     user: BaseUserSchema
@@ -30,12 +27,6 @@ class BaseUserProfileSchema(ModelSchema):
     class Meta:
         model = UserProfile
         fields = "__all__"
-
-
-class AddressCreate(Schema):
-    city: str
-    province: str
-    postal_code: str
 
 
 class UserCreate(Schema):

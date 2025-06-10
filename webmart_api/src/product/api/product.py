@@ -1,10 +1,17 @@
-from ninja import *
-from typing import *
+from ninja import (
+    Router,
+    Query,
+    Form,
+)
 from django.shortcuts import get_object_or_404
 
-from product.models.product import *
-from product.schema.product import *
-from _webmart_api.utils import *
+from product.models.product import Product
+from product.schema.product import (
+    ProductOut,
+    FullProductOut,
+    ProductsFilterSchema,
+    ProductCreate,
+)
 
 
 product_router = Router()
