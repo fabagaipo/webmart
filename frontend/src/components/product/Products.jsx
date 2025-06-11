@@ -135,7 +135,7 @@ function Products() {
               className="bg-white border border-gray-300 overflow-hidden shadow-sm transition-transform hover:-translate-y-2 block"
             >
               <Link 
-                to={`/product/${product.id}`}
+                to={`/products/${product.id}`}
                 className="block"
               >
                 <img src={product.image} alt={product.name} className="w-full h-36 object-cover" />

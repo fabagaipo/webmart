@@ -176,7 +176,7 @@ function ProductDetails() {
                 <div className="flex gap-4 w-full">
                   <button 
                     onClick={() => addToCart(product)}
-                    className="flex-1 bg-white text-primary-600 py-3 px-8 rounded-full hover:bg-gray-50 transition-all duration-200 border-2 border-primary-600 font-medium hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap min-w-[160px]"
+                    className="flex-1 bg-white text-white py-3 px-8 rounded-full hover:bg-gray-50 transition-all duration-200 border-2 border-primary-600 font-medium hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap min-w-[160px]"
                   >
                     <BsCartPlus className="text-lg" />
                     Add to Cart
