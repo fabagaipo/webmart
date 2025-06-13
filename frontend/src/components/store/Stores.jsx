@@ -108,7 +108,7 @@ const Stores = () => {
       <div className="flex flex-wrap gap-4 w-full justify-center">
         {filteredStores.map(store => (
           <Link to={`/store/${store.id}`} key={store.id} className="">
-            <div className="bg-[#F0F5FF] border border-gray-300 rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
+            <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
               <div className="aspect-rectangle">
                 <img src={store.image} alt={store.name} className="object-cover" />
               </div>

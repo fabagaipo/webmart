@@ -126,7 +126,7 @@ function Products() {
 
   return (
     <div className="px-2 sm:px-4 lg:px-6 py-8">
-      <div className="max-w-9xl mx-auto">
+      <div className="container mx-auto px-4">
         <h1 className="text-2xl font-bold text-gray-900 mb-8">All Products</h1>
         <div className="flex flex-wrap justify-center gap-4">
           {products.map(product => (
@@ -135,7 +135,7 @@ function Products() {
               className="bg-white border border-gray-300 overflow-hidden shadow-sm transition-transform hover:-translate-y-2 block"
             >
               <Link 
-                to={`/products/${product.id}`}
+                to={`/product/${product.id}`}
                 className="block"
               >
                 <img src={product.image} alt={product.name} className="w-full h-36 object-cover" />

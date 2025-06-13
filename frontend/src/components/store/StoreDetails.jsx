@@ -33,8 +33,8 @@ const StoreDetails = () => {
   const store = {
     id: parseInt(id),
     name: "Store Name",
-    logo: "https://placehold.co/200x200/0053E2/FFF",
-    banner: "https://placehold.co/1200x400/0053E2/FFF",
+    logo: "https://placehold.co/200x200/FDC700/FFFFFF?text=Logo",
+    banner: "https://placehold.co/1200x400/555/FFFFFF?text=Banner",
     rating: 4.8,
     reviewsCount: 1245,
     followers: 5823,
@@ -237,7 +237,7 @@ const StoreDetails = () => {
             {/* Store Banner Image */}
             <div className="mt-8">
               <img 
-                src="https://placehold.co/1200x625/0053E2/FFF" 
+                src="https://placehold.co/800@3x.png" 
                 alt={`${store.name} Banner`} 
                 className="w-full h-[625px] object-cover rounded-lg"
               />
@@ -285,7 +285,7 @@ const StoreDetails = () => {
             </svg>
             Follow Store
           </button>
-          <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-primary-600 bg-white hover:bg-gray-50">
+          <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-white bg-white hover:bg-gray-50">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
             </svg>
@@ -302,7 +302,7 @@ const StoreDetails = () => {
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'overview' 
                 ? 'border-primary-500 text-yellow-300' 
-                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
+                : 'border-transparent text-white hover:text-white hover:border-white'
             }`}
           >
             Overview
@@ -312,7 +312,7 @@ const StoreDetails = () => {
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'products' 
                 ? 'border-primary-500 text-yellow-300' 
-                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
+                : 'border-transparent text-white hover:text-white hover:border-white'
             }`}
           >
             Products
@@ -322,7 +322,7 @@ const StoreDetails = () => {
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'reviews' 
                 ? 'border-primary-500 text-yellow-300' 
-                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
+                : 'border-transparent text-white hover:text-white hover:border-white'
             }`}
           >
             Reviews
@@ -332,7 +332,7 @@ const StoreDetails = () => {
             className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
               activeTab === 'contact' 
                 ? 'border-primary-500 text-yellow-300' 
-                : 'border-transparent text-primary-600 hover:text-primary-600 hover:border-primary-600'
+                : 'border-transparent text-white hover:text-white hover:border-white'
             }`}
           >
             Contact

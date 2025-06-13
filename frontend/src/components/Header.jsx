@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaMapMarkerAlt, FaUser, FaShoppingCart, FaBars, FaChevronDown, FaBell, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaSearch, FaMapMarkerAlt, FaUser, FaShoppingCart, FaBell, FaExternalLinkAlt } from 'react-icons/fa';
+import Marquee from 'react-fast-marquee';
 import { useCart } from '../context/useCart';
 import { useNotifications } from '../context/NotificationContext';
 import NotificationItem from './notification/NotificationItem';
@@ -29,7 +30,7 @@ const CountdownTimer = () => {
   ];
 
   useEffect(() => {
-    // Set the end time for the sale (24 hours from now)
+    // Set the end time for the sale (Currently set to 24 hours from now)
     const endTime = new Date();
     endTime.setHours(endTime.getHours() + 24);
 
@@ -42,7 +43,6 @@ const CountdownTimer = () => {
         return;
       }
 
-      // Calculate time remaining
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -57,61 +57,8 @@ const CountdownTimer = () => {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    // In the second useEffect where the styles are defined, update the keyframes and animation properties
-    const marqueeStyles = `
-      @keyframes marquee {
-        0% {
-          transform: translateX(100%);
-        }
-        100% {
-          transform: translateX(-100%);
-        }
-      }
-      .marquee-container {
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-      }
-      .animate-marquee {
-        display: inline-flex;
-        white-space: nowrap;
-        will-change: transform;
-        animation: marquee ${saleMessages.length * 4}s linear infinite;
-        padding-left: 100%;
-      }
-      .marquee-item {
-        margin: 0 2rem;
-        min-width: max-content;
-        padding: 0.25rem 0;
-        flex-shrink: 0;
-      }
-      .animate-marquee:hover {
-        animation-play-state: paused;
-      }
-      @media (max-width: 768px) {
-        .marquee-item {
-          margin: 0 1rem;
-        }
-        .animate-marquee {
-          animation-duration: ${saleMessages.length * 6}s;
-        }
-      }
-      `;
-    
-    const styleElement = document.createElement('style');
-    styleElement.textContent = marqueeStyles;
-    document.head.appendChild(styleElement);
-
-    return () => {
-      if (styleElement && styleElement.parentNode) {
-        styleElement.parentNode.removeChild(styleElement);
-      }
-    };
-  }, []);
-
   return (
-    <div className="flex items-center w-full">
+    <div className="flex items-center w-full overflow-hidden">
       {/* Sale Timer - Fixed width */}
       <div className="w-48 flex-shrink-0 pr-4">
         <div className="flex items-center space-x-1">
@@ -139,17 +86,23 @@ const CountdownTimer = () => {
       <div className="h-8 w-px bg-blue-600 flex-shrink-0"></div>
       
       {/* Scrolling Sale Message */}
-      <div className="flex-1 overflow-hidden pl-4">
-        <div className="marquee-container w-full">
-          <div className="animate-marquee">
-            {saleMessages.map((message, index) => (
-              <span key={index} className="marquee-item text-sm font-medium text-white">
-                {message} •
-              </span>
-            ))}
-          </div>
-        </div>
+      <div className="flex-1 overflow-hidden w-full">
+        <Marquee 
+          speed={40}
+          gradient={false}
+          pauseOnHover
+          className="py-1 w-full"
+        >
+          {saleMessages.map((message, index) => (
+            <span key={index} className="mx-8 text-sm font-medium text-white whitespace-nowrap">
+              {message}
+            </span>
+          ))}
+        </Marquee>
       </div>
+
+      {/* Vertical Divider */}
+      <div className="h-8 w-px bg-blue-600 flex-shrink-0"></div>
     </div>
   );
 };
@@ -206,10 +159,10 @@ const Header = () => {
   return (
     <>
       {/* Top Bar */}
-      <header className="bg-blue-700 text-white">
+      <header className="bg-blue-700 text-white overflow-x-hidden">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-2">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 w-full">
               <CountdownTimer />
             </div>
           </div>
@@ -217,7 +170,7 @@ const Header = () => {
       </header>
 
       {/* Main Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      <header className="bg-gray-100 shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-4">
             <Link to="/" className="flex items-center space-x-2">
