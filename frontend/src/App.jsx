@@ -31,16 +31,17 @@ import Stores from './components/store/Stores';
 import StoreDetails from './components/store/StoreDetails';
 import NewArrivals from './components/NewArrivals';
 import NotFound from './components/NotFound';
+import PromoCollage from './components/PromoCollage';
 
 // Sample data for the homepage
-const featuredCategories = [
-  { id: 1, name: 'Electronics', image: 'https://placehold.co/150x150/0053E2/FFFFFF?text=Electronics', url: '/electronics' },
-  { id: 2, name: 'Home', image: 'https://placehold.co/150x150/0071DC/FFFFFF?text=Home', url: '/home' },
-  { id: 3, name: 'Fashion', image: 'https://placehold.co/150x150/004F9A/FFFFFF?text=Fashion', url: '/fashion' },
-  { id: 4, name: 'Toys', image: 'https://placehold.co/150x150/003B7A/FFFFFF?text=Toys', url: '/toys' },
-  { id: 5, name: 'Grocery', image: 'https://placehold.co/150x150/002E99/FFFFFF?text=Grocery', url: '/grocery' },
-  { id: 6, name: 'Deals', image: 'https://placehold.co/150x150/FFC220/000000?text=Deals', url: '/deals' },
-];
+// const featuredCategories = [
+//   { id: 1, name: 'Electronics', image: 'https://placehold.co/150x150/0053E2/FFFFFF?text=Electronics', url: '/electronics' },
+//   { id: 2, name: 'Home', image: 'https://placehold.co/150x150/0071DC/FFFFFF?text=Home', url: '/home' },
+//   { id: 3, name: 'Fashion', image: 'https://placehold.co/150x150/004F9A/FFFFFF?text=Fashion', url: '/fashion' },
+//   { id: 4, name: 'Toys', image: 'https://placehold.co/150x150/003B7A/FFFFFF?text=Toys', url: '/toys' },
+//   { id: 5, name: 'Grocery', image: 'https://placehold.co/150x150/002E99/FFFFFF?text=Grocery', url: '/grocery' },
+//   { id: 6, name: 'Deals', image: 'https://placehold.co/150x150/FFC220/000000?text=Deals', url: '/deals' },
+// ];
 
 function App() {
   return (
@@ -104,7 +105,7 @@ function HomePage() {
       <CategoryCards />
       
       {/* Category Grid */}
-      <section className="py-8 bg-white">
+      {/* <section className="py-8 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">Shop by Category</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
@@ -116,14 +117,14 @@ function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Divider */}
-      <div className="bg-white">
+      {/* <div className="bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-t border-gray-200 my-8"></div>
         </div>
-      </div>
+      </div> */}
 
       {/* Top Stores */}
       <section className="py-8">
@@ -205,6 +206,8 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      <PromoCollage />
 
       {/* Divider */}
       <div className="bg-white">
