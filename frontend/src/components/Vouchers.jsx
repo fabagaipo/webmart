@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { LuCopy, LuCheck, LuTicketCheck, LuTicketX } from 'react-icons/lu';
+import { toast } from 'react-hot-toast';
 
 const Vouchers = () => {
+  const [copiedCode, setCopiedCode] = useState(null);
+
   // TODO: Replace with actual voucher data from API
   const vouchers = [
     {
@@ -29,6 +33,15 @@ const Vouchers = () => {
     },
   ];
 
+  const handleCopy = (code) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+    toast.success('Voucher code copied!', {
+      position: 'bottom-center'
+    });
+    setTimeout(() => setCopiedCode(null), 1000);
+  };
+
   // Separate vouchers by status
   const activeVouchers = vouchers.filter(v => v.status === 'active');
   const expiredVouchers = vouchers.filter(v => v.status === 'expired');
@@ -49,11 +62,27 @@ const Vouchers = () => {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">{voucher.code}</h3>
+                  <div className="flex items-center space-x-2">
+                    <LuTicketCheck className="w-4 h-4 text-green-500" />
+                    <h3 className="text-sm font-medium text-gray-900">{voucher.code}</h3>
+                  </div>
                   <p className="text-xs text-gray-600">{voucher.description}</p>
                 </div>
-                <div className="text-sm font-semibold text-gray-900">
-                  {voucher.discount}%
+                <div className="flex flex-col items-end">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCopy(voucher.code);
+                    }}
+                    className="text-gray-400 hover:text-gray-600 transition-colors flex items-center space-x-1 no-bg no-focus no-hover"
+                    title="Copy code"
+                  >
+                    {copiedCode === voucher.code ? (
+                      <LuCheck className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <LuCopy className="w-4 h-4" />
+                    )}
+                  </button>
                 </div>
               </div>
               <div className="mt-2">
@@ -79,11 +108,11 @@ const Vouchers = () => {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">{voucher.code}</h3>
+                  <div className="flex items-center space-x-2">
+                    <LuTicketX className="w-4 h-4 text-gray-400" />
+                    <h3 className="text-sm font-medium text-gray-900">{voucher.code}</h3>
+                  </div>
                   <p className="text-xs text-gray-600">{voucher.description}</p>
-                </div>
-                <div className="text-sm font-semibold text-gray-900">
-                  {voucher.discount}%
                 </div>
               </div>
               <div className="mt-2">

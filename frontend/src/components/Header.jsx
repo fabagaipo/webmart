@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaMapMarkerAlt, FaUser, FaShoppingCart, FaBell, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaSearch, FaCalendarAlt, FaUser, FaShoppingCart, FaBell, FaExternalLinkAlt } from 'react-icons/fa';
 import Marquee from 'react-fast-marquee';
 import { useCart } from '../context/useCart';
 import { useNotifications } from '../context/NotificationContext';
@@ -62,7 +62,7 @@ const CountdownTimer = () => {
       {/* Sale Timer - Fixed width */}
       <div className="w-48 flex-shrink-0 pr-4">
         <div className="flex items-center space-x-1">
-          <FaMapMarkerAlt className="text-yellow-400 flex-shrink-0" />
+          <FaCalendarAlt className="text-yellow-400 flex-shrink-0" />
           <div className="text-center w-full">
             <div className="text-xs text-blue-100 whitespace-nowrap">Super Sale Ends In</div>
             <div className="flex items-center justify-center space-x-1">

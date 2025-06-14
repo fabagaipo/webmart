@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useMatch } from 'react-router-dom';
+import { useLocation, useMatch, Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { useUser } from 'context';
-import { Outlet, useNavigate, NavLink } from 'react-router-dom';
-import AuthForm from 'components/AuthForm';
-import { BiLogOut } from 'react-icons/bi';
+import { useNotifications } from 'context/NotificationContext';
+import { BiLogOut, BiEdit, BiUser, BiShoppingBag, BiBell, BiGift, BiStore, BiCog } from 'react-icons/bi';
 
 const Profile = () => {
   const navigate = useNavigate();
   const match = useMatch('/profile');
   const { user, performLogout } = useUser();
-  const [showRegister, setShowRegister] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [editData, setEditData] = useState({
+  const { unreadCount } = useNotifications();
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
     username: '',
     firstName: '',
     lastName: '',
@@ -26,432 +25,452 @@ const Profile = () => {
       additionalDetails: '',
       contactNumber: '',
     },
-    isStoreOwner: true,
   });
-  const [currentView, setCurrentView] = useState('profile');
-  const location = useLocation();
+
+  // Navigation items
+  const navItems = [
+    { id: 'profile', icon: <BiUser />, label: 'Profile' },
+    { id: 'purchases', icon: <BiShoppingBag />, label: 'Purchases' },
+    { 
+      id: 'notifications', 
+      icon: <BiBell />, 
+      label: 'Notifications', 
+      ...(unreadCount > 0 && { badge: unreadCount })
+    },
+    { id: 'vouchers', icon: <BiGift />, label: 'Vouchers' },
+    user?.isStoreOwner 
+      ? { id: 'store-management', icon: <BiStore />, label: 'Manage Store' }
+      : { id: 'store-owner-application', icon: <BiStore />, label: 'Start Selling' },
+    { id: 'settings', icon: <BiCog />, label: 'Settings' }
+  ];
 
   useEffect(() => {
-    if (!Object.keys(user).length) {
+    if (!user || Object.keys(user).length === 0) {
       navigate('/', { replace: true });
     }
- }, [user, navigate])
+  }, [user, navigate]);
 
-  const handleEdit = (e) => {
-    const { name, value } = e.target;
-    if (name === 'profilePicture') {
-      const file = e.target.files[0];
-      setEditData(prev => ({
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          profilePicture: reader.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type } = e.target;
+    
+    if (type === 'file') {
+      handleImageUpload(e);
+      return;
+    }
+
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.');
+      setFormData(prev => ({
         ...prev,
-        profilePicture: file
+        [parent]: {
+          ...prev[parent],
+          [child]: value
+        }
       }));
     } else {
-      setEditData(prev => ({
+      setFormData(prev => ({
         ...prev,
         [name]: value
       }));
     }
   };
 
-  const isActivePath = (path) => {
-    if (path === 'profile') return location.pathname === `/${path}`
-    return location.pathname.includes(path)
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: Implement form submission
+    console.log('Form submitted:', formData);
+    setIsEditing(false);
+  };
 
   const onLogout = () => {
     performLogout();
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  if (!user) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {showRegister ? (
-          <AuthForm mode="register" />
-        ) : (
-          <AuthForm mode="login" />
-        )}
-      </div>
-    );
-  }
+  if (!user) return null;
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-xl border-r border-gray-100">
-        <div className="p-8">
-          {/* Profile Section */}
-          <div className="flex flex-col items-center mb-10">
-            <div className="relative">
-              <div className="rounded-full w-24 h-24 bg-gray-200 flex items-center justify-center mb-2 overflow-hidden border-2 border-indigo-600">
-                {user && user.profilePicture ? (
-                  <img src={user.profilePicture} alt="Profile" className="w-20 h-20" />
-                ) : (
-                  <img src="./user.svg" alt="Profile" className="w-20 h-20" />
-                )}
-              </div>
-              <div className="absolute -bottom-1 -right-1 bg-indigo-600 w-6 h-6 rounded-full flex items-center justify-center">
-                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-4 py-6">
+          <div className="md:flex md:items-center md:justify-between">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                My Account
+              </h2>
             </div>
-            <div className="mt-4">
-              <h2 className="text-xl font-semibold mb-0.5 text-gray-900">Welcome, {user.firstName + ' ' + user.lastName}</h2>
-              <p className="text-gray-500 text-sm text-center">{user.email}</p>
+            <div className="mt-4 flex md:mt-0 md:ml-4">
+              <button
+                type="button"
+                onClick={onLogout}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-red-500 no-bg no-hover no-focus"
+              >
+                <BiLogOut className="-ml-1 mr-2 h-5 w-5 text-red-500" />
+                Sign out
+              </button>
             </div>
-          </div>
-
-          {/* Navigation */}
-          <nav className="space-y-1">
-            <button
-              onClick={() => navigate('')}
-              className={`w-full px-4 py-3 rounded-lg ${
-                isActivePath('profile') ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-              } font-medium flex items-center space-x-3 transition-all duration-200`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span className="text-sm">Profile</span>
-            </button>
-            <button
-              onClick={() => navigate('purchases')}
-              className={`w-full px-4 py-3 rounded-lg ${
-                isActivePath('purchases') ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-              } font-medium flex items-center space-x-3 transition-all duration-200`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              <span className="text-sm">Purchases</span>
-            </button>
-            <button
-              onClick={() => navigate('notifications')}
-              className={`w-full px-4 py-3 rounded-lg ${
-                isActivePath('notifications') ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-              } font-medium flex items-center space-x-3 transition-all duration-200`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              <span className="text-sm">Notifications</span>
-            </button>
-            <button
-              onClick={() => navigate('vouchers')}
-              className={`w-full px-4 py-3 rounded-lg ${
-                isActivePath('vouchers') ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-              } font-medium flex items-center space-x-3 transition-all duration-200`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="text-sm">Vouchers</span>
-            </button>
-            {!user.isStoreOwner ? (
-              <button
-                onClick={() => navigate('store-owner-application')}
-                className={`w-full px-4 py-3 rounded-lg ${
-                  isActivePath('store-owner-application') ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-                } font-medium flex items-center space-x-3 transition-all duration-200`}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-sm">Start Selling</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => navigate('store-management')}
-                className={`w-full px-4 py-3 rounded-lg ${
-                   isActivePath('store-management') ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-                } font-medium flex items-center space-x-3 transition-all duration-200`}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                <span className="text-sm">Manage Store</span>
-              </button>
-            )}
-            <button
-              onClick={() => navigate('settings')}
-              className={`w-full px-4 py-3 rounded-lg ${
-                isActivePath('settings') ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-              } font-medium flex items-center space-x-3 transition-all duration-200`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-              <span className="text-sm">Settings</span>
-            </button>
-          </nav>
-
-          {/* Bottom Section */}
-          <div className="mt-auto pt-8 border-t border-gray-100">
-            <button 
-              onClick={onLogout}
-              className="w-full px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 flex items-center space-x-3 transition-all duration-200"
-            >
-              <BiLogOut className="w-5 h-5" />
-              <span className="text-sm">Logout</span>
-            </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Main Content */}
-      <div className="flex-1 p-8">
-        { !match ?
-          (<Outlet/>)
-          : (
-            <div className="bg-white rounded-2xl shadow-xl p-8">
-              <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
-              </div>
+      <main className="container mx-auto px-4 py-8">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+          {/* Sidebar Navigation */}
+          <aside className="hidden lg:block lg:col-span-2">
+            <nav className="space-y-1">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.id}
+                  to={item.id === 'profile' ? '/profile' : `/profile/${item.id}`}
+                  end={item.id === 'profile'}
+                  className={({ isActive }) => 
+                    `group flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                      isActive
+                        ? 'bg-indigo-50 text-indigo-700'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    }`
+                  }
+                >
+                  <span className="mr-3 text-lg">{item.icon}</span>
+                  <span className="truncate">{item.label}</span>
+                  {item.badge && (
+                    <span className="ml-auto inline-block py-0.5 px-2.5 text-xs leading-4 font-medium bg-indigo-100 text-indigo-800 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+          </aside>
 
-              <div className="text-center mb-8">
-                <div className="relative">
-                  <div className="rounded-full w-24 h-24 bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-indigo-600 mx-auto mb-6">
-                    {user && user.profilePicture ? (
-                      <img src={user.profilePicture} alt="Profile" className="w-20 h-20" />
-                    ) : (
-                      <img src="./user.svg" alt="Profile" className="w-20 h-20" />
-                    )}
+          {/* Main Content */}
+          <div className="lg:col-span-10">
+            {!match ? (
+              <Outlet />
+            ) : (
+              <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                {/* Profile Header */}
+                <div className="px-4 py-5 sm:px-6 bg-gradient-to-r from-indigo-600 to-purple-600">
+                  <div className="flex items-center">
+                    <div className="relative">
+                      <div className="h-24 w-24 rounded-full bg-white p-1">
+                        <img
+                          className="h-full w-full rounded-full object-cover"
+                          src={user?.profilePicture || '/user.svg'}
+                          alt="Profile"
+                        />
+                      </div>
+                      <label className="absolute -bottom-2 -right-2 bg-white p-1.5 rounded-full shadow-md cursor-pointer hover:bg-gray-100">
+                        <BiEdit className="h-5 w-5 text-gray-600" />
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                        />
+                      </label>
+                    </div>
+                    <div className="ml-6">
+                      <h3 className="text-2xl font-bold text-white">
+                        {`${user?.firstName} ${user?.lastName}`}
+                      </h3>
+                      <p className="text-indigo-100">{user?.email}</p>
+                      {user?.isStoreOwner && (
+                        <span className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          Store Owner
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <label className="cursor-pointer text-indigo-600 hover:text-indigo-700 block text-center">
-                    <input
-                      type="file"
-                      name="profilePicture"
-                      accept="image/*"
-                      onChange={handleEdit}
-                      className="hidden"
-                    />
-                    <span className="text-sm">Change Profile Picture</span>
-                  </label>
                 </div>
-                <div className="flex justify-end">
-                  <button 
-                    onClick={() => setShowEdit(true)}
-                    className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-sm shadow-sm hover:shadow-lg flex items-center space-x-2"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
-                    <span>Edit Profile</span>
-                  </button>
-                </div>
-              </div>
 
-              {showEdit ? (
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-4">Personal Information</h3>
-                      <div className="space-y-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
-                          <input
-                            type="text"
-                            name="username"
-                            value={editData.username}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your username"
-                          />
+                {/* Profile Content */}
+                <div className="px-4 py-5 sm:p-6">
+                  {isEditing ? (
+                    // Edit Form
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                      <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        {/* Personal Information */}
+                        <div className="sm:col-span-6">
+                          <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Personal Information</h3>
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                        
+                        <div className="sm:col-span-3">
+                          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                            First name
+                          </label>
                           <input
                             type="text"
                             name="firstName"
-                            value={editData.firstName}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your first name"
+                            id="firstName"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           />
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+
+                        <div className="sm:col-span-3">
+                          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                            Last name
+                          </label>
                           <input
                             type="text"
                             name="lastName"
-                            value={editData.lastName}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your last name"
+                            id="lastName"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           />
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+
+                        <div className="sm:col-span-4">
+                          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                            Email address
+                          </label>
                           <input
                             type="email"
                             name="email"
-                            value={editData.email}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your email"
+                            id="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           />
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+
+                        <div className="sm:col-span-2">
+                          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                            Phone
+                          </label>
                           <input
                             type="tel"
                             name="phone"
-                            value={editData.phone}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your phone number"
+                            id="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           />
                         </div>
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-4">Address Information</h3>
-                      <div className="space-y-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
-                          <input
-                            type="text"
-                            name="street"
-                            value={editData.address.street}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your street address"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                          <input
-                            type="text"
-                            name="city"
-                            value={editData.address.city}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your city"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Province/State</label>
-                          <input
-                            type="text"
-                            name="province"
-                            value={editData.address.province}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your province/state"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">ZIP/Postal Code</label>
-                          <input
-                            type="text"
-                            name="zipCode"
-                            value={editData.address.zipCode}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your ZIP/postal code"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Additional Details</label>
-                          <textarea
-                            name="additionalDetails"
-                            value={editData.address.additionalDetails}
-                            onChange={handleEdit}
-                            rows="2"
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter additional address details (optional)"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Contact Number</label>
-                          <input
-                            type="tel"
-                            name="contactNumber"
-                            value={editData.address.contactNumber}
-                            onChange={handleEdit}
-                            className="mt-1 block w-full rounded-lg text-gray-500 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:ring-2 focus:ring-opacity-50 focus:shadow-sm transition-all duration-200"
-                            placeholder="Enter your contact number"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="flex justify-end space-x-4">
-                    <button
-                      type="button"
-                      onClick={() => setShowEdit(false)}
-                      className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm hover:shadow-lg"
-                    >
-                      Save Changes
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-6">Personal Information</h3>
-                    <div className="space-y-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">Name</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.firstName + ' ' + user.lastName || 'Not provided'}</p>
+                        {/* Address Information */}
+                        <div className="sm:col-span-6 border-t border-gray-200 pt-6 mt-6">
+                          <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Address Information</h3>
+                        </div>
+
+                        <div className="sm:col-span-6">
+                          <label htmlFor="address.street" className="block text-sm font-medium text-gray-700">
+                            Street address
+                          </label>
+                          <input
+                            type="text"
+                            name="address.street"
+                            id="address.street"
+                            value={formData.address.street}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label htmlFor="address.city" className="block text-sm font-medium text-gray-700">
+                            City
+                          </label>
+                          <input
+                            type="text"
+                            name="address.city"
+                            id="address.city"
+                            value={formData.address.city}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label htmlFor="address.province" className="block text-sm font-medium text-gray-700">
+                            State/Province
+                          </label>
+                          <input
+                            type="text"
+                            name="address.province"
+                            id="address.province"
+                            value={formData.address.province}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label htmlFor="address.zipCode" className="block text-sm font-medium text-gray-700">
+                            ZIP / Postal code
+                          </label>
+                          <input
+                            type="text"
+                            name="address.zipCode"
+                            id="address.zipCode"
+                            value={formData.address.zipCode}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-6">
+                          <label htmlFor="address.additionalDetails" className="block text-sm font-medium text-gray-700">
+                            Additional details
+                          </label>
+                          <textarea
+                            id="address.additionalDetails"
+                            name="address.additionalDetails"
+                            rows={3}
+                            value={formData.address.additionalDetails}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">Username</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.username || 'Not provided'}</p>
+                      
+                      <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                        <button
+                          type="button"
+                          onClick={() => setIsEditing(false)}
+                          className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-red-500 no-bg no-hover no-focus"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white"
+                        >
+                          Save changes
+                        </button>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">Email</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.email}</p>
+                    </form>
+                  ) : (
+                    // View Mode
+                    <div className="space-y-8">
+                      <div className="flex justify-end">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({
+                              ...user,
+                              address: user.address || {
+                                street: '',
+                                city: '',
+                                province: '',
+                                zipCode: '',
+                                additionalDetails: '',
+                                contactNumber: '',
+                              }
+                            });
+                            setIsEditing(true);
+                          }}
+                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                          <BiEdit className="-ml-1 mr-2 h-5 w-5" />
+                          Edit Profile
+                        </button>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">Phone Number</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.phone || 'Not provided'}</p>
+
+                      <div className="grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-8">
+                        {/* Personal Information */}
+                        <div>
+                          <h3 className="text-lg leading-6 font-medium text-gray-900">
+                            Personal Information
+                          </h3>
+                          <div className="mt-6 space-y-4">
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">Full name</dt>
+                              <dd className="mt-1 text-sm text-gray-900">
+                                {`${user?.firstName} ${user?.lastName}` || 'Not provided'}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">Username</dt>
+                              <dd className="mt-1 text-sm text-gray-900">
+                                {user?.username || 'Not provided'}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">Email address</dt>
+                              <dd className="mt-1 text-sm text-gray-900">{user?.email}</dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">Phone</dt>
+                              <dd className="mt-1 text-sm text-gray-900">
+                                {user?.phone || 'Not provided'}
+                              </dd>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Address Information */}
+                        <div>
+                          <h3 className="text-lg leading-6 font-medium text-gray-900">
+                            Address Information
+                          </h3>
+                          <div className="mt-6 space-y-4">
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">Address</dt>
+                              <dd className="mt-1 text-sm text-gray-900">
+                                {user?.address?.street || 'Not provided'}
+                              </dd>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <dt className="text-sm font-medium text-gray-500">City</dt>
+                                <dd className="mt-1 text-sm text-gray-900">
+                                  {user?.address?.city || 'Not provided'}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt className="text-sm font-medium text-gray-500">State/Province</dt>
+                                <dd className="mt-1 text-sm text-gray-900">
+                                  {user?.address?.province || 'Not provided'}
+                                </dd>
+                              </div>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">ZIP/Postal code</dt>
+                              <dd className="mt-1 text-sm text-gray-900">
+                                {user?.address?.zipCode || 'Not provided'}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">Additional Details</dt>
+                              <dd className="mt-1 text-sm text-gray-900">
+                                {user?.address?.additionalDetails || 'Not provided'}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-gray-500">Contact Number</dt>
+                              <dd className="mt-1 text-sm text-gray-900">
+                                {user?.address?.contactNumber || 'Not provided'}
+                              </dd>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-6">Address Information</h3>
-                    <div className="space-y-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">City</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.address?.city || 'Not provided'}</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">Province/State</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.address?.province || 'Not provided'}</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">ZIP/Postal Code</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.address?.zipCode || 'Not provided'}</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">Additional Details</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.address?.additionalDetails || 'Not provided'}</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-2">Contact Number</label>
-                        <p className="mt-1 text-gray-900 font-medium">{user.address?.contactNumber || 'Not provided'}</p>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )
-        }
-      </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
