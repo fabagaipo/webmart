@@ -3,6 +3,7 @@ import { useLocation, useMatch, Outlet, useNavigate, NavLink } from 'react-route
 import { useUser } from 'context';
 import { useNotifications } from 'context/NotificationContext';
 import { BiLogOut, BiEdit, BiUser, BiShoppingBag, BiBell, BiGift, BiStore, BiCog } from 'react-icons/bi';
+import SignOutModal from './modals/SignOutModal';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Profile = () => {
   const { user, performLogout } = useUser();
   const { unreadCount } = useNotifications();
   const [isEditing, setIsEditing] = useState(false);
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     firstName: '',
@@ -96,14 +98,22 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  const onLogout = () => {
+  const handleSignOut = () => {
     performLogout();
+    setShowSignOutModal(false);
   };
 
   if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Sign Out Modal */}
+      <SignOutModal 
+        isOpen={showSignOutModal}
+        onClose={() => setShowSignOutModal(false)}
+        onConfirm={handleSignOut}
+      />
+
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-6">
@@ -116,7 +126,7 @@ const Profile = () => {
             <div className="mt-4 flex md:mt-0 md:ml-4">
               <button
                 type="button"
-                onClick={onLogout}
+                onClick={() => setShowSignOutModal(true)}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-red-500 no-bg no-hover no-focus"
               >
                 <BiLogOut className="-ml-1 mr-2 h-5 w-5 text-red-500" />
@@ -351,7 +361,7 @@ const Profile = () => {
                         </button>
                         <button
                           type="submit"
-                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white"
+                          className="inline-flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md shadow-sm text-white"
                         >
                           Save changes
                         </button>
