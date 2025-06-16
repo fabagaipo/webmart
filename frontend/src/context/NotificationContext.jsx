@@ -25,7 +25,7 @@ export const NotificationProvider = ({ children }) => {
       title: 'Order Confirmation',
       message: 'Your order #123456 has been successfully placed!',
       type: 'success',
-      timestamp: '2025-05-20 14:30',
+      timestamp: new Date().toISOString(),
       read: false
     },
     {
@@ -33,7 +33,7 @@ export const NotificationProvider = ({ children }) => {
       title: 'Shipping Update',
       message: 'Your order is being prepared for shipping.',
       type: 'info',
-      timestamp: '2025-05-19 10:45',
+      timestamp: new Date().toISOString(),
       read: false
     },
   ]);

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MdStarRate, MdStarOutline, MdStarHalf } from 'react-icons/md';
+import { MdStarRate, MdStarOutline, MdStarHalf, MdShoppingCart } from 'react-icons/md';
 
 function Products() {
-
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -12,152 +11,128 @@ function Products() {
   const [products] = useState([
     {
       id: 1,
-      name: 'Product 1',
+      name: 'Wireless Earbuds',
       price: 99.99,
-      items_sold: 10,
-      image: 'https://placehold.co/600x400/002E99/FFF',
+      sales: 124,
+      image: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.5,
     },
     {
       id: 2,
-      name: 'Product 2',
+      name: 'Smart Watch',
       price: 149.99,
-      items_sold: 20,
-      image: 'https://placehold.co/600x400/002E99/FFF',
+      sales: 89,
+      image: 'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=500&auto=format&fit=crop&iq=60',
       rating: 4.7,
     },
     {
       id: 3,
-      name: 'Product 3',
+      name: 'Bluetooth Speaker',
       price: 1299.99,
-      items_sold: 30,
-      image: 'https://placehold.co/600x400/002E99/FFF',
+      sales: 45,
+      image: 'https://images.unsplash.com/photo-1589003077984-894e133dabab?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.8,
     },
     {
       id: 4,
-      name: 'Product 4',
+      name: 'Wireless Charger',
       price: 1299.99,
-      items_sold: 40,
-      image: 'https://placehold.co/600x400/002E99/FFF',
+      sales: 67,
+      image: 'https://images.unsplash.com/photo-1591290619618-904f6dd935e3?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.8,
     },
     {
       id: 5,
-      name: 'Product 5',
-      price: 1299.99,
-      items_sold: 50,
-      image: 'https://placehold.co/600x400/002E99/FFF',
-      rating: 4.8,
+      name: 'Gaming Monitor',
+      price: 899.99,
+      sales: 78,
+      image: 'https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b?q=80&w=500&auto=format&fit=crop&q=60',
+      rating: 4.6,
     },
     {
       id: 6,
-      name: 'Product 6',
-      price: 1299.99,
-      items_sold: 60,
-      image: 'https://placehold.co/600x400/002E99/FFF',
-      rating: 4.8,
+      name: 'Wireless Headphones',
+      price: 99.99,
+      sales: 10,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60',
+      rating: 4.5,
     },
     {
       id: 7,
-      name: 'Product 7',
-      price: 1299.99,
-      items_sold: 70,
-      image: 'https://placehold.co/600x400/002E99/FFF',
-      rating: 4.8,
+      name: 'Nintendo Switch',
+      price: 149.99,
+      sales: 20,
+      image: 'https://images.unsplash.com/photo-1591182136289-67ff16828fd4?q=80&w=500&auto=format&fit=crop&q=60',
+      rating: 4.7,
     },
     {
       id: 8,
-      name: 'Product 8',
+      name: 'Magsafe Powerbank',
       price: 1299.99,
-      items_sold: 80,
-      image: 'https://placehold.co/600x400/002E99/FFF',
+      sales: 30,
+      image: 'https://images.unsplash.com/photo-1644571663498-f4f18db66c17?q=80&w=500auto=format&fit=crop&q=60',
       rating: 4.8,
     },
     {
       id: 9,
-      name: 'Product 9',
+      name: 'Macbook Air M2',
       price: 1299.99,
-      items_sold: 90,
-      image: 'https://placehold.co/600x400/002E99/FFF',
+      sales: 40,
+      image: 'https://images.unsplash.com/photo-1625766763788-95dcce9bf5ac?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.8,
     },
     {
       id: 10,
-      name: 'Product 10',
+      name: 'Casio GShock',
       price: 1299.99,
-      items_sold: 100,
-      image: 'https://placehold.co/600x400/002E99/FFF',
-      rating: 4.8,
-    },
-    {
-      id: 11,
-      name: 'Product 11',
-      price: 1299.99,
-      items_sold: 110,
-      image: 'https://placehold.co/600x400/002E99/FFF',
-      rating: 4.9,
-    },
-    {
-      id: 12,
-      name: 'Product 12',
-      price: 1299.99,
-      items_sold: 120,
-      image: 'https://placehold.co/600x400/002E99/FFF',
-      rating: 4.8,
-    },
-    {
-      id: 13,
-      name: 'Product 13',
-      price: 1299.99,
-      items_sold: 130,
-      image: 'https://placehold.co/600x400/002E99/FFF',
-      rating: 4.8,
-    },
-    {
-      id: 14,
-      name: 'Product 14',
-      price: 1299.99,
-      items_sold: 140,
-      image: 'https://placehold.co/600x400/002E99/FFF',
+      sales: 50,
+      image: 'https://images.unsplash.com/photo-1624608291203-c0efcb41cab6?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.8,
     },
   ]);
 
   return (
-    <div className="px-2 sm:px-4 lg:px-6 py-8">
-      <div className="container mx-auto px-4">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">All Products</h1>
-        <div className="flex flex-wrap justify-center gap-4">
-          {products.map(product => (
-            <div 
-              key={product.id} 
-              className="bg-white border border-gray-300 overflow-hidden shadow-sm transition-transform hover:-translate-y-2 block"
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">All Products</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100"
             >
-              <Link 
-                to={`/product/${product.id}`}
-                className="block"
-              >
-                <img src={product.image} alt={product.name} className="w-full h-36 object-cover" />
-                <div className="p-3">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-1">{product.name}</h3>
-                  <div className="flex items-center justify-center mb-1">
-                    <div className="flex text-yellow-400">
+              <Link to={`/product/${product.id}`} className="flex flex-col h-full">
+                <div className="relative pt-[100%] overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                <div className="p-4 flex-1 flex flex-col">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center mb-3">
+                    <div className="flex">
                       {[1, 2, 3, 4, 5].map((star) => {
                         if (star <= Math.floor(product.rating)) {
-                          return <MdStarRate key={star} className="w-4 h-4" />;
+                          return <MdStarRate key={star} className="w-5 h-5 text-yellow-400" />;
                         }
                         if (star === Math.ceil(product.rating) && product.rating % 1 > 0) {
-                          return <MdStarHalf key={star} className="w-4 h-4" />;
+                          return <MdStarHalf key={star} className="w-5 h-5 text-yellow-400" />;
                         }
-                        return <MdStarOutline key={star} className="w-4 h-4" />;
+                        return <MdStarOutline key={star} className="w-5 h-5 text-yellow-400" />;
                       })}
                     </div>
-                    <span className="ml-1 text-xs text-gray-500">{product.rating}</span>
+                    <span className="ml-2 text-sm text-gray-500">({product.rating})</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-base font-bold text-[#001E60]">₱{product.price.toFixed(2)}</div>
-                    <div className="text-sm text-gray-500">{product.items_sold || 0} sold</div>
+                  <div className="mt-auto pt-3 border-t border-gray-100">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xl font-bold text-blue-900">₱{product.price.toFixed(2)}</span>
+                      <div className="text-xs text-gray-500 mt-1">{product.sales || 0} sold</div>
+                    </div>
                   </div>
                 </div>
               </Link>

@@ -171,7 +171,7 @@ function HomePage() {
                 name: "Samyang Offical",
                 rating: 4.8,
                 reviews: 2134,
-                image: "https://placehold.co/300x200/003B7A/FFFFFF?text=Samyang Offical",
+                image: "https://placehold.co/300x200/003B7A/FFFFFF?text=Samyang Official",
                 category: "Food & Beverages"
               },
               {

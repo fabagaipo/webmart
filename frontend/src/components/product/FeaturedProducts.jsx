@@ -11,7 +11,7 @@ function FeaturedProducts() {
       id: 1,
       name: 'Wireless Earbuds',
       price: '99.99',
-      image: 'https://placehold.co/200x200/0053E2/FFFFFF?text=Wireless+Earbuds',
+      image: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.5,
       sales: 124
     },
@@ -19,7 +19,7 @@ function FeaturedProducts() {
       id: 2,
       name: 'Smart Watch',
       price: '149.99',
-      image: 'https://placehold.co/200x200/0071DC/FFFFFF?text=Smart+Watch',
+      image: 'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?q=80&w=500&auto=format&fit=crop&iq=60',
       rating: 4.7,
       sales: 89
     },
@@ -27,7 +27,7 @@ function FeaturedProducts() {
       id: 3,
       name: 'Bluetooth Speaker',
       price: '1299.99',
-      image: 'https://placehold.co/200x200/004F9A/FFFFFF?text=Bluetooth+Speaker',
+      image: 'https://images.unsplash.com/photo-1589003077984-894e133dabab?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.8,
       sales: 45
     },
@@ -35,7 +35,7 @@ function FeaturedProducts() {
       id: 4,
       name: 'Wireless Charger',
       price: '1299.99',
-      image: 'https://placehold.co/200x200/003B7A/FFFFFF?text=Wireless+Charger',
+      image: 'https://images.unsplash.com/photo-1591290619618-904f6dd935e3?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.8,
       sales: 67
     },
@@ -43,50 +43,50 @@ function FeaturedProducts() {
       id: 5,
       name: 'Gaming Monitor',
       price: '899.99',
-      image: 'https://placehold.co/150x150/002E99/FFFFFF?text=Gaming+Monitor',
+      image: 'https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.6,
       sales: 78
     },
     {
       id: 6,
-      name: 'Product 6',
-      price: '199.99',
-      image: 'https://placehold.co/300x200/0053E2/FFF',
-      rating: 4.9,
-      sales: 95
+      name: 'Wireless Headphones',
+      price: 99.99,
+      sales: 10,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60',
+      rating: 4.5,
     },
     {
       id: 7,
-      name: 'Product 7',
-      price: '299.99',
-      image: 'https://placehold.co/300x200/0053E2/FFF',
+      name: 'Nintendo Switch',
+      price: 149.99,
+      sales: 20,
+      image: 'https://images.unsplash.com/photo-1591182136289-67ff16828fd4?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.7,
-      sales: 112
     },
     {
       id: 8,
-      name: 'Product 8',
-      price: '399.99',
-      image: 'https://placehold.co/300x200/0053E2/FFF',
-      rating: 4.5,
-      sales: 88
+      name: 'Magsafe Powerbank',
+      price: 1299.99,
+      sales: 30,
+      image: 'https://images.unsplash.com/photo-1644571663498-f4f18db66c17?q=80&w=500auto=format&fit=crop&q=60',
+      rating: 4.8,
     },
     {
       id: 9,
-      name: 'Product 9',
-      price: '499.99',
-      image: 'https://placehold.co/300x200/0053E2/FFF',
+      name: 'Macbook Air M2',
+      price: 1299.99,
+      sales: 40,
+      image: 'https://images.unsplash.com/photo-1625766763788-95dcce9bf5ac?q=80&w=500&auto=format&fit=crop&q=60',
       rating: 4.8,
-      sales: 65
     },
     {
       id: 10,
-      name: 'Product 10',
-      price: '599.99',
-      image: 'https://placehold.co/300x200/0053E2/FFF',
-      rating: 4.9,
-      sales: 102
-    }
+      name: 'Casio GShock',
+      price: 1299.99,
+      sales: 50,
+      image: 'https://images.unsplash.com/photo-1624608291203-c0efcb41cab6?q=80&w=500&auto=format&fit=crop&q=60',
+      rating: 4.8,
+    },
   ];
 
   const totalPages = Math.ceil(products.length / productsPerPage);
