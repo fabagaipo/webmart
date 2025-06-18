@@ -48,9 +48,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button.no-bg {
-  background-color: transparent;
-}
+
 button:hover {
   background-color: #002E99;
 }
@@ -59,7 +57,11 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Classes to disable hover and focus effects */
+/* Classes to disable bg, hover and focus effects */
+button.no-bg {
+  background-color: transparent;
+}
+
 button.no-hover {
   transition: none !important;
 }
@@ -91,17 +93,4 @@ button.no-focus:focus-visible {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #002E99;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }

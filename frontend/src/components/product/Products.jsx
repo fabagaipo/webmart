@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdStarRate, MdStarOutline, MdStarHalf, MdShoppingCart } from 'react-icons/md';
+import { motion } from 'framer-motion';
 
 function Products() {
   // Scroll to top when component mounts
@@ -94,14 +95,31 @@ function Products() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">All Products</h1>
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-4xl font-extrabold mb-8 text-center"
+        >
+          <span className="relative inline-block">
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
+              All Products
+            </span>
+            <motion.span 
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+              className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full origin-left"
+            />
+          </span>
+        </motion.h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {products.map((product) => (
             <div
               key={product.id}
               className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100"
             >
-              <Link to={`/product/${product.id}`} className="flex flex-col h-full">
+              <Link to={`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex flex-col h-full">
                 <div className="relative pt-[100%] overflow-hidden">
                   <img
                     src={product.image}

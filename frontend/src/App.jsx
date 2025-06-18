@@ -73,7 +73,10 @@ function AppContent() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<AuthForm mode="login" />} />
           <Route path="/register" element={<AuthForm mode="register" />} />
-          <Route path="/stores" element={<Stores />} />
+          <Route path="/stores">
+            <Route index element={<Stores />} />
+            <Route path="category/:categorySlug" element={<Stores />} />
+          </Route>
           <Route path="/store/:id" element={<StoreDetails />} />
           <Route path="/new-arrivals" element={<NewArrivals />} />
           <Route path="/404" element={<NotFound />} />
@@ -183,7 +186,7 @@ function HomePage() {
                 category: "Books & Stationery"
               }
             ].map(store => (
-              <Link to={`/store/${store.id}`} key={store.id} className="block">
+              <Link to={`/store/${store.name.toLowerCase().replace(/\s+/g, '-')}`} key={store.id} className="block">
                 <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm transition-transform hover:-translate-y-1">
                   <div className="aspect-square relative">
                     <img src={store.image} alt={store.name} className="w-full h-full object-cover" />

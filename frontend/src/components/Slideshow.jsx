@@ -109,7 +109,7 @@ const Slideshow = () => {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-900 hover:text-gray-200 w-16 h-16 flex items-center justify-center z-50 no-bg no-focus"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-900 hover:text-gray-400 w-16 h-16 flex items-center justify-center z-50 no-bg no-focus"
           aria-label="Previous slide"
           style={{
             textShadow: '0 2px 4px rgba(0,0,0,0.3)'
@@ -119,7 +119,7 @@ const Slideshow = () => {
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-900 hover:text-gray-200 w-16 h-16 flex items-center justify-center z-50 no-bg no-focus"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-900 hover:text-gray-400 w-16 h-16 flex items-center justify-center z-50 no-bg no-focus"
           aria-label="Next slide"
           style={{
             textShadow: '0 2px 4px rgba(0,0,0,0.3)'

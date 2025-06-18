@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaLaptop, FaTshirt, FaHome, FaBook } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 // Color palette for categories
 const categoryColors = [
@@ -48,7 +49,7 @@ function Categories() {
     },
     {
       id: 3,
-      name: 'Home & Living',
+      name: 'Home and Living',
       icon: categoryIcons[2],
       color: categoryColors[2],
       products: [
@@ -74,9 +75,26 @@ function Categories() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-12">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Categories</h1>
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-4xl font-extrabold mb-8 text-center"
+        >
+          <span className="relative inline-block">
+            <span className="bg-gradient-to-r from-indigo-600 to-pink-600 text-transparent bg-clip-text">
+              Categories
+            </span>
+            <motion.span 
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+              className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-indigo-400 to-pink-400 rounded-full origin-left"
+            />
+          </span>
+        </motion.h1>
         <div className="space-y-8">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <div 
               key={category.id} 
               className={`${category.color.split(' ')[0]} rounded-xl shadow-sm overflow-hidden border ${category.color.split(' ')[2]}`}
@@ -88,7 +106,7 @@ function Categories() {
                     {category.name}
                   </h2>
                   <Link 
-                    to={`/category/${category.id}`}
+                    to={`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
                     className={`ml-auto ${category.color.split(' ')[1].replace('700', '600')} hover:${category.color.split(' ')[1].replace('700', '800')} font-medium text-sm flex items-center`}
                   >
                     View all
@@ -100,7 +118,7 @@ function Categories() {
               </div>
               <div className="p-4 overflow-x-auto">
                 <div className="flex space-x-4 pb-2">
-                  {category.products.map(product => (
+                  {category.products.map((product) => (
                     <div 
                       key={product.id} 
                       className="flex-shrink-0 w-32 p-3 rounded-lg hover:shadow-md transition-shadow duration-200 flex flex-col items-center"

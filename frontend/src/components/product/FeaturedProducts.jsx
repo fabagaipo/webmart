@@ -118,10 +118,10 @@ function FeaturedProducts() {
         {currentProducts.map(product => (
           <div 
             key={product.id} 
-            className="bg-white overflow-hidden border border-gray-300 shadow-sm transition-transform hover:-translate-y-1"
+            className="bg-white rounded-md overflow-hidden border border-gray-300 shadow-sm transition-transform hover:-translate-y-1"
           >
             <Link 
-              to={`/product/${product.id}`}
+              to={`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`}
               className="block"
             >
               <img src={product.image} alt={product.name} className="w-full h-64 object-cover" />
