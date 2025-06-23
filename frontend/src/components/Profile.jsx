@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useMatch, Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { useUser } from 'context';
-import { useNotifications } from 'hooks/useNotifications';
+import { useNotifications } from '../hooks/useNotifications';
 import {
     BiLogOut,
     BiEdit,

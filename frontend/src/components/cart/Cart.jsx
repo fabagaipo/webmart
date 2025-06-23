@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from 'hooks';
+import { useCart } from 'context';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { RiDeleteBinFill } from 'react-icons/ri';
 

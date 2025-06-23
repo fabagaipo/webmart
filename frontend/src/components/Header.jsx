@@ -228,7 +228,7 @@ const Header = () => {
                                                         e.stopPropagation();
                                                         markAllAsRead();
                                                     }}
-                                                    className='text-sm no-bg text-indigo-600 no-hover'
+                                                    className='text-sm no-bg text-indigo-600 no-hover no-focus'
                                                 >
                                                     Mark all as read
                                                 </button>

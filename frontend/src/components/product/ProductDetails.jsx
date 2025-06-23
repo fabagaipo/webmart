@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCart } from 'hooks/useCart';
+import { useCart } from 'context';
 import { useState, useEffect } from 'react';
 import { BsCartPlus } from 'react-icons/bs';
 import { FaPlus, FaMinus } from 'react-icons/fa';
