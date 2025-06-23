@@ -1,35 +1,32 @@
-import { createContext, useState } from "react";
-import { WebMartApi } from "webmart/webmartAPI";
+import { createContext, useState } from 'react';
+import { WebMartApi } from 'webmart/webmartAPI';
 const UserContext = createContext();
 
-export const UserProvider = ({ children }) =>{
+export const UserProvider = ({ children }) => {
     const [user, setUser] = useState({});
 
     const performSignup = (payload) => {
-        return WebMartApi('user/sign-up', 'POST', payload)
-        .then((res) => {
+        return WebMartApi('user/sign-up', 'POST', payload).then((res) => {
             setUser(res.user);
             const { tokens } = res;
-            localStorage.setItem("refresh_token", tokens.refresh_token);
-            localStorage.setItem("access_token", tokens.access_token);
-            return res
-        });
-    };
-
-    const performLogin = (payload) => {
-        return WebMartApi('user/sign-in', 'POST', payload)
-        .then((res) => {
-            setUser(res.user);
-            const { tokens } = res;
-            localStorage.setItem("refresh_token", tokens?.refresh_token);
-            localStorage.setItem("access_token", tokens?.access_token);
+            localStorage.setItem('refresh_token', tokens.refresh_token);
+            localStorage.setItem('access_token', tokens.access_token);
             return res;
         });
     };
 
-    const performLogout = (payload={}) => {
-        return WebMartApi('user/sign-out', 'POST', payload)
-        .then((res) => {
+    const performLogin = (payload) => {
+        return WebMartApi('user/sign-in', 'POST', payload).then((res) => {
+            setUser(res.user);
+            const { tokens } = res;
+            localStorage.setItem('refresh_token', tokens?.refresh_token);
+            localStorage.setItem('access_token', tokens?.access_token);
+            return res;
+        });
+    };
+
+    const performLogout = (payload = {}) => {
+        return WebMartApi('user/sign-out', 'POST', payload).then((res) => {
             setUser({});
             localStorage.clear();
             return res;
@@ -37,9 +34,7 @@ export const UserProvider = ({ children }) =>{
     };
 
     return (
-        <UserContext.Provider
-            value={{ user, performLogin, performLogout, performSignup }}
-        >
+        <UserContext.Provider value={{ user, performLogin, performLogout, performSignup }}>
             {children}
         </UserContext.Provider>
     );
