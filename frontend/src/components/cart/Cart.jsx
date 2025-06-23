@@ -61,49 +61,59 @@ const Cart = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Cart Items */}
         <div className="space-y-6">
-          {cart.map((item) => (
-            <div key={item.id} className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-6">
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
-                    className="w-32 h-32 object-cover rounded-lg"
-                  />
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{item.name}</h3>
-                    <p className="text-gray-600 mb-1">{item.price}</p>
-                    <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+          {cart.map((item) => {
+            if (!item.id) {
+              console.error('Cart item is missing an ID:', item);
+              return null;
+            }
+            
+            return (
+              <div 
+                key={`cart-item-${item.id}`}
+                className="bg-white rounded-lg shadow-sm p-6 border border-gray-100"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-6">
+                    <img 
+                      src={item.image} 
+                      alt={item.name} 
+                      className="w-32 h-32 object-cover rounded-lg"
+                    />
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">{item.name}</h3>
+                      <p className="text-gray-600 mb-1">{item.price}</p>
+                      <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <button 
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      disabled={item.quantity <= 1}
+                      className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    >
+                      <span className="sr-only">Decrease quantity</span>
+                      <FaMinus className="w-2 h-2 text-white" />
+                    </button>
+                    <span className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700">{item.quantity}</span>
+                    <button 
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200"
+                    >
+                      <span className="sr-only">Increase quantity</span>
+                      <FaPlus className="w-2 h-2 text-white" />
+                    </button>
+                    <button 
+                      onClick={() => removeFromCart(item.id)}
+                      className="text-red-600 hover:text-red-700 no-bg no-hover no-focus transition-colors"
+                      title="Remove item"
+                    >
+                      <RiDeleteBinFill className="w-6 h-6" />
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <button 
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    disabled={item.quantity <= 1}
-                    className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                  >
-                    <span className="sr-only">Decrease quantity</span>
-                    <FaMinus className="w-2 h-2 text-white" />
-                  </button>
-                  <span className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700">{item.quantity}</span>
-                  <button 
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200"
-                  >
-                    <span className="sr-only">Increase quantity</span>
-                    <FaPlus className="w-2 h-2 text-white" />
-                  </button>
-                  <button 
-                    onClick={() => removeFromCart(item.id)}
-                    className="text-red-600 hover:text-red-700 no-bg no-hover no-focus transition-colors"
-                    title="Remove item"
-                  >
-                    <RiDeleteBinFill className="w-6 h-6" />
-                  </button>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Order Summary */}

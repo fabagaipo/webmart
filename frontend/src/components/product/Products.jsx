@@ -119,7 +119,7 @@ function Products() {
               key={product.id}
               className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100"
             >
-              <Link to={`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex flex-col h-full">
+              <Link to={`/product/${product.id}`} className="flex flex-col h-full">
                 <div className="relative pt-[100%] overflow-hidden">
                   <img
                     src={product.image}
