@@ -21,6 +21,7 @@ from _webmart_api.auth import (
     generate_access_token,
     generate_refresh_token,
 )
+from _webmart_api.auth import WebMartAuth
 
 
 user_router = Router()
@@ -39,7 +40,7 @@ def register_user(request, payload: UserCreate = Form()):
         serialized_user = BaseUserProfileSchema.from_orm(new_user_profile)
 
         return {
-            "user": serialized_user,
+            "data": serialized_user,
             "tokens": {
                 "access_token": generate_access_token(data={"user": new_user}),
                 "refresh_token": generate_refresh_token(data={"user": new_user}),
@@ -50,21 +51,17 @@ def register_user(request, payload: UserCreate = Form()):
 @user_router.post("sign-in", response={200: dict, 404: str})
 def sign_in_user(request, payload: UserSignInForm = Form()):
     data = request.POST.copy()
-    user_obj = User.objects.filter(
-        Q(username=data["username"]) | Q(email__iexact=data["email"])
-    ).first()
+    user_obj = get_object_or_404(User, Q(username=data["username"]) | Q(email__iexact=data["email"]))
     user = authenticate(username=user_obj.username, password=data["password"])
-    if user:
-        user_profile = UserProfile.objects.filter(user=user).first()
-        serialized_user = BaseUserProfileSchema.from_orm(user_profile)
-        return 200, {
-            "user": serialized_user,
-            "tokens": {
-                "access_token": generate_access_token(data={"user": user}),
-                "refresh_token": generate_refresh_token(data={"user": user}),
-            },
-        }
-    return 404, "Not found"
+    user_profile = get_object_or_404(UserProfile, user=user)
+    serialized_user = BaseUserProfileSchema.from_orm(user_profile)
+    return 200, {
+        "data": serialized_user,
+        "tokens": {
+            "access_token": generate_access_token(data={"user": user}),
+            "refresh_token": generate_refresh_token(data={"user": user}),
+        },
+    }
 
 
 @user_router.post("sign-out")
@@ -73,11 +70,13 @@ def sign_out_user(request):
     return 200
 
 
-@user_router.get("user-profiles", response=list[BaseUserProfileSchema])
-def get_user_profiles(request):
-    return UserProfile.objects.all()
+@user_router.get("me", auth=WebMartAuth())
+def get_user(request):
+    user_profile = get_object_or_404(UserProfile, user=request.user_id)
+    serialized_user = BaseUserProfileSchema.from_orm(user_profile)
+    return {"data": serialized_user}
 
 
-@user_router.get("get/{id}", response=BaseUserProfileSchema)
-def get_user(request, id: int):
-    return get_object_or_404(UserProfile, id=id)
+@user_router.get("refresh-access", response= str)
+def refresh_access_token(request):
+    return {"access_token": generate_access_token(data={"user": request.user})}
