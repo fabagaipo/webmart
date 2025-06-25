@@ -55,12 +55,6 @@ const Profile = () => {
         { id: 'settings', icon: <BiCog />, label: 'Settings' },
     ];
 
-    useEffect(() => {
-        if (!user || Object.keys(user).length === 0) {
-            navigate('/', { replace: true });
-        }
-    }, [user, navigate]);
-
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -205,7 +199,7 @@ const Profile = () => {
                                         </div>
                                         <div className='ml-6'>
                                             <h3 className='text-2xl font-bold text-white'>
-                                                {`${user?.firstName} ${user?.lastName}`}
+                                                { user.full_name }
                                             </h3>
                                             <p className='text-indigo-100'>{user?.email}</p>
                                             {user?.isStoreOwner && (
@@ -446,9 +440,7 @@ const Profile = () => {
                                                                 Full name
                                                             </dt>
                                                             <dd className='mt-1 text-sm text-gray-900'>
-                                                                {user?.firstName || user?.lastName
-                                                                    ? `${user.firstName || ''} ${user.lastName || ''}`.trim()
-                                                                    : 'Not provided'}
+                                                                {user?.full_name}
                                                             </dd>
                                                         </div>
                                                         <div>
@@ -472,7 +464,7 @@ const Profile = () => {
                                                                 Phone
                                                             </dt>
                                                             <dd className='mt-1 text-sm text-gray-900'>
-                                                                {user?.phone || 'Not provided'}
+                                                                {user?.address?.[0]?.phone_number ?? 'Not provided'}
                                                             </dd>
                                                         </div>
                                                     </div>
