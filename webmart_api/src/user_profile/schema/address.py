@@ -15,8 +15,9 @@ class BaseAddressSchema(ModelSchema):
 
 
 class AddressCreate(Schema):
-    city: str
-    province: str
-    zip_code: str
+    region_code: str
+    province_code: str
+    city_code: str
+    barangay_code: str
     phone_number: str
     details: Optional[str] = None
