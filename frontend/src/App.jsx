@@ -45,15 +45,15 @@ import PromoCollage from './components/PromoCollage';
 
 function App() {
     return (
-        <UserProvider>
-            <CartProvider>
-                <NotificationProvider>
-                    <Router>
-                        <AppContent />
-                    </Router>
-                </NotificationProvider>
-            </CartProvider>
-        </UserProvider>
+        <Router>
+            <UserProvider>
+                <CartProvider>
+                    <NotificationProvider>
+                            <AppContent />
+                    </NotificationProvider>
+                </CartProvider>
+            </UserProvider>
+        </Router>
     );
 }
 
