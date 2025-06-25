@@ -32,36 +32,39 @@ const AuthForm = ({ mode }) => {
         barangay: {},
     });
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (mode === 'register') {
-            const payload = {
-                email: email,
-                first_name: firstName,
-                last_name: lastName,
-                password: password,
-                ...address,
-            };
-            performSignup(payload).then(() => {
-                //navigate("/cart")
-            });
-        } else {
-            const payload = {
-                email: email,
-                password: password,
-                username: '',
-            };
-            performLogin(payload)
-                .then(() => {
-                    navigate('/profile');
-                })
-                .catch(() => {});
-        }
-    };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (mode === "register") {
+      const payload = {
+        email: email,
+        first_name: firstName,
+        last_name: lastName,
+        password: password,
+        region_code: address['region'].region_code,
+        province_code: address['province'].province_code,
+        city_code: address['city'].city_code,
+        barangay_code: address['barangay'].brgy_code,
+        phone_number: phone
+      }
+      performSignup(payload).then(() => {
+        navigate('/profile');
+      }).catch(() => {});
+    }
+    else {
+      const payload = {
+        email: email,
+        password: password,
+        username: ''
+      }
+      performLogin(payload).then(() => {
+        navigate('/profile');
+      }).catch(() => {})
+    }
+  }
 
     const getRegions = useCallback(() => {
         regions().then((res) => setAddressOptions((prev) => ({ ...prev, regions: res })));
@@ -109,13 +112,15 @@ const AuthForm = ({ mode }) => {
                 getBarangays(newCity.city_code);
                 break;
             }
+          case 'barangays':
+        {
+          const newBrgy = addressOptions[key].find(brgy => brgy.brgy_code === code);
+          setAddress((prev) => ({...prev,
+            barangay: newBrgy
+          }))
+          break;
         }
-    };
-
-    const resetOptions = (keys) => {
-        keys.forEach((key) => {
-            setAddressOptions((prev) => ({ ...prev, [key]: [] }));
-        });
+    }
     };
 
     useEffect(() => {
@@ -136,6 +141,10 @@ const AuthForm = ({ mode }) => {
     useEffect(() => {
         getRegions();
     }, [getRegions]);
+
+    useEffect(() => {
+        if (user?.id) navigate('/profile')
+    }, [user, navigate])
 
     return (
         <div className='max-w-md mx-auto bg-white rounded-lg shadow p-8'>
