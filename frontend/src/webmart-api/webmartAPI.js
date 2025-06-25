@@ -1,6 +1,6 @@
 const BASE_URL = 'http://localhost:8000/webmart/';
 
-export function WebMartApi(endpoint, method = 'GET', data) {
+export function WebMartApi(endpoint, method = 'GET', data=null) {
     // We use this to retain the beautiful interactive form in our api docs
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
