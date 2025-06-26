@@ -82,14 +82,14 @@ const Stores = () => {
                     className='text-4xl font-extrabold mb-6'
                 >
                     <span className='relative inline-block'>
-                        <span className='bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text'>
+                        <span className='bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text'>
                             Stores
                         </span>
                         <motion.span
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ delay: 0.3, duration: 0.5, ease: 'easeOut' }}
-                            className='absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full origin-left'
+                            className='absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full origin-left'
                         />
                     </span>
                 </motion.h1>

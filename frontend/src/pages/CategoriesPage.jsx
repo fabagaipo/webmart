@@ -82,14 +82,14 @@ function Categories() {
                     className='text-4xl font-extrabold mb-8 text-center'
                 >
                     <span className='relative inline-block'>
-                        <span className='bg-gradient-to-r from-indigo-600 to-pink-600 text-transparent bg-clip-text'>
+                        <span className='bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text'>
                             Categories
                         </span>
                         <motion.span
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ delay: 0.3, duration: 0.5, ease: 'easeOut' }}
-                            className='absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-indigo-400 to-pink-400 rounded-full origin-left'
+                            className='absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full origin-left'
                         />
                     </span>
                 </motion.h1>

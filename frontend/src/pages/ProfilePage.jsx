@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useMatch, Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { useUser } from 'context';
-import { useNotifications } from '../hooks/useNotifications';
+import { useNotifications } from '../context/NotificationContext';
 import {
     BiLogOut,
     BiEdit,
@@ -12,7 +12,7 @@ import {
     BiStore,
     BiCog,
 } from 'react-icons/bi';
-import SignOutModal from './modals/SignOutModal';
+import SignOutModal from '../components/modals/SignOutModal';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -177,7 +177,7 @@ const Profile = () => {
                         ) : (
                             <div className='bg-white shadow overflow-hidden sm:rounded-lg'>
                                 {/* Profile Header */}
-                                <div className='px-4 py-5 sm:px-6 bg-gradient-to-r from-indigo-600 to-purple-600'>
+                                <div className='px-4 py-5 sm:px-6 bg-gradient-to-r from-blue-600 to-cyan-600'>
                                     <div className='flex items-center'>
                                         <div className='relative'>
                                             <div className='h-24 w-24 rounded-full bg-white p-1'>
