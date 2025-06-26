@@ -61,16 +61,16 @@ const Slideshow = () => {
         return () => clearInterval(interval);
     }, [isHovered, slides.length]);
 
-    // Add keyboard navigation
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        };
+    // Add keyboard navigation -- idk if needed?
+    // useEffect(() => {
+    //     const handleKeyDown = (e) => {
+    //         if (e.key === 'ArrowRight') nextSlide();
+    //         if (e.key === 'ArrowLeft') prevSlide();
+    //     };
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [nextSlide, prevSlide]);
+    //     window.addEventListener('keydown', handleKeyDown);
+    //     return () => window.removeEventListener('keydown', handleKeyDown);
+    // }, [nextSlide, prevSlide]);
 
     return (
         <div

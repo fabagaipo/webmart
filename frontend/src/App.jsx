@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import { CartProvider } from 'context/CartContext';
 import { UserProvider } from 'context/UserContext';
-import { NotificationProvider } from 'context/NotificationProvider';
+import { NotificationProvider } from 'context/NotificationContext';
 
 import Header from './components/Header';
 import Footer from './components/Footer';

@@ -10,7 +10,7 @@ import {
 } from 'react-icons/fa';
 import Marquee from 'react-fast-marquee';
 import { useCart } from '../context/CartContext';
-import { useNotifications } from '../hooks/useNotifications';
+import { useNotifications } from '../context/NotificationContext';
 import NotificationItem from './notification/NotificationItem';
 
 const CountdownTimer = () => {
