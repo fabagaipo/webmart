@@ -72,7 +72,12 @@ function AppContent() {
                         <Route index element={<Stores />} />
                         <Route path='category/:categorySlug' element={<Stores />} />
                     </Route>
-                    <Route path='/store/:id' element={<StoreDetails />} />
+                    <Route path='/store/:id' element={<StoreDetails />}>
+                        <Route index element={<StoreDetails />} />
+                        <Route path='products' element={<StoreDetails />} />
+                        <Route path='reviews' element={<StoreDetails />} />
+                        <Route path='contact' element={<StoreDetails />} />
+                    </Route>
                     <Route path='/new-arrivals' element={<NewArrivals />} />
                     <Route path='*' element={<NotFound />} />
                     <Route element={<ProtectedRoute />}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { LuCopy, LuCheck } from 'react-icons/lu';
 import { BsPersonHeart, BsPersonFillCheck } from 'react-icons/bs';
@@ -12,8 +12,27 @@ import NewArrivals from '../NewArrivals';
 
 const StoreDetails = () => {
     const { id } = useParams();
-    const [activeTab, setActiveTab] = useState('overview');
+    const location = useLocation();
+    
+    // Get active tab from URL
+    const getActiveTab = () => {
+        const pathParts = location.pathname.split('/');
+        const lastPart = pathParts[pathParts.length - 1];
+        
+        // If we're at the root of the store, it's the overview
+        if (lastPart === id) return 'overview';
+        
+        // Otherwise, return the last part of the URL (products, reviews, contact)
+        return lastPart;
+    };
+
+    const [activeTab, setActiveTab] = useState(getActiveTab());
     const [copiedCode, setCopiedCode] = useState(null);
+
+    // Update activeTab when URL changes
+    useEffect(() => {
+        setActiveTab(getActiveTab());
+    }, [location.pathname]);
 
     // Scroll to top when component mounts
     useEffect(() => {
@@ -41,6 +60,7 @@ const StoreDetails = () => {
         category: 'Fashion',
         joiningDate: '2024-01-15',
         description: 'Welcome to the store.',
+        overview: 'Welcome to the store.',
         featuredProducts: [
             {
                 id: 1,
@@ -154,14 +174,14 @@ const StoreDetails = () => {
                 return <StoreReviews reviews={store.reviews} />;
             case 'contact':
                 return <StoreContact contact={store.contact} />;
-            default:
+            default: // 'overview'
                 return (
                     <div className='space-y-8'>
                         <div>
                             <h3 className='text-lg font-medium text-gray-900 mb-4'>
                                 Store Overview
                             </h3>
-                            <p className='text-gray-600'>{store.description}</p>
+                            <p className='text-gray-600'>{store.overview}</p>
                         </div>
                         <div>
                             <h3 className='text-lg font-medium text-gray-900 mb-4'>
@@ -356,48 +376,57 @@ const StoreDetails = () => {
             </div>
 
             {/* Store Info Tabs */}
-            <div className='border-b border-gray-200 mb-8'>
-                <nav className='-mb-px flex space-x-8' aria-label='Tabs'>
-                    <button
-                        onClick={() => setActiveTab('overview')}
-                        className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
-                            activeTab === 'overview'
-                                ? 'border-primary-500 text-yellow-300'
-                                : 'border-transparent text-white hover:text-white hover:border-white'
-                        }`}
+            <div className='mb-8'>
+                <nav className='flex space-x-2 border-b border-gray-200' aria-label='Tabs'>
+                    <NavLink
+                        to='.'
+                        end
+                        className={({ isActive }) =>
+                            `px-6 py-3 text-sm font-medium transition-colors duration-200 ${
+                                isActive
+                                    ? 'text-primary-600 border-b-2 border-primary-600'
+                                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            }`
+                        }
                     >
                         Overview
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('products')}
-                        className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
-                            activeTab === 'products'
-                                ? 'border-primary-500 text-yellow-300'
-                                : 'border-transparent text-white hover:text-white hover:border-white'
-                        }`}
+                    </NavLink>
+                    <NavLink
+                        to='products'
+                        className={({ isActive }) =>
+                            `px-6 py-3 text-sm font-medium transition-colors duration-200 ${
+                                isActive
+                                    ? 'text-primary-600 border-b-2 border-primary-600'
+                                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            }`
+                        }
                     >
                         Products
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('reviews')}
-                        className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
-                            activeTab === 'reviews'
-                                ? 'border-primary-500 text-yellow-300'
-                                : 'border-transparent text-white hover:text-white hover:border-white'
-                        }`}
+                    </NavLink>
+                    <NavLink
+                        to='reviews'
+                        className={({ isActive }) =>
+                            `px-6 py-3 text-sm font-medium transition-colors duration-200 ${
+                                isActive
+                                    ? 'text-primary-600 border-b-2 border-primary-600'
+                                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            }`
+                        }
                     >
                         Reviews
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('contact')}
-                        className={`border-b-2 whitespace-nowrap py-4 px-1 text-sm font-medium no-focus ${
-                            activeTab === 'contact'
-                                ? 'border-primary-500 text-yellow-300'
-                                : 'border-transparent text-white hover:text-white hover:border-white'
-                        }`}
+                    </NavLink>
+                    <NavLink
+                        to='contact'
+                        className={({ isActive }) =>
+                            `px-6 py-3 text-sm font-medium transition-colors duration-200 ${
+                                isActive
+                                    ? 'text-primary-600 border-b-2 border-primary-600'
+                                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            }`
+                        }
                     >
                         Contact
-                    </button>
+                    </NavLink>
                 </nav>
             </div>
 

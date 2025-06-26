@@ -83,7 +83,7 @@ function HomePage() {
                             },
                         ].map((store) => (
                             <Link
-                                to={`/store/${store.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                to={`/store/${store.id}`}
                                 key={store.id}
                                 className='block'
                             >
