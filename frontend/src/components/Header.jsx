@@ -9,7 +9,7 @@ import {
     FaExternalLinkAlt,
 } from 'react-icons/fa';
 import Marquee from 'react-fast-marquee';
-import { useCart } from '../hooks/useCart';
+import { useCart } from '../context/CartContext';
 import { useNotifications } from '../hooks/useNotifications';
 import NotificationItem from './notification/NotificationItem';
 

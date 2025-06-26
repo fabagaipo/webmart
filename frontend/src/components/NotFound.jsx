@@ -1,6 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const NotFound = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!location.state?.is404) {
+            navigate(location.pathname, {
+                replace: true,
+                state: { is404: true }
+            });
+        }
+    }, [location, navigate]);
+
     return (
         <div className='min-h-screen flex items-center justify-center bg-white py-20'>
             <div className='text-center px-4 w-full max-w-md'>

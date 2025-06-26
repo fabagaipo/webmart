@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 
 const Footer = () => {
     const footerSections = [
@@ -11,10 +12,11 @@ const Footer = () => {
             ],
         },
         {
-            title: 'About Us',
+            title: 'About WebMart',
             links: [
-                { text: 'About WebMart', url: '/about' },
+                { text: 'About Us', url: '/about' },
                 { text: 'Sell on WebMart', url: '/sell' },
+                { text: 'Careers', url: '/career' },
             ],
         },
         {
@@ -26,17 +28,17 @@ const Footer = () => {
             ],
         },
         {
-            title: 'Help',
+            title: 'Follow Us',
             links: [
-                { text: 'FAQs', url: '/faq' },
-                { text: 'Shipping', url: '/shipping' },
-                { text: 'Returns', url: '/returns' },
+                { text: 'Facebook', url: 'https://www.facebook.com/', icon: <FaFacebook className="inline mr-2" /> },
+                { text: 'Instagram', url: 'https://www.instagram.com/', icon: <FaInstagram className="inline mr-2" /> },
+                { text: 'Twitter', url: 'https://twitter.com/', icon: <FaTwitter className="inline mr-2" /> },
             ],
         },
     ];
 
     return (
-        <footer className='bg-gray-100 text-gray-700 py-12 mt-12'>
+        <footer className='bg-gray-100 text-gray-700 py-12 mt-auto'>
             <div className='container mx-auto px-4'>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
                     {footerSections.map((section, index) => (
@@ -49,8 +51,11 @@ const Footer = () => {
                                     <li key={linkIndex}>
                                         <Link
                                             to={link.url}
-                                            className='text-gray-600 hover:text-blue-600 transition-colors duration-200'
+                                            className='text-gray-600 hover:text-blue-600 transition-colors duration-200 flex items-center'
+                                            target={link.url.startsWith('http') ? '_blank' : undefined}
+                                            rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                                         >
+                                            {link.icon || null}
                                             {link.text}
                                         </Link>
                                     </li>
