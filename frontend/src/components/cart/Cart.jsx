@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from 'context';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { RiDeleteBinFill } from 'react-icons/ri';
+import { BsCart } from 'react-icons/bs';
 
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity } = useCart();
@@ -47,12 +48,15 @@ const Cart = () => {
 
     if (cart.length === 0) {
         return (
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-                <h2 className='text-3xl font-bold text-gray-900 mb-8'>Your Cart is Empty</h2>
-                <p className='text-gray-600 mb-8'>Add some items to your cart to get started!</p>
+            <div className='max-w-md mx-auto p-32 text-center'>
+                <div className='w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4'>
+                    <BsCart className='w-8 h-8 text-gray-400' />
+                </div>
+                <h2 className='text-xl font-semibold text-gray-800 mb-2'>Your Cart is Empty</h2>
+                <p className='text-gray-500 mb-6'>Add some items to get started!</p>
                 <Link
                     to='/products'
-                    className='bg-primary-600 text-white px-8 py-4 rounded-lg hover:bg-primary-700 transition-colors inline-block'
+                    className='inline-flex items-center px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors'
                 >
                     Continue Shopping
                 </Link>

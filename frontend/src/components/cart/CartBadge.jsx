@@ -1,4 +1,4 @@
-import { useCart } from 'hooks';
+import { useCart } from '../context/CartContext';
 
 function CartBadge() {
     const { cart } = useCart();
