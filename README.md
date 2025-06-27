@@ -17,6 +17,6 @@ Run
 ```
 python manage.py migrate
 ```
-
-Frontend runs at port [4000](http://localhost:4000/)
+___
+Frontend runs at port [4000](http://localhost:4000/) \
 Backend runs at port [8000](http://localhost:8000/webmart/docs)
