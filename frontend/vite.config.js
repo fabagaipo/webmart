@@ -12,6 +12,7 @@ export default defineConfig({
             assets: path.resolve(__dirname, './src/assets'),
             context: path.resolve(__dirname, './src/context'),
             webmart: path.resolve(__dirname, './src/webmart-api'),
+            'custom-hooks': path.resolve(__dirname, './src/hooks')
         },
     },
 });
