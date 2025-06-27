@@ -1,0 +1,38 @@
+# Reference: https://docs.docker.com/reference/compose-file/services/
+# https://www.youtube.com/watch?v=DQdB7wFEygo&t=135s
+
+services:
+  webmart_api:
+    build: ./webmart_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - webmart_db
+    volumes:
+      - ./webmart_api:/app
+  front_end:
+    build: ./frontend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+  webmart_db:
+    image: postgres:15.3-bullseye
+    environment:
+      POSTGRES_DB: webmart
+      POSTGRES_USER: webmart_user
+      POSTGRES_PASSWORD: webmartpassword  # ← This must match Django
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+volumes:
+  pg_data:
+
+
+
+
+
+    
