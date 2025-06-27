@@ -22,7 +22,7 @@ services:
     environment:
       POSTGRES_DB: webmart
       POSTGRES_USER: webmart_user
-      POSTGRES_PASSWORD: webmartpassword  # ← This must match Django
+      POSTGRES_PASSWORD: webmartpassword
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
