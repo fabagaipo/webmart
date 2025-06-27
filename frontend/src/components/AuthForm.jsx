@@ -91,14 +91,12 @@ const AuthForm = ({ mode }) => {
     const onSelection = ({ code, key }) => {
         switch (key) {
             case 'regions': {
-                //resetOptions(['provinces', 'cities', 'barangays']);
                 const newRegion = addressOptions[key].find((region) => region.region_code === code);
                 setAddress((prev) => ({ ...prev, region: newRegion }));
                 getProvinces(newRegion.region_code);
                 break;
             }
             case 'provinces': {
-                //resetOptions(['cities', 'barangays']);
                 const newProvince = addressOptions[key].find(
                     (province) => province.province_code === code
                 );
@@ -248,7 +246,6 @@ const AuthForm = ({ mode }) => {
                                     </label>
                                     <select
                                         className='mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 pr-10 appearance-none p-2 focus:outline-none'
-                                        value={vals[key]?.psgc_code}
                                         defaultValue={'preselect'}
                                         required
                                         onChange={(e) => onSelection({ code: e.target.value, key })}
