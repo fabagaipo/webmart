@@ -83,9 +83,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "webmart",
-        #'USER': 'webmartuser',
-        #'PASSWORD': 'webmartpassword',
-        "HOST": "localhost",
+        'USER': 'webmart_user',
+        'PASSWORD': 'webmartpassword',
+        "HOST": "webmart_db",
         "PORT": "5432",
     }
 }
