@@ -2,27 +2,18 @@
 
 ## Setup local development
 
-```
-sh setup.sh
-```
+### Prerequisite 
+- Docker
 
-## Backend
-Project is set to Python 3.12.0
-
+Start containers after building the images
 ```
-cd webmart_api
+docker compose up --build
 ```
+On another terminal session
 ```
-pyenv local 3.12.0
+docker compose exec webmart_api bash
 ```
+Run
 ```
-python manage.py runserver
-```
-
-## Frontend
-```
-cd frontend
-```
-```
-npm run dev
+python manage.py migrate
 ```
