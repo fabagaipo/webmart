@@ -7,7 +7,7 @@
 
 #### Building the images and starting the containers
 ```
-docker compose up --build
+docker compose up -d --build
 ```
 #### Run migrations and create superuser
 ```
