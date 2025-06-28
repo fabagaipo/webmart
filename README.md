@@ -1,21 +1,28 @@
 # WebMart
 
-## Setup local development
+### 🐳 Development setup 
 
-### Prerequisite 
+#### Prerequisite 
 - Docker
 
-Start containers after building the images
+#### Building the images and starting the containers
 ```
 docker compose up --build
 ```
-On another terminal session
+#### Run migrations and create superuser
 ```
 docker compose exec webmart_api bash
 ```
-Run
 ```
 python manage.py migrate
+```
+```
+python manage.py createsuperuser
+```
+#### Additional setup
+On your machine's terminal
+```
+sh addional_setup.sh
 ```
 ___
 Frontend runs at port [4000](http://localhost:4000/) \
