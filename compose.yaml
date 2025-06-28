@@ -23,6 +23,7 @@ services:
       POSTGRES_DB: webmart
       POSTGRES_USER: webmart_user
       POSTGRES_PASSWORD: webmartpassword
+      PGUSER: webmart_user
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
