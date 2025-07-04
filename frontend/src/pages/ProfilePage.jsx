@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useMatch, Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { useUser } from 'context';
 import { useNotifications } from '../context/NotificationContext';
+import { useUpload  } from 'custom-hooks/useUpload';
+
 import {
     BiLogOut,
     BiEdit,
@@ -16,8 +18,9 @@ import SignOutModal from '../components/modals/SignOutModal';
 
 const Profile = () => {
     const navigate = useNavigate();
+    const { uploadFile } = useUpload()
     const match = useMatch('/profile');
-    const { user, performLogout } = useUser();
+    const { user, performLogout, updateUserAvatar } = useUser();
     const { unreadCount } = useNotifications();
     const [isEditing, setIsEditing] = useState(false);
     const [showSignOutModal, setShowSignOutModal] = useState(false);
@@ -55,17 +58,17 @@ const Profile = () => {
         { id: 'settings', icon: <BiCog />, label: 'Settings' },
     ];
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData((prev) => ({
-                    ...prev,
-                    profilePicture: reader.result,
-                }));
-            };
-            reader.readAsDataURL(file);
+            let uploadedFile = undefined;
+            try {
+               uploadedFile = await uploadFile({file: file, config: { profile_upload: true }})
+                await updateUserAvatar(uploadedFile);
+                setFormData(prev => ({ ...prev, profilePicture: uploadedFile.url}));
+            } catch (e) {
+                console.error(e);
+            }
         }
     };
 
@@ -183,7 +186,7 @@ const Profile = () => {
                                             <div className='h-24 w-24 rounded-full bg-white p-1'>
                                                 <img
                                                     className='h-full w-full rounded-full object-cover'
-                                                    src={user?.profilePicture || '/user.svg'}
+                                                    src={user.avatar_url || '/user.svg'}
                                                     alt='Profile'
                                                 />
                                             </div>
