@@ -84,3 +84,5 @@ virtualenv==20.31.2
 watchfiles==1.0.5
 wcwidth==0.2.13
 websockets==15.0.1
+cloudinary==1.44.1
+django-environ==0.12.0
