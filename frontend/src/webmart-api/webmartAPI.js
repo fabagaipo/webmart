@@ -1,42 +1,43 @@
-const BASE_URL = 'http://localhost:8000/webmart/';
+import axios from "axios";
 
-export function WebMartApi(endpoint, method = 'GET', data=null) {
-    // We use this to retain the beautiful interactive form in our api docs
-    const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-    };
+function prepRequestBody(data, type='form') {
+    if (type === 'form') {
+        let form = new URLSearchParams();
+        Object.keys(data).forEach((key) => {
+            if (key === 'id') return;
+            form.append(key, data[key]);
+        })
+        return form;
+    } else if (type === 'json') {
+        return JSON.stringify(data);
+    } else {
+        return data;
+    }
+}
+
+export async function WebMartApi({endpoint, method='POST', type='form', data=null}) {
+    if (method === 'GET') type = 'json';
+    const BASE_URL = import.meta.env.VITE_WEBMART_BASE_URL;
     const access_token = localStorage.getItem('access_token');
 
-    if (access_token) {
-        headers['Authorization'] = `Bearer ${access_token}`;
-    }
-
-    const config = {
-        method,
-        headers,
-    };
-    if (data) {
-        const formData = new URLSearchParams();
-        for (const key in data) {
-            if (typeof data[key] === 'object') {
-                for (const nestedKey in data[key]) {
-                    formData.append(`${key}.${nestedKey}`, data[key][nestedKey]);
-                }
-            } else {
-                formData.append(key, data[key]);
-            }
+    // https://axios-http.com/docs/instance
+    const instance = axios.create({
+        baseURL: BASE_URL,
+        headers: {
+            ...(access_token ? {Authorization: `Bearer ${access_token}`} : {}),
+            ...(type === 'json' ? {'Content-Type' :'application/json'} : {})
         }
-
-        config.body = formData.toString();
-    }
-
-    return new Promise((resolve, reject) => {
-        fetch(`${BASE_URL}${endpoint}`, config)
-            .then((response) => {
-                if (response.ok) return response.json();
-                throw new Error(response);
-            })
-            .then((data) => resolve(data))
-            .catch((error) => reject(error));
     });
+
+    try {
+        const response = await instance.request({
+            data: prepRequestBody(data, type),
+            method: method.toLocaleLowerCase(),
+            url: endpoint
+        })
+        return response.data;
+    } catch (error) {
+        // https://axios-http.com/docs/handling_errors
+        return error.response.data;
+    }
 }
