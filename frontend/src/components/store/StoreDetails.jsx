@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { LuCopy, LuCheck } from 'react-icons/lu';
@@ -15,7 +15,7 @@ const StoreDetails = () => {
     const location = useLocation();
     
     // Get active tab from URL
-    const getActiveTab = () => {
+    const getActiveTab = useCallback(() => {
         const pathParts = location.pathname.split('/');
         const lastPart = pathParts[pathParts.length - 1];
         
@@ -24,7 +24,7 @@ const StoreDetails = () => {
         
         // Otherwise, return the last part of the URL (products, reviews, contact)
         return lastPart;
-    };
+    }, [id, location.pathname])
 
     const [activeTab, setActiveTab] = useState(getActiveTab());
     const [copiedCode, setCopiedCode] = useState(null);
@@ -32,7 +32,7 @@ const StoreDetails = () => {
     // Update activeTab when URL changes
     useEffect(() => {
         setActiveTab(getActiveTab());
-    }, [location.pathname]);
+    }, [location.pathname, getActiveTab]);
 
     // Scroll to top when component mounts
     useEffect(() => {
