@@ -1,6 +1,5 @@
 from ninja import Schema, ModelSchema, Field
 from typing import Optional
-from pydantic import computed_field
 
 from user_profile.models.user_profile import UserProfile
 from django.contrib.auth.models import User
@@ -15,14 +14,13 @@ class BaseUserSchema(ModelSchema):
         model = User
         fields = ["first_name", "email", "last_name"]
 
-    @computed_field
-    def full_name(self) -> str:
-        return f"{self.first_name} {self.last_name}"
-
 
 class BaseUserProfileSchema(ModelSchema):
     address: Optional[list[BaseAddressSchema]] = Field(default=[], alias="address_list")
     user: BaseUserSchema
+    avatar_data: Optional[dict]
+    avatar_url: Optional[str]
+    full_name: str
 
     class Meta:
         model = UserProfile
