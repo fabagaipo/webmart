@@ -6,7 +6,15 @@ class UserProfile(models.Model):
     user = models.OneToOneField(
         User, related_name="user_profile", on_delete=models.CASCADE
     )
-    avatar_url = models.CharField(max_length=50, blank=True)
+    avatar_data = models.JSONField(blank=True, null=True)
+
+    @property
+    def avatar_url(self):
+        return self.avatar_data.get("url") if self.avatar_data else None
+    
+    @property
+    def full_name(self):
+        return self.user.get_full_name()
 
 
 class Address(models.Model):
