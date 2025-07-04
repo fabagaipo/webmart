@@ -4,8 +4,7 @@ import axios from "axios";
 // Reference: https://github.com/LearnWebCode/cloudinary-finished-reference/blob/main/public/client-side.js
 // https://cloudinary.com/documentation/upload_images
 export function useUpload() {
-    const [response, setResponse] = useState(null);
-    
+
     async function uploadFile({file, config={}}) {
         const UPLOAD_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_URL
         const form = new FormData();
@@ -21,13 +20,20 @@ export function useUpload() {
             //via backend for security
         }
         
-        // Ref https://axios-http.com/docs/req_config
-        const response = await axios.post(UPLOAD_URL, form, {
-            onUploadProgress: function (progressEvent) {
-            },
-        })
-        setResponse(response)
+        // https://cloudinary.com/documentation/upload_images#upload_response
+        try {
+            const response = await axios.post(
+                UPLOAD_URL,
+                form,
+                { 
+                    onUploadProgress: function (_progressEvent) {},
+                }
+            ); 
+            return response.data;
+        } catch (error) {
+            throw new Error(error.data);
+        }
     }
 
-    return { uploadFile, response };
+    return { uploadFile };
 }
