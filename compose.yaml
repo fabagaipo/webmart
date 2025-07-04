@@ -10,6 +10,9 @@ services:
       - webmart_db
     volumes:
       - ./webmart_api:/app
+    env_file:
+      - ./webmart_api/.env
+    restart: on-failure
   front_end:
     build: ./frontend
     ports:
