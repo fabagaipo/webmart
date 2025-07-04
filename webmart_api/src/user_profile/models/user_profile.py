@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     @property
     def avatar_url(self):
         return self.avatar_data.get("url") if self.avatar_data else None
-    
+
     @property
     def full_name(self):
         return self.user.get_full_name()

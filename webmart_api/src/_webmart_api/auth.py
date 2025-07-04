@@ -21,15 +21,11 @@ class WebMartAuth(HttpBearer):
             token_type = expired_token.get("type")
             if token_type == "refresh":
                 raise HttpError(
-                    401,
-                    "Refresh token has expired",
-                    code="refresh_token_expired"
+                    401, "Refresh token has expired", code="refresh_token_expired"
                 )
             else:
                 raise HttpError(
-                    401,
-                    "Access token has expired",
-                    code="access_token_expired"
+                    401, "Access token has expired", code="access_token_expired"
                 )
         except InvalidTokenError:
             raise HttpError(401, "Invalid token")
@@ -42,7 +38,7 @@ def generate_access_token(data):
             "exp": datetime.now(timezone.utc)
             + settings.JWT_SETTING["ACCESS_TOKEN_LIFETIME"],
             "iat": datetime.now(timezone.utc),
-            "type": "access"
+            "type": "access",
         },
         settings.SECRET_KEY,
         algorithm="HS256",

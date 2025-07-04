@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+# FIND WAY TO FORCE INITIAL LOAD THESE TWO
+#from . import env
+#from .cloudinary import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,8 +86,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "webmart",
-        'USER': 'webmart_user',
-        'PASSWORD': 'webmartpassword',
+        "USER": "webmart_user",
+        "PASSWORD": "webmartpassword",
         "HOST": "webmart_db",
         "PORT": "5432",
     }
