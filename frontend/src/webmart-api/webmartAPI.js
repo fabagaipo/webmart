@@ -2,7 +2,7 @@ import axios from "axios";
 
 function prepRequestBody(data, type='form') {
     if (type === 'form') {
-        let form = new URLSearchParams();
+        let form = new FormData();
         Object.keys(data).forEach((key) => {
             if (key === 'id') return;
             form.append(key, data[key]);
@@ -15,7 +15,7 @@ function prepRequestBody(data, type='form') {
     }
 }
 
-export async function WebMartApi({endpoint, method='POST', type='form', data=null}) {
+export async function WebMartApi({endpoint, method='POST', type='json', data=null}) {
     if (method === 'GET') type = 'json';
     const BASE_URL = import.meta.env.VITE_WEBMART_BASE_URL;
     const access_token = localStorage.getItem('access_token');
