@@ -12,6 +12,9 @@ services:
       - ./webmart_api:/app
     env_file:
       - ./webmart_api/.env
+    # https://stackoverflow.com/questions/29663459/why-doesnt-python-app-print-anything-when-run-in-a-detached-docker-container
+    environment:
+      - PYTHONUNBUFFERED=1
     restart: on-failure
   front_end:
     build: ./frontend
@@ -23,10 +26,10 @@ services:
   webmart_db:
     image: postgres:15.3-bullseye
     environment:
-      POSTGRES_DB: webmart
-      POSTGRES_USER: webmart_user
-      POSTGRES_PASSWORD: webmartpassword
-      PGUSER: webmart_user
+      - POSTGRES_DB=webmart
+      - POSTGRES_USER=webmart_user
+      - POSTGRES_PASSWORD=webmartpassword
+      - PGUSER=webmart_user
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
