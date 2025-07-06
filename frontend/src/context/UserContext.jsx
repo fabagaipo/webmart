@@ -24,10 +24,7 @@ export const UserProvider = ({ children }) => {
             const response = await WebMartApi({
                 endpoint: 'user/me', method: 'GET'
             })
-            const { id, avatar_data,
-                avatar_url, address, full_name, user } = response;
-            setUser(prev => ({...prev, id, avatar_url, avatar_data, full_name,
-                address, ...user}));
+            setUser(prev => ({...prev, ...response.user_profile}));
         } catch (error) {
             if (error.code === "access_token_expired") {
                 const refreshed = refreshAccessToken()
@@ -45,10 +42,7 @@ export const UserProvider = ({ children }) => {
         return WebMartApi({
             endpoint: 'user/sign-up', method: 'POST', data: payload
         }).then((response) => {
-            const { id, avatar_data,
-                avatar_url, address, full_name, user } = response;
-            setUser(prev => ({...prev, id, avatar_url, avatar_data, full_name,
-                address, ...user}));
+            setUser(prev => ({...prev, ...response.user_profile}));
             const { tokens } = response;
             localStorage.setItem('refresh_token', tokens.refresh_token);
             localStorage.setItem('access_token', tokens.access_token);
@@ -60,10 +54,7 @@ export const UserProvider = ({ children }) => {
         return WebMartApi({
             endpoint: 'user/sign-in', method: 'POST', data: payload
         }).then((response) => {
-            const { id, avatar_data,
-                avatar_url, address, full_name, user } = response;
-            setUser(prev => ({...prev, id, avatar_url, avatar_data, full_name,
-                address, ...user}));
+            setUser(prev => ({...prev, ...response.user_profile}));
             const { tokens } = response;
             localStorage.setItem('refresh_token', tokens?.refresh_token);
             localStorage.setItem('access_token', tokens?.access_token);
@@ -91,7 +82,7 @@ export const UserProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        getUser();
+        if (localStorage.getItem("access_token")) getUser();
     }, [getUser]);
 
     return (
