@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-# FIND WAY TO FORCE INITIAL LOAD THESE TWO
-#from . import env
-#from .cloudinary import cloudinary
+from .env import env
+# from .cloudinary import cloudinary
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,14 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-nl7(9q_gldr+i+2@a4wdq!f=*#8k77sxi$f-f7*(8r==beqzky"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -45,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "simple_history",
     "corsheaders",
+    "cloudinary",
     *WEBMART_API_APPS,
 ]
 
@@ -77,22 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "_webmart_api.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "webmart",
-        "USER": "webmart_user",
-        "PASSWORD": "webmartpassword",
-        "HOST": "webmart_db",
-        "PORT": "5432",
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -135,15 +112,16 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env("DEBUG")
+JWT_SETTING = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=env("ACCESS_TOKEN_LIFETIME")),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=env("REFRESH_TOKEN_LIFETIME")),
+}
+DATABASES = {"default": env.db_url()}
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 # Ref https://www.stackhawk.com/blog/django-cors-guide/
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"http://localhost:\d+$",
     r"http://127.0.0.1:\d+$",
 ]
-
-
-# TO DO: Usage of refresh token to generate new access token (instead of forced log out then log in). Shorter lifetime for access token
-JWT_SETTING = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-}
