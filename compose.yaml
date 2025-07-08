@@ -4,6 +4,7 @@
 services:
   webmart_api:
     build: ./webmart_api
+    container_name: webmart_api
     ports:
       - "8000:8000"
     depends_on:
@@ -16,15 +17,29 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     restart: on-failure
-  front_end:
+  frontend:
     build: ./frontend
+    container_name: frontend
     ports:
       - "4000:4000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    restart: on-failure
+  webmart_seller:
+    build: ./webmart_seller
+    container_name: webmart_seller
+    ports: 
+      - "3000:3000"
+    volumes:
+      - type: bind
+        source: ./webmart_seller
+        target: /app
+      - /app/node_modules
+    restart: on-failure
   webmart_db:
     image: postgres:15.3-bullseye
+    container_name: webmart_db
     environment:
       - POSTGRES_DB=webmart
       - POSTGRES_USER=webmart_user
