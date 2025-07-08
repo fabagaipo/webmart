@@ -14,6 +14,7 @@ import {
     BiStore,
     BiCog,
 } from 'react-icons/bi';
+import { LuClipboardPenLine } from "react-icons/lu";
 import SignOutModal from '../components/modals/SignOutModal';
 
 const Profile = () => {
@@ -52,9 +53,15 @@ const Profile = () => {
             ...(unreadCount > 0 && { badge: unreadCount }),
         },
         { id: 'vouchers', icon: <BiGift />, label: 'Vouchers' },
-        user?.isStoreOwner
-            ? { id: 'store-management', icon: <BiStore />, label: 'Manage Store' }
-            : { id: 'store-owner-application', icon: <BiStore />, label: 'Start Selling' },
+        // Set to false temporarily since isStoreOwner is not yet implemented
+        !user?.isStoreOwner
+            ? { 
+                id: 'store-management',
+                icon: <BiStore />,
+                label: 'Manage Store',
+                to: 'http://localhost:5173/store/dashboard'
+            }
+            : { id: 'store-owner-application', icon: <LuClipboardPenLine />, label: 'Start Selling' },
         { id: 'settings', icon: <BiCog />, label: 'Settings' },
     ];
 
@@ -151,7 +158,7 @@ const Profile = () => {
                             {navItems.map((item) => (
                                 <NavLink
                                     key={item.id}
-                                    to={item.id === 'profile' ? '/profile' : `/profile/${item.id}`}
+                                    to={item.to || (item.id === 'profile' ? '/profile' : `/profile/${item.id}`)}
                                     end={item.id === 'profile'}
                                     className={({ isActive }) =>
                                         `group flex items-center px-3 py-2 text-sm font-medium rounded-md ${

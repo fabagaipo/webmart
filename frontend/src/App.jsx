@@ -21,7 +21,6 @@ import About from './components/About';
 import SaleItems from './components/SaleItems';
 import AuthForm from './components/AuthForm';
 import StoreOwnerApplication from './components/store/StoreOwnerApplication';
-import StoreManagement from './components/store/StoreManagement';
 import Settings from './components/Settings';
 import Stores from './pages/StoresPage';
 import StoreDetails from './components/store/StoreDetails';
@@ -89,7 +88,6 @@ function AppContent() {
                                 path='store-owner-application'
                                 element={<StoreOwnerApplication />}
                             />
-                            <Route path='store-management' element={<StoreManagement />} />
                             <Route path='settings' element={<Settings />} />
                         </Route>
                     </Route>
@@ -97,7 +95,7 @@ function AppContent() {
             </main>
 
             {showHeaderFooter && <Footer />}
-            <Toaster position='top-right' />
+            <Toaster position='top-center' reverseOrder={false} />
         </div>
     );
 }
