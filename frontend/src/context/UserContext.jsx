@@ -74,8 +74,7 @@ export const UserProvider = ({ children }) => {
 
     const updateUserAvatar = (payload = {}) => {
         return WebMartApi({
-            endpoint: 'user/update-avatar', method: 'PUT',
-            data: payload, type: 'json'
+            endpoint: 'user/update-avatar', method: 'PUT', data: payload
         }).then((response) => {
             return response;
         })

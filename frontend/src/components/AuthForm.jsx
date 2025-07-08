@@ -44,11 +44,13 @@ const AuthForm = ({ mode }) => {
         first_name: firstName,
         last_name: lastName,
         password: password,
-        region_code: address['region'].region_code,
-        province_code: address['province'].province_code,
-        city_code: address['city'].city_code,
-        barangay_code: address['barangay'].brgy_code,
-        phone_number: phone
+        address: {
+            region_code: address['region'].region_code,
+            province_code: address['province'].province_code,
+            city_code: address['city'].city_code,
+            barangay_code: address['barangay'].brgy_code,
+            phone_number: phone
+        }
       }
       performSignup(payload).then(() => {
         navigate('/profile');
