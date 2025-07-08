@@ -1,0 +1,36 @@
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
+const NotFound = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!location.state?.is404) {
+            navigate(location.pathname, {
+                replace: true,
+                state: { is404: true }
+            });
+        }
+    }, [location, navigate]);
+
+    return (
+        <div className='min-h-screen flex items-center justify-center bg-white py-20'>
+            <div className='text-center px-4 w-full max-w-md'>
+                <h1 className='text-9xl font-bold text-gray-900 mb-6'>404</h1>
+                <h2 className='text-4xl font-semibold text-gray-900 mb-6'>Page Not Found</h2>
+                <p className='text-xl text-gray-600 mb-10'>
+                    The page you're looking for doesn't exist.
+                </p>
+                <Link
+                    to='/store/dashboard'
+                    className='inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 focus:outline-none'
+                >
+                    Go back home
+                </Link>
+            </div>
+        </div>
+    );
+};
+
+export default NotFound;

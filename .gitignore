@@ -41,15 +41,31 @@ ENV/
 *.swp
 *.swo
 
-# Frontend
-frontend/node_modules/
-frontend/dist/
-frontend/.env
-frontend/.env.local
-frontend/.env.*.local
+# Frontend and Seller directories
+{frontend,webmart_seller}/*/
+!{frontend,webmart_seller}/src/
+
+# Node.js
+node_modules/
+.cache/
+.parcel-cache/
+
+# Build outputs
+.next/
+.nuxt/
+.output/
+dist/
+
+# Environment files
+.env*
+!.env.example
+
+# Development and build caches
+.sass-cache/
+.cache/
 
 # Webmart API
-webmart_api/.env
+webmart_api/.env*
 webmart_api/.env.local
 webmart_api/.env.*.local
 webmart_api/.pyenv
