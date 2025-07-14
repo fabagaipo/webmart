@@ -38,6 +38,6 @@ export async function WebMartApi({endpoint, method='POST', type='json', data=nul
         return response.data;
     } catch (error) {
         // https://axios-http.com/docs/handling_errors
-        return error.response.data;
+        throw error.response.data;
     }
 }
