@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { regions, provinces, cities, barangays } from 'select-philippines-address';
 import { useUser } from 'context';
-import { useLocation, useNavigate } from 'react-router';
+import { usePHAddress } from 'custom-hooks/usePHAddress';
+import { useNavigate } from 'react-router';
 
 const AuthForm = ({ mode }) => {
+    const { getSelectedData, getChildKey, selections } = usePHAddress();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -17,111 +18,50 @@ const AuthForm = ({ mode }) => {
     const passwordContainerRef = useRef(null);
     const { user, performLogin, performSignup } = useUser();
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const [addressOptions, setAddressOptions] = useState({
-        regions: [],
-        provinces: [],
-        cities: [],
-        barangays: [],
-    });
     const [address, setAddress] = useState({
-        region: {},
-        province: {},
-        city: {},
-        barangay: {},
+        regions: {},
+        provinces: {},
+        cities: {},
+        barangays: {},
     });
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (mode === "register") {
-      const payload = {
-        email: email,
-        first_name: firstName,
-        last_name: lastName,
-        password: password,
-        address: {
-            region_code: address['region'].region_code,
-            province_code: address['province'].province_code,
-            city_code: address['city'].city_code,
-            barangay_code: address['barangay'].brgy_code,
-            phone_number: phone
-        }
-      }
-      performSignup(payload).then(() => {
-        navigate('/profile');
-      }).catch(() => {});
-    }
-    else {
-      const payload = {
-        email: email,
-        password: password,
-        username: ''
-      }
-      performLogin(payload).then(() => {
-        navigate('/profile');
-      }).catch(() => {})
-    }
-  }
-
-    const getRegions = useCallback(() => {
-        regions().then((res) => setAddressOptions((prev) => ({ ...prev, regions: res })));
-    }, []);
-
-    const getProvinces = (regionCode) => {
-        provinces(regionCode).then((res) => {
-            setAddressOptions((prev) => ({ ...prev, provinces: res, cities: [], barangays: [] }));
-        });
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
-
-    const getCities = (provinceCode) => {
-        cities(provinceCode).then((res) => {
-            setAddressOptions((prev) => ({ ...prev, cities: res, barangays: [] }));
-        });
-    };
-
-    const getBarangays = (cityCode) => {
-        barangays(cityCode).then((res) => {
-            setAddressOptions((prev) => ({ ...prev, barangays: res }));
-        });
-    };
-
-    const onSelection = ({ code, key }) => {
-        switch (key) {
-            case 'regions': {
-                const newRegion = addressOptions[key].find((region) => region.region_code === code);
-                setAddress((prev) => ({ ...prev, region: newRegion }));
-                getProvinces(newRegion.region_code);
-                break;
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (mode === "register") {
+            const payload = {
+                email: email,
+                first_name: firstName,
+                last_name: lastName,
+                password: password,
+                address: {
+                    region_code: address['regions'].region_code,
+                    province_code: address['provinces'].province_code,
+                    city_code: address['cities'].city_code,
+                    barangay_code: address['barangays'].brgy_code,
+                    phone_number: phone
+                }
             }
-            case 'provinces': {
-                const newProvince = addressOptions[key].find(
-                    (province) => province.province_code === code
-                );
-                setAddress((prev) => ({ ...prev, province: newProvince }));
-                getCities(newProvince.province_code);
-                break;
+            performSignup(payload).then(() => {
+                navigate('/profile');
+            }).catch((e) => {
+                setError(e.message);
+            });
+        } else {
+            const payload = {
+                email: email,
+                password: password,
+                username: ''
             }
-            case 'cities': {
-                const newCity = addressOptions[key].find((city) => city.city_code === code);
-                setAddress((prev) => ({ ...prev, city: newCity }));
-                getBarangays(newCity.city_code);
-                break;
-            }
-          case 'barangays':
-        {
-          const newBrgy = addressOptions[key].find(brgy => brgy.brgy_code === code);
-          setAddress((prev) => ({...prev,
-            barangay: newBrgy
-          }))
-          break;
+            performLogin(payload).then(() => {
+                navigate('/profile');
+            }).catch(() => {})
         }
     }
-    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -139,15 +79,14 @@ const AuthForm = ({ mode }) => {
     }, []);
 
     useEffect(() => {
-        getRegions();
-    }, [getRegions]);
-
-    useEffect(() => {
         if (user?.id) navigate('/profile')
     }, [user, navigate])
 
     return (
-        <div className='max-w-md mx-auto bg-white rounded-lg shadow p-8'>
+        <div
+            className='max-w-md mx-auto bg-white rounded-lg shadow p-8'
+            onClick={() => setError('')}
+        >
             <div className='flex flex-col items-center justify-center mb-2'>
                 <div className='relative mb-2 w-20 h-20'>
                     <div className='absolute inset-0 bg-gray-200 rounded-full aspect-square'></div>
@@ -164,11 +103,6 @@ const AuthForm = ({ mode }) => {
             <h2 className='text-3xl font-bold mb-2 text-center'>
                 {mode === 'login' ? 'Login' : 'Register'}
             </h2>
-            {error && (
-                <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-3'>
-                    {error}
-                </div>
-            )}
             <form onSubmit={handleSubmit} className='space-y-8'>
                 {mode === 'register' && (
                     <div className='space-y-4'>
@@ -232,14 +166,11 @@ const AuthForm = ({ mode }) => {
                                 cities: 'City',
                                 barangays: 'Barangay',
                             };
-                            const vals = {
-                                regions: address['region'],
-                                provinces: address['province'],
-                                cities: address['city'],
-                                barangays: address['barangay'],
-                            };
                             return (
-                                <div key={key}>
+                                !!selections[key].length &&
+                                <div
+                                    key={key}
+                                >
                                     <label
                                         htmlFor={key}
                                         className='block text-sm font-medium text-gray-700'
@@ -247,32 +178,31 @@ const AuthForm = ({ mode }) => {
                                         {texts[key]}
                                     </label>
                                     <select
-                                        className='mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 pr-10 appearance-none p-2 focus:outline-none'
-                                        defaultValue={'preselect'}
-                                        required
-                                        onChange={(e) => onSelection({ code: e.target.value, key })}
+                                        className='mt-1 block w-full rounded-md border-gray-300 shadow-sm text-gray-900 appearance-none p-2 focus:outline-none'
+                                        defaultValue=''
+                                        required={!Object.keys(address[key]).length}
+                                        onChange={(e) => {
+                                            const choice = getSelectedData({ code: e.target.value, key });
+                                            setAddress(prev => ({...prev, [key]: choice}))
+                                        }}
                                     >
                                         <option
                                             disabled
-                                            value={'preselect'}
-                                        >{`Select ${texts[key].toLowerCase()}`}</option>
-                                        {addressOptions[key].map((data) => {
-                                            const innerKey = {
-                                                regions: data?.region_code,
-                                                provinces: data?.province_code,
-                                                cities: data?.city_code,
-                                                barangays: data?.brgy_code,
-                                            };
-                                            const name =
-                                                data?.region_name ??
-                                                data?.province_name ??
-                                                data?.city_name ??
-                                                data?.brgy_name;
+                                            value=''
+                                        >
+                                            {`Select a ${texts[key].toLowerCase()}`}
+                                        </option>
+                                        {selections[key].map((data) =>{
+                                            const code = data[getChildKey(key, 'code')];
+                                            const name = data[getChildKey(key)];
                                             return (
-                                                <option key={innerKey[key]} value={innerKey[key]}>
+                                                <option
+                                                    key={code}
+                                                    value={code}
+                                                >
                                                     {name}
                                                 </option>
-                                            );
+                                            )
                                         })}
                                     </select>
                                 </div>
@@ -324,6 +254,11 @@ const AuthForm = ({ mode }) => {
                     {mode === 'login' ? 'Login' : 'Register'}
                 </button>
             </form>
+            {error && (
+                <p className='mt-2 text-red-700'>
+                    { error }
+                </p >
+            )}
             <p className='mt-4 text-center text-sm text-gray-600'>
                 {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
                 <a
