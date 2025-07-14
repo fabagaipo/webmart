@@ -11,7 +11,9 @@ class BaseUserProfileSchema(ModelSchema):
     addresses: Optional[list[BaseAddressSchema]]
     avatar_url: Optional[str] = None
     email: str = Field(..., alias="user.email")
+    first_name: str = Field(..., alias="user.first_name")
     full_name: str = Field(..., alias="user.get_full_name")
+    last_name: str = Field(..., alias="user.last_name")
     username: str = Field(..., alias="user.username")
 
     class Meta:
