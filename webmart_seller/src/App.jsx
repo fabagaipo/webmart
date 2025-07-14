@@ -6,7 +6,8 @@ import StoreHeader from './components/StoreHeader';
 import StoreProducts from './components/StoreProducts';
 import StoreProductDetails from './components/StoreProductDetails';
 import NotFound from './components/NotFound';
-import Orders from './components/Orders';
+import StoreOrders from './components/StoreOrders';
+import StoreOrderDetails from './components/StoreOrderDetails';
 
 function App() {
   return (
@@ -34,7 +35,8 @@ function AppContent() {
       <main className='flex-grow'>
         <Routes>
           <Route path="/store/dashboard/*" element={<StoreManagement />} />
-          <Route path="/store/orders" element={<Orders />} />
+          <Route path="/store/orders" element={<StoreOrders />} />
+          <Route path="/store/orders/:orderId" element={<StoreOrderDetails />} />
           <Route path="/store/products" element={<StoreProducts />} />
           <Route path="/store/products/:productId" element={<StoreProductDetails />} />
           <Route path="/" element={<Navigate to="/store/dashboard" replace />} />

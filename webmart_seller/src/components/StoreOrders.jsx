@@ -5,12 +5,16 @@ import {
     FiSearch,
     FiFilter
 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import StoreOrderDetails from './StoreOrderDetails';
 
-const Orders = () => {
+const StoreOrders = () => {
+    const navigate = useNavigate();
+    
     // Sample order data
     const [orders, setOrders] = useState([
         {
-            id: 'ORD-1001',
+            id: '1001',
             customer: 'Juan de la Cruz',
             date: '2025-07-08',
             status: 'processing',
@@ -22,7 +26,7 @@ const Orders = () => {
             ]
         },
         {
-            id: 'ORD-1002',
+            id: '1002',
             customer: 'Maria de la Cruz',
             date: '2025-07-07',
             status: 'shipped',
@@ -33,7 +37,7 @@ const Orders = () => {
             ]
         },
         {
-            id: 'ORD-1003',
+            id: '1003',
             customer: 'Catriona Gray',
             date: '2025-07-06',
             status: 'delivered',
@@ -60,6 +64,10 @@ const Orders = () => {
                 {statusInfo.label}
             </span>
         );
+    };
+
+    const handleOrderClick = (order) => {
+        navigate(`/store/orders/${order.id}`);
     };
 
     return (
@@ -93,12 +101,16 @@ const Orders = () => {
                 <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                     <ul className="divide-y divide-gray-200">
                         {orders.map((order) => (
-                            <li key={order.id} className="hover:bg-gray-50">
+                            <li 
+                                key={order.id} 
+                                className="hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+                                onClick={() => handleOrderClick(order)}
+                            >
                                 <div className="px-4 py-4 sm:px-6">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center">
                                             <span className="text-sm font-medium text-blue-600">
-                                                Order #{order.id}
+                                                Order #ORD-{order.id}
                                             </span>
                                             <span className="ml-2 text-sm text-gray-500">
                                                 • {order.customer}
@@ -147,4 +159,4 @@ const Orders = () => {
     );
 };
 
-export default Orders;
+export default StoreOrders;
