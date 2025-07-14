@@ -92,8 +92,8 @@ webmart_api/*.egg
 webmart_api/venv/
 webmart_api/env/
 webmart_api/ENV/
-# TO DELETED LATER
-webmart_api/webmart_models*/migrations/*.py
+# TO DELETE
+**/migrations/*.py
 
 # Logs
 *.log
