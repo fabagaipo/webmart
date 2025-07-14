@@ -59,7 +59,7 @@ const Profile = () => {
                 id: 'store-management',
                 icon: <BiStore />,
                 label: 'Manage Store',
-                to: 'http://localhost:5173/store/dashboard'
+                to: 'http://localhost:3000/store/dashboard'
             }
             : { id: 'store-owner-application', icon: <LuClipboardPenLine />, label: 'Start Selling' },
         { id: 'settings', icon: <BiCog />, label: 'Settings' },
