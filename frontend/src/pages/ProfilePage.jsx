@@ -16,6 +16,7 @@ import {
 } from 'react-icons/bi';
 import { LuClipboardPenLine } from "react-icons/lu";
 import SignOutModal from '../components/modals/SignOutModal';
+import { Address } from '../components/Address';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -24,23 +25,17 @@ const Profile = () => {
     const { user, performLogout, updateUserAvatar } = useUser();
     const { unreadCount } = useNotifications();
     const [isEditing, setIsEditing] = useState(false);
+    const [addressToEdit, setAddressToEdit] = useState(null);
     const [showSignOutModal, setShowSignOutModal] = useState(false);
     const [formData, setFormData] = useState({
-        username: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        profilePicture: null,
-        address: {
-            street: '',
-            city: '',
-            province: '',
-            zipCode: '',
-            additionalDetails: '',
-            contactNumber: '',
-        },
+        username: user.username,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        avatar_url: user.avatar_url,
+        address: user.addresses,
     });
+    const [scrolled, setScrolled] = useState();
 
     // Navigation items
     const navItems = [
@@ -72,12 +67,21 @@ const Profile = () => {
             try {
                uploadedFile = await uploadFile({file: file, config: { profile_upload: true }})
                 await updateUserAvatar(uploadedFile);
-                setFormData(prev => ({ ...prev, profilePicture: uploadedFile.url}));
+                setFormData(prev => ({ ...prev, avatar_url: uploadedFile.url}));
             } catch (e) {
                 console.error(e);
             }
         }
     };
+
+    const handleEditAddress = (address) => {
+        setAddressToEdit(address);
+    }
+
+    const setScrolling = (e) => {
+        const el = e.target;
+        setScrolled(el.scrollTop > 0);
+    }
 
     const handleInputChange = (e) => {
         const { name, value, type } = e.target;
@@ -120,14 +124,11 @@ const Profile = () => {
 
     return (
         <div className='min-h-screen bg-gray-50'>
-            {/* Sign Out Modal */}
             <SignOutModal
                 isOpen={showSignOutModal}
                 onClose={() => setShowSignOutModal(false)}
                 onConfirm={handleSignOut}
             />
-
-            {/* Header */}
             <header className='bg-white shadow-sm'>
                 <div className='container mx-auto px-4 py-6'>
                     <div className='md:flex md:items-center md:justify-between'>
@@ -149,10 +150,8 @@ const Profile = () => {
                     </div>
                 </div>
             </header>
-
             <main className='container mx-auto px-4 py-8'>
                 <div className='lg:grid lg:grid-cols-12 lg:gap-8'>
-                    {/* Sidebar Navigation */}
                     <aside className='hidden lg:block lg:col-span-2'>
                         <nav className='space-y-1'>
                             {navItems.map((item) => (
@@ -179,21 +178,18 @@ const Profile = () => {
                             ))}
                         </nav>
                     </aside>
-
-                    {/* Main Content */}
                     <div className='lg:col-span-10'>
                         {!match ? (
                             <Outlet />
                         ) : (
                             <div className='bg-white shadow overflow-hidden sm:rounded-lg'>
-                                {/* Profile Header */}
                                 <div className='px-4 py-5 sm:px-6 bg-gradient-to-r from-blue-600 to-cyan-600'>
                                     <div className='flex items-center'>
                                         <div className='relative'>
                                             <div className='h-24 w-24 rounded-full bg-white p-1'>
                                                 <img
                                                     className='h-full w-full rounded-full object-cover'
-                                                    src={user.avatar_url || '/user.svg'}
+                                                    src={formData.avatar_url ?? '/user.svg'}
                                                     alt='Profile'
                                                 />
                                             </div>
@@ -220,20 +216,15 @@ const Profile = () => {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Profile Content */}
                                 <div className='px-4 py-5 sm:p-6'>
                                     {isEditing ? (
-                                        // Edit Form
                                         <form className='space-y-6' onSubmit={handleSubmit}>
                                             <div className='grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6'>
-                                                {/* Personal Information */}
                                                 <div className='sm:col-span-6'>
                                                     <h3 className='text-lg font-medium leading-6 text-gray-900 mb-4'>
                                                         Personal Information
                                                     </h3>
                                                 </div>
-
                                                 <div className='sm:col-span-3'>
                                                     <label
                                                         htmlFor='firstName'
@@ -250,7 +241,6 @@ const Profile = () => {
                                                         className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                                                     />
                                                 </div>
-
                                                 <div className='sm:col-span-3'>
                                                     <label
                                                         htmlFor='lastName'
@@ -267,7 +257,6 @@ const Profile = () => {
                                                         className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                                                     />
                                                 </div>
-
                                                 <div className='sm:col-span-4'>
                                                     <label
                                                         htmlFor='email'
@@ -284,117 +273,7 @@ const Profile = () => {
                                                         className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                                                     />
                                                 </div>
-
-                                                <div className='sm:col-span-2'>
-                                                    <label
-                                                        htmlFor='phone'
-                                                        className='block text-sm font-medium text-gray-700'
-                                                    >
-                                                        Phone
-                                                    </label>
-                                                    <input
-                                                        type='tel'
-                                                        name='phone'
-                                                        id='phone'
-                                                        value={formData.phone}
-                                                        onChange={handleInputChange}
-                                                        className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                                                    />
-                                                </div>
-
-                                                {/* Address Information */}
-                                                <div className='sm:col-span-6 border-t border-gray-200 pt-6 mt-6'>
-                                                    <h3 className='text-lg font-medium leading-6 text-gray-900 mb-4'>
-                                                        Address Information
-                                                    </h3>
-                                                </div>
-
-                                                <div className='sm:col-span-6'>
-                                                    <label
-                                                        htmlFor='address.street'
-                                                        className='block text-sm font-medium text-gray-700'
-                                                    >
-                                                        Street address
-                                                    </label>
-                                                    <input
-                                                        type='text'
-                                                        name='address.street'
-                                                        id='address.street'
-                                                        value={formData.address.street}
-                                                        onChange={handleInputChange}
-                                                        className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                                                    />
-                                                </div>
-
-                                                <div className='sm:col-span-2'>
-                                                    <label
-                                                        htmlFor='address.city'
-                                                        className='block text-sm font-medium text-gray-700'
-                                                    >
-                                                        City
-                                                    </label>
-                                                    <input
-                                                        type='text'
-                                                        name='address.city'
-                                                        id='address.city'
-                                                        value={formData.address.city}
-                                                        onChange={handleInputChange}
-                                                        className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                                                    />
-                                                </div>
-
-                                                <div className='sm:col-span-2'>
-                                                    <label
-                                                        htmlFor='address.province'
-                                                        className='block text-sm font-medium text-gray-700'
-                                                    >
-                                                        State/Province
-                                                    </label>
-                                                    <input
-                                                        type='text'
-                                                        name='address.province'
-                                                        id='address.province'
-                                                        value={formData.address.province}
-                                                        onChange={handleInputChange}
-                                                        className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                                                    />
-                                                </div>
-
-                                                <div className='sm:col-span-2'>
-                                                    <label
-                                                        htmlFor='address.zipCode'
-                                                        className='block text-sm font-medium text-gray-700'
-                                                    >
-                                                        ZIP / Postal code
-                                                    </label>
-                                                    <input
-                                                        type='text'
-                                                        name='address.zipCode'
-                                                        id='address.zipCode'
-                                                        value={formData.address.zipCode}
-                                                        onChange={handleInputChange}
-                                                        className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                                                    />
-                                                </div>
-
-                                                <div className='sm:col-span-6'>
-                                                    <label
-                                                        htmlFor='address.additionalDetails'
-                                                        className='block text-sm font-medium text-gray-700'
-                                                    >
-                                                        Additional details
-                                                    </label>
-                                                    <textarea
-                                                        id='address.additionalDetails'
-                                                        name='address.additionalDetails'
-                                                        rows={3}
-                                                        value={formData.address.additionalDetails}
-                                                        onChange={handleInputChange}
-                                                        className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                                                    />
-                                                </div>
                                             </div>
-
                                             <div className='flex justify-end space-x-3 pt-6 border-t border-gray-200'>
                                                 <button
                                                     type='button'
@@ -412,41 +291,15 @@ const Profile = () => {
                                             </div>
                                         </form>
                                     ) : (
-                                        // View Mode
                                         <div className='space-y-8'>
-                                            <div className='flex justify-end'>
-                                                <button
-                                                    type='button'
-                                                    onClick={() => {
-                                                        setFormData({
-                                                            ...user,
-                                                            address: user.address || {
-                                                                street: '',
-                                                                city: '',
-                                                                province: '',
-                                                                zipCode: '',
-                                                                additionalDetails: '',
-                                                                contactNumber: '',
-                                                            },
-                                                        });
-                                                        setIsEditing(true);
-                                                    }}
-                                                    className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                                                >
-                                                    <BiEdit className='-ml-1 mr-2 h-5 w-5' />
-                                                    Edit Profile
-                                                </button>
-                                            </div>
-
                                             <div className='grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-8'>
-                                                {/* Personal Information */}
                                                 <div>
                                                     <h3 className='text-lg leading-6 font-medium text-gray-900'>
                                                         Personal Information
                                                     </h3>
                                                     <div className='mt-6 space-y-4'>
                                                         <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
+                                                            <dt className='text-sm font-medium text-gray-700'>
                                                                 Full name
                                                             </dt>
                                                             <dd className='mt-1 text-sm text-gray-900'>
@@ -454,7 +307,7 @@ const Profile = () => {
                                                             </dd>
                                                         </div>
                                                         <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
+                                                            <dt className='text-sm font-medium text-gray-700'>
                                                                 Username
                                                             </dt>
                                                             <dd className='mt-1 text-sm text-gray-900'>
@@ -462,87 +315,40 @@ const Profile = () => {
                                                             </dd>
                                                         </div>
                                                         <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
+                                                            <dt className='text-sm font-medium text-gray-700'>
                                                                 Email address
                                                             </dt>
                                                             <dd className='mt-1 text-sm text-gray-900'>
                                                                 {user?.email}
                                                             </dd>
                                                         </div>
-                                                        <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
-                                                                Phone
-                                                            </dt>
-                                                            <dd className='mt-1 text-sm text-gray-900'>
-                                                                {user?.address?.[0]?.phone_number ?? 'Not provided'}
-                                                            </dd>
-                                                        </div>
                                                     </div>
                                                 </div>
-
-                                                {/* Address Information */}
                                                 <div>
                                                     <h3 className='text-lg leading-6 font-medium text-gray-900'>
-                                                        Address Information
+                                                        Address
                                                     </h3>
-                                                    <div className='mt-6 space-y-4'>
-                                                        <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
-                                                                Address
-                                                            </dt>
-                                                            <dd className='mt-1 text-sm text-gray-900'>
-                                                                {user?.address?.street ||
-                                                                    'Not provided'}
-                                                            </dd>
-                                                        </div>
-                                                        <div className='grid grid-cols-2 gap-4'>
-                                                            <div>
-                                                                <dt className='text-sm font-medium text-gray-500'>
-                                                                    City
-                                                                </dt>
-                                                                <dd className='mt-1 text-sm text-gray-900'>
-                                                                    {user?.address?.city ||
-                                                                        'Not provided'}
-                                                                </dd>
-                                                            </div>
-                                                            <div>
-                                                                <dt className='text-sm font-medium text-gray-500'>
-                                                                    State/Province
-                                                                </dt>
-                                                                <dd className='mt-1 text-sm text-gray-900'>
-                                                                    {user?.address?.province ||
-                                                                        'Not provided'}
-                                                                </dd>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
-                                                                ZIP/Postal code
-                                                            </dt>
-                                                            <dd className='mt-1 text-sm text-gray-900'>
-                                                                {user?.address?.zipCode ||
-                                                                    'Not provided'}
-                                                            </dd>
-                                                        </div>
-                                                        <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
-                                                                Additional Details
-                                                            </dt>
-                                                            <dd className='mt-1 text-sm text-gray-900'>
-                                                                {user?.address?.additionalDetails ||
-                                                                    'Not provided'}
-                                                            </dd>
-                                                        </div>
-                                                        <div>
-                                                            <dt className='text-sm font-medium text-gray-500'>
-                                                                Contact Number
-                                                            </dt>
-                                                            <dd className='mt-1 text-sm text-gray-900'>
-                                                                {user?.address?.contactNumber ||
-                                                                    'Not provided'}
-                                                            </dd>
-                                                        </div>
-                                                    </div>
+                                                    {!addressToEdit ?
+                                                        <ul
+                                                            className={`mt-6 overflow-auto h-40 container flex flex-col gap-5 ${scrolled ? 'border-t-1 border-gray-100': ''}`}
+                                                            onScroll={setScrolling}
+                                                        >
+                                                            { user['addresses'].map((address, idx) => {
+                                                                return (
+                                                                    <Address
+                                                                        key={idx}
+                                                                        address={address}
+                                                                        onEdit={handleEditAddress}
+                                                                    />
+                                                                )
+                                                            })}
+                                                        </ul>
+                                                        :
+                                                        <Address
+                                                            addressToEdit={addressToEdit}
+                                                            onEdit={handleEditAddress}
+                                                        />
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
