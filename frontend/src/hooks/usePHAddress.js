@@ -8,12 +8,9 @@ export function usePHAddress() {
     const [barangays, setBarangays] = useState([]);
 
     const getRegions = useCallback(async () => {
-        //console.trace()
-        reg().then((response) => {setRegions(response); console.log(response); console.log('done')});
+        reg().then((response) => setRegions(response));
     }, [])
-    //const getRegions = async () => {
-    //    return reg().then((response) => {setRegions(response); console.log(response); console.log('done')});
-    //}
+
     const getProvinces = (regionCode) => {
         prov(regionCode).then((response) => {
             setProvinces(response);
@@ -71,10 +68,6 @@ export function usePHAddress() {
             }
         }
     }
-
-    //useEffect(() => {
-    //    getRegions();
-    //}, []);
 
     return {
         getSelectedData,
