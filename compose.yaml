@@ -16,7 +16,7 @@ services:
     # https://stackoverflow.com/questions/29663459/why-doesnt-python-app-print-anything-when-run-in-a-detached-docker-container
     environment:
       - PYTHONUNBUFFERED=1
-    restart: on-failure
+    restart: on-failure:3
   frontend:
     build: ./frontend
     container_name: frontend
@@ -25,7 +25,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    restart: on-failure
+    restart: on-failure:3
   webmart_seller:
     build: ./webmart_seller
     container_name: webmart_seller
@@ -36,7 +36,7 @@ services:
         source: ./webmart_seller
         target: /app
       - /app/node_modules
-    restart: on-failure
+    restart: on-failure:3
   webmart_db:
     image: postgres:15.3-bullseye
     container_name: webmart_db
