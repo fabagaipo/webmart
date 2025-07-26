@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, useNavig
 
 import StoreManagement from './components/StoreManagement';
 import StoreHeader from './components/StoreHeader';
-import StoreProducts from './components/StoreProducts';
-import StoreProductDetails from './components/StoreProductDetails';
+import StoreProducts from './components/products/StoreProducts';
+import StoreProductDetails from './components/products/StoreProductDetails';
+import StoreProductEdit from './components/products/StoreProductEdit';
+import StoreProductAdd from './components/products/StoreProductAdd';
 import NotFound from './components/NotFound';
-import StoreOrders from './components/StoreOrders';
-import StoreOrderDetails from './components/StoreOrderDetails';
+import StoreOrders from './components/orders/StoreOrders';
+import StoreOrderDetails from './components/orders/StoreOrderDetails';
 
 function App() {
   return (
@@ -38,7 +40,9 @@ function AppContent() {
           <Route path="/store/orders" element={<StoreOrders />} />
           <Route path="/store/orders/:orderId" element={<StoreOrderDetails />} />
           <Route path="/store/products" element={<StoreProducts />} />
+          <Route path="/store/products/add" element={<StoreProductAdd />} />
           <Route path="/store/products/:productId" element={<StoreProductDetails />} />
+          <Route path="/store/products/edit/:productId" element={<StoreProductEdit />} />
           <Route path="/" element={<Navigate to="/store/dashboard" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
