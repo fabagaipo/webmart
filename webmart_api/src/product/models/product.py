@@ -1,5 +1,5 @@
 from django.db import models
-from category.models.category import *
+from category.models.category import Category
 from simple_history.models import HistoricalRecords
 
 
@@ -11,6 +11,7 @@ class Product(models.Model):
     removed = models.BooleanField(default=False)
     price = models.PositiveIntegerField(default=0)
     category = models.ManyToManyField(Category, related_name="products", blank=True)
+    image_data = models.JSONField()
 
     history = HistoricalRecords()
 
