@@ -58,17 +58,14 @@ class Command(BaseCommand):
         subprocess.run(["python", "manage.py", "migrate"])
 
     def generate_fake_users(self):
-        users_objs = []
         for i in range(50):
-            user = User(
+            User.objects.create_user(
                 email=f"test{i + 1}@test.com",
                 first_name=f"User{i + 1}",
                 last_name=f"Userlastname{i + 1}",
                 username=f"user_name{i + 1}",
                 password=f"user_password{i + 1}",
             )
-            users_objs.append(user)
-        User.objects.bulk_create(users_objs)
 
         logger.info("Fake users were generated.")
 
