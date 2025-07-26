@@ -4,8 +4,8 @@
 import os
 import sys
 
-sys.path.insert(0, "src/")
-
+proj_root = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(proj_root, "src"))
 
 def main():
     """Run administrative tasks."""
