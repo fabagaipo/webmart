@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "simple_history",
     "corsheaders",
     "cloudinary",
+    "dummy",
+    "django_extensions",
     *WEBMART_API_APPS,
 ]
 
