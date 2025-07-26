@@ -9,17 +9,17 @@
 ```
 docker compose up -d --build
 ```
-#### Run migrations and create superuser
+#### Run migrations, initialize db with fake records, and create superuser
 ```
 docker compose exec webmart_api bash
 ```
 ```
-python manage.py migrate
+python manage.py dummy
 ```
 ```
 python manage.py createsuperuser
 ```
-#### Additional setup
+#### Additional setup (pre-commit hooks for backend)
 On your machine's terminal
 ```
 sh addional_setup.sh
