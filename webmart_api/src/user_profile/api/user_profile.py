@@ -27,7 +27,7 @@ def register_user(request, payload: dict = Body()):
     address_payload = payload.pop("address", {})
     try:
         with transaction.atomic():
-            if User.objects.filter(email=payload.get('email')).exists():
+            if User.objects.filter(email=payload.get("email")).exists():
                 raise Exception("Email is already taken.")
             new_user = User.objects.create_user(
                 **payload, username=f"{payload['first_name']} {payload['last_name']}"
