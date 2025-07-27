@@ -16,6 +16,7 @@ from django.db import transaction
 from user_profile.models.user_profile import UserProfile, Address
 from category.models.category import Category
 from store.models.store import Store, StoreApplication, Inventory
+
 # from order.models.order import Order
 from product.models.product import Product
 
@@ -58,6 +59,7 @@ class Command(BaseCommand):
         subprocess.run(["python", "manage.py", "migrate"])
 
     def generate_fake_users(self):
+        logger.info("Generating fake users.")
         for i in range(50):
             User.objects.create_user(
                 email=f"test{i + 1}@test.com",
@@ -70,6 +72,7 @@ class Command(BaseCommand):
         logger.info("Fake users were generated.")
 
     def generate_fake_profiles(self):
+        logger.info("Generating fake profiles.")
         address = Address.objects.create(
             region_code="01",
             province_code="0101",
@@ -96,6 +99,7 @@ class Command(BaseCommand):
         logger.info("Fake profiles were generated.")
 
     def generate_fake_stores(self):
+        logger.info("Generating fake stores.")
         applicants = UserProfile.objects.all()[:20]
         identification = {"url": {}}
         status = StoreApplication.APPROVED
@@ -111,16 +115,18 @@ class Command(BaseCommand):
         logger.info("Fake store applications and stores were generated.")
 
     def generate_fake_categories(self):
+        logger.info("Generating fake categories.")
         for i in range(10):
             Category.objects.create(
                 title=f"Category {i + 1}",
                 description=f"Description for category {i + 1}",
-                image_data={"url": "https://picsum.photos/292/237/2000/3000"},
+                image_data={"url": "https://picsum.photos/id/292/500/600"},
             )
 
         logger.info("Fake categories were generated")
 
     def generate_fake_products(self):
+        logger.info("Generating fake products.")
         stores = Store.objects.all()
         categories = Category.objects.all()
         for i in range(100):
@@ -128,7 +134,7 @@ class Command(BaseCommand):
                 name=f"Product {i + 1}",
                 description=f"Description for product {i + 1}",
                 price=200,
-                image_data={"url": "https://picsum.photos/26/237/2000/3000"},
+                image_data={"url": "https://picsum.photos/id/26/500/600"},
             )
             product.category.add(categories[random.randint(0, 9)])
 
