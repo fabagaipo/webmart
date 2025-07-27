@@ -26,9 +26,9 @@ user_router = Router()
 def register_user(request, payload: dict = Body()):
     address_payload = payload.pop("address", {})
     try:
+        if User.objects.filter(email=payload.get("email")).exists():
+            raise Exception("Email is already taken.")
         with transaction.atomic():
-            if User.objects.filter(email=payload.get("email")).exists():
-                raise Exception("Email is already taken.")
             new_user = User.objects.create_user(
                 **payload, username=f"{payload['first_name']} {payload['last_name']}"
             )
@@ -44,7 +44,7 @@ def register_user(request, payload: dict = Body()):
                     "refresh_token": generate_refresh_token(data={"user": new_user}),
                 },
             }
-            return Response(response_data, status=200)
+            return Response(response_data, status=201)
     except Exception as e:
         return Response({"message": str(e)}, status=500)
 
