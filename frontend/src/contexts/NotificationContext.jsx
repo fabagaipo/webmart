@@ -1,15 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
 const NotificationContext = createContext();
-
-// eslint-disable-next-line
-export const useNotifications = () => {
-    const context = useContext(NotificationContext);
-    if (!context) {
-        throw new Error('useNotifications must be used within a NotificationProvider');
-    }
-    return context;
-};
 
 export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([
@@ -80,4 +71,4 @@ export const NotificationProvider = ({ children }) => {
     );
 };
 
-export default NotificationContext;
+export { NotificationContext};

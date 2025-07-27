@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useCallback } from 'react';
+import { createContext, useState, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 
 const CartContext = createContext();
@@ -73,15 +73,6 @@ export const CartProvider = ({ children }) => {
             {children}
         </CartContext.Provider>
     );
-};
-
-// eslint-disable-next-line
-export const useCart = () => {
-    const context = useContext(CartContext);
-    if (context === undefined) {
-        throw new Error('useCart must be used within a CartProvider');
-    }
-    return context;
 };
 
 export { CartContext };

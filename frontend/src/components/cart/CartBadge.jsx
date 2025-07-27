@@ -1,7 +1,7 @@
-import { useCart } from '../context/CartContext';
+import { useCartContext } from 'contexts';
 
 function CartBadge() {
-    const { cart } = useCart();
+    const { cart } = useCartContext();
 
     if (cart.length === 0) {
         return null;

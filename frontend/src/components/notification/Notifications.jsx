@@ -1,6 +1,6 @@
 import React from 'react';
 import NotificationItem from './NotificationItem';
-import { useNotifications } from '../../context/NotificationContext';
+import { useNotifications } from 'contexts';
 
 const Notifications = () => {
     const { notifications, markAsRead, markAllAsRead } = useNotifications();

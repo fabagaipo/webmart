@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from 'context';
+import { useCartContext } from 'contexts';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { BsCart } from 'react-icons/bs';
 
 const Cart = () => {
-    const { cart, removeFromCart, updateQuantity } = useCart();
+    const { cart, removeFromCart, updateQuantity } = useCartContext();
     const [total, setTotal] = useState(0);
     const [voucherCode, setVoucherCode] = useState('');
     const [voucherError, setVoucherError] = useState('');

@@ -1,8 +1,8 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useUser } from 'context';
+import { useUserContext } from 'contexts';
 
 export default function ProtectedRoute() {
-    const { user } = useUser();
+    const { user } = useUserContext();
     const location = useLocation();
     const isAuthenticated = !!user?.id;
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useMatch, Outlet, useNavigate, NavLink } from 'react-router-dom';
-import { useUser } from 'context';
-import { useNotifications } from '../context/NotificationContext';
+import { useUserContext } from 'contexts';
+import { useNotifications } from 'contexts';
 import { useUpload  } from 'custom-hooks/useUpload';
 
 import {
@@ -22,7 +22,7 @@ const Profile = () => {
     const navigate = useNavigate();
     const { uploadFile } = useUpload()
     const match = useMatch('/profile');
-    const { user, performLogout, updateUserAvatar } = useUser();
+    const { user, performLogout, updateUserAvatar } = useUserContext();
     const { unreadCount } = useNotifications();
     const [isEditing, setIsEditing] = useState(false);
     const [addressToEdit, setAddressToEdit] = useState(null);

@@ -2,12 +2,12 @@ import { TfiLocationPin } from "react-icons/tfi";
 import { PiPencilSimpleLight } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { usePHAddress } from 'custom-hooks/usePHAddress';
-import { useUser } from 'context';
+import { useUserContext } from 'contexts';
 
 
 // WIP
 export function Address({ address, addressToEdit, onEdit }) {
-    const { user } = useUser();
+    const { user } = useUserContext();
     const { getSelectedData, getChildKey, selections } = usePHAddress();
     const [addressForm, setAddressForm] = useState(null);
 

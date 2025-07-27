@@ -9,8 +9,8 @@ import {
     FaExternalLinkAlt,
 } from 'react-icons/fa';
 import Marquee from 'react-fast-marquee';
-import { useCart } from '../context/CartContext';
-import { useNotifications } from '../context/NotificationContext';
+import { useCartContext } from 'contexts';
+import { useNotifications } from 'contexts';
 import NotificationItem from './notification/NotificationItem';
 
 const CountdownTimer = () => {
@@ -118,7 +118,7 @@ const Header = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showNotifications, setShowNotifications] = useState(false);
     const navigate = useNavigate();
-    const { cart } = useCart();
+    const { cart } = useCartContext();
     const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
 
     useEffect(() => {

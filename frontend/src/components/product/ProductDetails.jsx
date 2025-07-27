@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCart } from 'context';
+import { useCartContext } from 'contexts';
 import { useState, useEffect } from 'react';
 import { BsCartPlus } from 'react-icons/bs';
 import { FaPlus, FaMinus } from 'react-icons/fa';
@@ -7,7 +7,7 @@ import { MdStarRate, MdStarOutline, MdStarHalf } from 'react-icons/md';
 
 function ProductDetails() {
     const { id } = useParams();
-    const { addToCart, updateQuantity, cart } = useCart();
+    const { addToCart, updateQuantity, cart } = useCartContext();
     const navigate = useNavigate();
 
     // Scroll to top when component mounts

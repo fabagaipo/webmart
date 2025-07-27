@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useUser } from 'context';
+import { useUserContext } from 'contexts';
 import { usePHAddress } from 'custom-hooks/usePHAddress';
 import { useNavigate } from 'react-router';
 
@@ -16,7 +16,7 @@ const AuthForm = ({ mode }) => {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const passwordContainerRef = useRef(null);
-    const { user, performLogin, performSignup } = useUser();
+    const { user, performLogin, performSignup } = useUserContext();
     const navigate = useNavigate();
 
     const [address, setAddress] = useState({
