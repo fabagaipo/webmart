@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { Toaster } from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 
-import { CartProvider } from 'context/CartContext';
-import { UserProvider } from 'context/UserContext';
-import { NotificationProvider } from 'context/NotificationContext';
+import { CartProvider } from 'contexts/CartContext';
+import { UserProvider } from 'contexts/UserContext';
+import { NotificationProvider } from 'contexts/NotificationContext';
+import { ProductsProvider } from 'contexts/ProductsContext';
+import { usePHAddress } from 'custom-hooks/usePHAddress';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -31,18 +33,21 @@ import HomePage from './pages/HomePage';
 function App() {
     return (
         <Router>
-            <UserProvider>
-                <CartProvider>
-                    <NotificationProvider>
-                        <AppContent />
-                    </NotificationProvider>
-                </CartProvider>
-            </UserProvider>
+            <ProductsProvider>
+                <UserProvider>
+                    <CartProvider>
+                        <NotificationProvider>
+                            <AppContent />
+                        </NotificationProvider>
+                    </CartProvider>
+                </UserProvider>
+            </ProductsProvider>
         </Router>
     );
 }
 
 function AppContent() {
+    const { getRegions } = usePHAddress();
     const location = useLocation();
     const [showHeaderFooter, setShowHeaderFooter] = useState(true);
     
@@ -51,6 +56,10 @@ function AppContent() {
                          (location.state && location.state.is404);
         setShowHeaderFooter(!is404Page);
     }, [location]);
+
+    useEffect(() => {
+        getRegions()
+    }, [])
     
     return (
         <div className='app flex flex-col min-h-screen'>
