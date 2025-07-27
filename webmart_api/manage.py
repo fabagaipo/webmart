@@ -7,6 +7,7 @@ import sys
 proj_root = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(proj_root, "src"))
 
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "_webmart_api.settings")
