@@ -10,7 +10,7 @@ export default defineConfig({
         alias: {
             components: path.resolve(__dirname, './src/components'),
             assets: path.resolve(__dirname, './src/assets'),
-            context: path.resolve(__dirname, './src/context'),
+            contexts: path.resolve(__dirname, './src/contexts'),
             webmart: path.resolve(__dirname, './src/webmart-api'),
             'custom-hooks': path.resolve(__dirname, './src/hooks')
         },
