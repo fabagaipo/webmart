@@ -10,6 +10,7 @@ import StoreProductAdd from './components/products/StoreProductAdd';
 import NotFound from './components/NotFound';
 import StoreOrders from './components/orders/StoreOrders';
 import StoreOrderDetails from './components/orders/StoreOrderDetails';
+import StoreAnalytics from './components/StoreAnalytics';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function AppContent() {
           <Route path="/store/products/add" element={<StoreProductAdd />} />
           <Route path="/store/products/:productId" element={<StoreProductDetails />} />
           <Route path="/store/products/edit/:productId" element={<StoreProductEdit />} />
+          <Route path="/store/analytics" element={<StoreAnalytics />} />
           <Route path="/" element={<Navigate to="/store/dashboard" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
