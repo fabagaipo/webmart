@@ -17,7 +17,7 @@ function prepRequestBody(data, type='form') {
 
 export async function WebMartApi({endpoint, method='POST', type='json', data=null}) {
     if (method === 'GET') type = 'json';
-    const BASE_URL = import.meta.env.VITE_WEBMART_BASE_URL;
+    const BASE_URL = import.meta.env.VITE_WEBMART_API_BASE_URL;
     const access_token = localStorage.getItem('access_token');
 
     // https://axios-http.com/docs/instance
