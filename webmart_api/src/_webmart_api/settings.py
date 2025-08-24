@@ -125,4 +125,6 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 # Ref https://www.stackhawk.com/blog/django-cors-guide/
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"http://localhost:\d+$",
+    r"https://webmart-seller.vercel.app/",
+    r"https://webmart-ph.vercel.app/",
 ]
